@@ -26,7 +26,7 @@ static void throw_error(JNIEnv *env, const char *exceptionClassName, const char 
     jclass exceptionClass = (*env)->FindClass(env, exceptionClassName);
     if (exceptionClass != NULL) {
         jint success = (*env)->ThrowNew(env, exceptionClass, message);
-        if (!success) {
+        if (0 != success) {
             (*env)->FatalError(env, "Could not throw exception");
         }
     } else {
