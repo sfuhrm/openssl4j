@@ -97,6 +97,7 @@ public class SpeedTest {
         });
     }
 
+    static boolean first = true;
     static void benchmark(String benchmarkName, String testName, int times, int length, Runnable r) {
         long start = System.currentTimeMillis();
         for (int i = 0; i < times; i++) {
@@ -109,7 +110,11 @@ public class SpeedTest {
         double seconds = millis / 1000.;
 
         Formatter formatter = new Formatter(System.out, Locale.ENGLISH);
-        formatter.format("Bench;Test;Times;Length;Seconds;Data;SpeedMBPS%n");
+
+        if (first) {
+            formatter.format("Bench;Test;Times;Length;Seconds;Data;SpeedMBPS%n");
+            first = false;
+        }
 
         formatter.format("%s;%s;%d;%d;%g;%g;%g%n",
                 benchmarkName,
