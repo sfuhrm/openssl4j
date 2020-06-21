@@ -47,6 +47,8 @@
             <configuration>
               <executable>gcc</executable>
               <arguments>
+                <argument>-Wall</argument>
+                <argument>-Werror</argument>
                 <argument>-o</argument>
                 <argument>${project.build.directory}/libmd5native-${os.name}-${os.arch}.so</argument>
                 <argument>-lc</argument>
