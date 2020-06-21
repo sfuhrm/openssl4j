@@ -15,8 +15,10 @@ import java.security.NoSuchAlgorithmException;
 import java.security.Provider;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Formatter;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -31,7 +33,7 @@ public class SpeedTest {
     static final int TIMES = 100;
 
     private static Stream<Arguments> provideTestArguments() throws NoSuchAlgorithmException, IOException {
-        List<String> messageDigestNames = Arrays.asList("MD5", "SHA1", "SHA-224", "SHA-256", "SHA-384", "SHA-512");
+        List<String> messageDigestNames = Arrays.asList("MD5", "SHA1", "SHA-224", "SHA-256", "SHA-384", "SHA-512", "SHA-512/224", "SHA-512/256");
         List<Integer> bufferSizes = Arrays.asList(1000, 100000, 1000000);
         List<Arguments> result = new ArrayList<>();
         Map<String, Provider> providerMap = new HashMap<>();
@@ -106,9 +108,10 @@ public class SpeedTest {
         double totalData = times * length;
         double seconds = millis / 1000.;
 
-        System.out.printf("Bench;Test;Times;Length;Seconds;Data;SpeedMBPS%n");
+        Formatter formatter = new Formatter(System.out, Locale.ENGLISH);
+        formatter.format("Bench;Test;Times;Length;Seconds;Data;SpeedMBPS%n");
 
-        System.out.printf("%s;%s;%d;%d;%g;%g;%g%n",
+        formatter.format("%s;%s;%d;%d;%g;%g;%g%n",
                 benchmarkName,
                 testName,
                 times,

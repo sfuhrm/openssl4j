@@ -41,6 +41,8 @@
                 <argument>${project.build.sourceDirectory}/de/sfuhrm/openssl/jni/SHA256Native.java</argument>
                 <argument>${project.build.sourceDirectory}/de/sfuhrm/openssl/jni/SHA384Native.java</argument>
                 <argument>${project.build.sourceDirectory}/de/sfuhrm/openssl/jni/SHA512Native.java</argument>
+                <argument>${project.build.sourceDirectory}/de/sfuhrm/openssl/jni/SHA512_224Native.java</argument>
+                <argument>${project.build.sourceDirectory}/de/sfuhrm/openssl/jni/SHA512_256Native.java</argument>
               </arguments>
             </configuration>
           </execution>

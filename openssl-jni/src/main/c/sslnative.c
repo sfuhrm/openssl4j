@@ -13,6 +13,8 @@
 #include "de_sfuhrm_openssl_jni_SHA256Native.h"
 #include "de_sfuhrm_openssl_jni_SHA384Native.h"
 #include "de_sfuhrm_openssl_jni_SHA512Native.h"
+#include "de_sfuhrm_openssl_jni_SHA512_224Native.h"
+#include "de_sfuhrm_openssl_jni_SHA512_256Native.h"
 
 #define ILLEGAL_STATE_EXCEPTION "java/lang/IllegalStateException"
 
@@ -166,3 +168,5 @@ INIT_FUNC(Java_de_sfuhrm_openssl_jni_SHA224Native_nativeInit,EVP_sha224)
 INIT_FUNC(Java_de_sfuhrm_openssl_jni_SHA256Native_nativeInit,EVP_sha256)
 INIT_FUNC(Java_de_sfuhrm_openssl_jni_SHA384Native_nativeInit,EVP_sha384)
 INIT_FUNC(Java_de_sfuhrm_openssl_jni_SHA512Native_nativeInit,EVP_sha512)
+INIT_FUNC(Java_de_sfuhrm_openssl_jni_SHA512_1224Native_nativeInit,EVP_sha512_224)
+INIT_FUNC(Java_de_sfuhrm_openssl_jni_SHA512_1256Native_nativeInit,EVP_sha512_256)
