@@ -70,6 +70,8 @@ public class OpenSSLProvider extends Provider {
         Map<String, String> map = new HashMap<>();
         map.put("MessageDigest.MD5", MD5Native.class.getCanonicalName());
         map.put("MessageDigest.SHA1", SHA1Native.class.getCanonicalName());
+        map.put("MessageDigest.SHA-224", SHA224Native.class.getCanonicalName());
+        map.put("MessageDigest.SHA-256", SHA256Native.class.getCanonicalName());
 
         return map;
     }

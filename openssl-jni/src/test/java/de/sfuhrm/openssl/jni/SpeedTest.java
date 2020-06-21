@@ -31,7 +31,7 @@ public class SpeedTest {
     static final int TIMES = 100;
 
     private static Stream<Arguments> provideTestArguments() throws NoSuchAlgorithmException, IOException {
-        List<String> messageDigestNames = Arrays.asList("MD5", "SHA1");
+        List<String> messageDigestNames = Arrays.asList("MD5", "SHA1", "SHA-224", "SHA-256");
         List<Integer> bufferSizes = Arrays.asList(1000, 100000, 1000000);
         List<Arguments> result = new ArrayList<>();
         Map<String, Provider> providerMap = new HashMap<>();
