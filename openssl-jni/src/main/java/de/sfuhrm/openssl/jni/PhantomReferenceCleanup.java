@@ -1,27 +1,43 @@
 package de.sfuhrm.openssl.jni;
 
 import java.lang.ref.PhantomReference;
-import java.lang.ref.Reference;
 import java.lang.ref.ReferenceQueue;
 import java.nio.ByteBuffer;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
- * Frees native ByteBuffer objects.
+ * Frees native AbstractNative objects.
  * The ByteBuffer objects are allocated in {@linkplain AbstractNative#AbstractNative()}
  * and are not used any longer.
  * @author Stephan Fuhrmann
  */
 class PhantomReferenceCleanup {
 
-    /** The reference queue of unused ByteBuffer objects. */
-    private static final ReferenceQueue<ByteBuffer> BYTE_BUFFER_REFERENCE_QUEUE = new ReferenceQueue<>();
+    /** The reference queue of unused AbstractNative objects. */
+    private static final ReferenceQueue<AbstractNative> BYTE_BUFFER_REFERENCE_QUEUE = new ReferenceQueue<>();
 
     /** Is the thread running? */
     private static boolean running = false;
 
-    /** Enqueues a ByteBuffer for later cleanup. */
-    static void enqueueForCleanup(ByteBuffer bb) {
-        PhantomReference<ByteBuffer> phantomReference = new PhantomReference<ByteBuffer>(bb, BYTE_BUFFER_REFERENCE_QUEUE);
+    private static Set<NativePhantomReference> nativePhantomReferenceList = Collections.synchronizedSet(new HashSet<>());
+
+    private static class NativePhantomReference extends PhantomReference<AbstractNative> {
+        private final ByteBuffer byteBuffer;
+        NativePhantomReference(AbstractNative abstractNative, ByteBuffer context) {
+            super(abstractNative, BYTE_BUFFER_REFERENCE_QUEUE);
+            this.byteBuffer = context;
+        }
+        public void free() {
+            AbstractNative.removeContext(byteBuffer);
+        }
+    }
+
+    /** Enqueues a AbstractNative for later cleanup. */
+    static void enqueueForCleanup(AbstractNative ref) {
+        NativePhantomReference phantomReference = new NativePhantomReference(ref, ref.getContext());
+        nativePhantomReferenceList.add(phantomReference);
         startIfNeeded();
     }
 
@@ -34,8 +50,9 @@ class PhantomReferenceCleanup {
             Runnable r = () -> {
                 try {
                     while (true) {
-                        Reference<ByteBuffer> reference = (Reference<ByteBuffer>) BYTE_BUFFER_REFERENCE_QUEUE.remove(0);
-                        AbstractNative.removeContext(reference.get());
+                        NativePhantomReference reference = (NativePhantomReference)BYTE_BUFFER_REFERENCE_QUEUE.remove();
+                        reference.free();
+                        nativePhantomReferenceList.remove(reference);
                     }
                 } catch (InterruptedException e) {
                 }

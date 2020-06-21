@@ -67,12 +67,17 @@ abstract class AbstractNative extends MessageDigestSpi {
         try {
             NativeLoader.loadAll();
             context = nativeContext();
-            PhantomReferenceCleanup.enqueueForCleanup(context);
+            PhantomReferenceCleanup.enqueueForCleanup(this);
             engineReset();
         }
         catch (IOException e) {
             throw new IllegalStateException(e);
         }
+    }
+
+    /** Get the native context that needs to be cleared at GC. */
+    ByteBuffer getContext() {
+        return context;
     }
 
     @Override

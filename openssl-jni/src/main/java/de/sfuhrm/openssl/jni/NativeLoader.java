@@ -22,6 +22,8 @@ class NativeLoader {
     /** The transfer for object files. */
     private ObjectTransfer objectTransfer;
 
+    private static boolean isLoaded = false;
+
     static final String[] OBJECTS = {
             "libsslnative"
     };
@@ -35,6 +37,9 @@ class NativeLoader {
      * @throws IOException if transferring the object files failed.
      */
     static void loadAll() throws IOException {
+        if (isLoaded) {
+            return;
+        }
         NativeLoader nativeLoader = new NativeLoader();
         ObjectTransfer objectTransfer = new ObjectTransfer();
         objectTransfer.transfer(OBJECTS);
@@ -42,6 +47,7 @@ class NativeLoader {
         for (Path path : nativeLoader.objectFiles) {
             nativeLoader.load(path);
         }
+        isLoaded = true;
     }
 
     /** Loads an object file and remembers it was loaded. */
