@@ -10,6 +10,8 @@
 #include "de_sfuhrm_openssl_jni_SHA1Native.h"
 #include "de_sfuhrm_openssl_jni_SHA224Native.h"
 #include "de_sfuhrm_openssl_jni_SHA256Native.h"
+#include "de_sfuhrm_openssl_jni_SHA384Native.h"
+#include "de_sfuhrm_openssl_jni_SHA512Native.h"
 
 #define ILLEGAL_STATE_EXCEPTION "java/lang/IllegalStateException"
 
@@ -32,6 +34,9 @@ static void* md_context_from(JNIEnv *env, jobject context) {
     }
     return context_data;
 }
+
+/* md5 */
+#include "ssl_undef.h"
 
 #define DIGEST_LENGTH MD5_DIGEST_LENGTH
 #define CONTEXT_T MD5_CTX
@@ -99,5 +104,41 @@ static void* md_context_from(JNIEnv *env, jobject context) {
 #define NATIVE_UPDATE_BYTE_ARRAY Java_de_sfuhrm_openssl_jni_SHA256Native_nativeUpdateWithByteArray
 #define NATIVE_UPDATE_BYTE_BUFFER Java_de_sfuhrm_openssl_jni_SHA256Native_nativeUpdateWithByteBuffer
 #define NATIVE_FINAL Java_de_sfuhrm_openssl_jni_SHA256Native_nativeFinal
+
+#include "mdnative.h"
+
+/* sha-384 */
+#include "ssl_undef.h"
+
+#define DIGEST_LENGTH SHA384_DIGEST_LENGTH
+#define CONTEXT_T SHA512_CTX
+#define C_INIT_FUNC SHA384_Init
+#define C_UPDATE_FUNC SHA384_Update
+#define C_FINAL_FUNC SHA384_Final
+
+#define NATIVE_CONTEXT_SIZE Java_de_sfuhrm_openssl_jni_SHA384Native_nativeContextSize
+#define NATIVE_INIT Java_de_sfuhrm_openssl_jni_SHA384Native_nativeInit
+#define NATIVE_UPDATE_BYTE Java_de_sfuhrm_openssl_jni_SHA384Native_nativeUpdateWithByte
+#define NATIVE_UPDATE_BYTE_ARRAY Java_de_sfuhrm_openssl_jni_SHA384Native_nativeUpdateWithByteArray
+#define NATIVE_UPDATE_BYTE_BUFFER Java_de_sfuhrm_openssl_jni_SHA384Native_nativeUpdateWithByteBuffer
+#define NATIVE_FINAL Java_de_sfuhrm_openssl_jni_SHA384Native_nativeFinal
+
+#include "mdnative.h"
+
+/* sha-512 */
+#include "ssl_undef.h"
+
+#define DIGEST_LENGTH SHA512_DIGEST_LENGTH
+#define CONTEXT_T SHA512_CTX
+#define C_INIT_FUNC SHA512_Init
+#define C_UPDATE_FUNC SHA512_Update
+#define C_FINAL_FUNC SHA512_Final
+
+#define NATIVE_CONTEXT_SIZE Java_de_sfuhrm_openssl_jni_SHA512Native_nativeContextSize
+#define NATIVE_INIT Java_de_sfuhrm_openssl_jni_SHA512Native_nativeInit
+#define NATIVE_UPDATE_BYTE Java_de_sfuhrm_openssl_jni_SHA512Native_nativeUpdateWithByte
+#define NATIVE_UPDATE_BYTE_ARRAY Java_de_sfuhrm_openssl_jni_SHA512Native_nativeUpdateWithByteArray
+#define NATIVE_UPDATE_BYTE_BUFFER Java_de_sfuhrm_openssl_jni_SHA512Native_nativeUpdateWithByteBuffer
+#define NATIVE_FINAL Java_de_sfuhrm_openssl_jni_SHA512Native_nativeFinal
 
 #include "mdnative.h"
