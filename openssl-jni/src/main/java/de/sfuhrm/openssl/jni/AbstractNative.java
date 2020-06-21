@@ -61,8 +61,6 @@ abstract class AbstractNative extends MessageDigestSpi {
     /** A MD5 context where the state of the current calculation is stored.  */
     private final ByteBuffer context;
 
-    private static final ReferenceQueue<PhantomReference<ByteBuffer>> BYTE_BUFFER_REFERENCE_QUEUE = new ReferenceQueue<>();
-
     public AbstractNative() {
         try {
             NativeLoader.loadAll();
@@ -82,7 +80,7 @@ abstract class AbstractNative extends MessageDigestSpi {
 
     @Override
     protected void engineUpdate(ByteBuffer input) {
-        if (input.hasRemaining() == false) {
+        if (!input.hasRemaining()) {
             return;
         }
         int remaining = input.remaining();

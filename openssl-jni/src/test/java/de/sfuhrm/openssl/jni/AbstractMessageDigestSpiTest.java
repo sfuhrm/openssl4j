@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import java.nio.ByteBuffer;
 import java.security.MessageDigest;
 import java.security.MessageDigestSpi;
-import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -64,7 +63,7 @@ public abstract class AbstractMessageDigestSpiTest extends BasicTest {
         for (byte val : data) {
             mdSpi.update(val);
         }
-        byte actualDigest[] = mdSpi.digest();
+        byte[] actualDigest = mdSpi.digest();
 
         MessageDigest reference = newReferenceMD();
         for (byte val : data) {
@@ -83,7 +82,7 @@ public abstract class AbstractMessageDigestSpiTest extends BasicTest {
         ByteBuffer actualCopy = bb.duplicate();
         MessageDigest mdSpi = newTestMD();
         mdSpi.update(actualCopy);
-        byte actualDigest[] = mdSpi.digest();
+        byte[] actualDigest = mdSpi.digest();
 
         MessageDigest reference = newReferenceMD();
         ByteBuffer expectedCopy = bb.duplicate();
@@ -107,7 +106,7 @@ public abstract class AbstractMessageDigestSpiTest extends BasicTest {
         ByteBuffer actualCopy = bb.duplicate();
         MessageDigest mdSpi = newTestMD();
         mdSpi.update(actualCopy);
-        byte actualDigest[] = mdSpi.digest();
+        byte[] actualDigest = mdSpi.digest();
 
         MessageDigest reference = newReferenceMD();
         ByteBuffer expectedCopy = bb.duplicate();

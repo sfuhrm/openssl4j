@@ -1,7 +1,5 @@
 package de.sfuhrm.openssl.jni;
 
-import org.junit.jupiter.api.Test;
-
 /**
  * Test for {@linkplain MD5Native}.
  * @author Stephan Fuhrmann

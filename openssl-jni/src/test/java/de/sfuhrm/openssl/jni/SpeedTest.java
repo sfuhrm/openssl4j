@@ -1,8 +1,5 @@
 package de.sfuhrm.openssl.jni;
 
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -10,7 +7,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.security.MessageDigest;
-import java.security.MessageDigestSpi;
 import java.security.NoSuchAlgorithmException;
 import java.security.Provider;
 import java.util.ArrayList;
@@ -20,8 +16,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.function.Function;
-import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 /**
@@ -58,7 +52,7 @@ public class SpeedTest {
 
     @ParameterizedTest
     @MethodSource("provideTestArguments")
-    public void updateWithByte(String benchmarkName, MessageDigest md, String messageDigestName, Integer bufferSize) throws NoSuchAlgorithmException {
+    public void updateWithByte(String benchmarkName, MessageDigest md, String messageDigestName, Integer bufferSize) {
         benchmark(benchmarkName, "SingleByte", TIMES, bufferSize, () -> {
             for (int i = 0; i < bufferSize; i++) {
                 md.update((byte) 0);
@@ -68,16 +62,14 @@ public class SpeedTest {
 
     @ParameterizedTest
     @MethodSource("provideTestArguments")
-    public void updateWithArray(String benchmarkName, MessageDigest md, String messageDigestName, Integer bufferSize) throws NoSuchAlgorithmException {
+    public void updateWithArray(String benchmarkName, MessageDigest md, String messageDigestName, Integer bufferSize) {
         byte[] data = new byte[bufferSize];
-        benchmark(benchmarkName, "ByteArray", TIMES, bufferSize, () -> {
-                md.update(data);
-        });
+        benchmark(benchmarkName, "ByteArray", TIMES, bufferSize, () -> md.update(data));
     }
 
     @ParameterizedTest
     @MethodSource("provideTestArguments")
-    public void updateWithHeapBB(String benchmarkName, MessageDigest md, String messageDigestName, Integer bufferSize) throws NoSuchAlgorithmException {
+    public void updateWithHeapBB(String benchmarkName, MessageDigest md, String messageDigestName, Integer bufferSize) {
         ByteBuffer byteBuffer = ByteBuffer.allocate(bufferSize);
         byteBuffer.limit(byteBuffer.capacity());
         benchmark(benchmarkName, "HeapBB", TIMES, bufferSize, () -> {
@@ -88,7 +80,7 @@ public class SpeedTest {
 
     @ParameterizedTest
     @MethodSource("provideTestArguments")
-    public void updateWithDirectBB(String benchmarkName, MessageDigest md, String messageDigestName, Integer bufferSize) throws NoSuchAlgorithmException {
+    public void updateWithDirectBB(String benchmarkName, MessageDigest md, String messageDigestName, Integer bufferSize) {
         ByteBuffer byteBuffer = ByteBuffer.allocateDirect(bufferSize);
         byteBuffer.limit(byteBuffer.capacity());
         benchmark(benchmarkName, "DirectBB", TIMES, bufferSize, () -> {

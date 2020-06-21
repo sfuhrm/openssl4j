@@ -3,7 +3,6 @@ package de.sfuhrm.openssl.jni;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -14,13 +13,10 @@ import java.util.Set;
  */
 class NativeLoader {
     /** Which objects have already been loaded? */
-    private Set<Path> loaded;
+    private final Set<Path> loaded;
 
     /** The object files loaded.  */
     private List<Path> objectFiles;
-
-    /** The transfer for object files. */
-    private ObjectTransfer objectTransfer;
 
     private static boolean isLoaded = false;
 
@@ -28,7 +24,7 @@ class NativeLoader {
             "libsslnative"
     };
 
-    NativeLoader() throws IOException {
+    NativeLoader() {
         loaded = new HashSet<>();
     }
 

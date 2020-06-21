@@ -21,7 +21,7 @@ class PhantomReferenceCleanup {
     /** Is the thread running? */
     private static boolean running = false;
 
-    private static Set<NativePhantomReference> nativePhantomReferenceList = Collections.synchronizedSet(new HashSet<>());
+    private static final Set<NativePhantomReference> nativePhantomReferenceList = Collections.synchronizedSet(new HashSet<>());
 
     private static class NativePhantomReference extends PhantomReference<AbstractNative> {
         private final ByteBuffer byteBuffer;
@@ -55,6 +55,7 @@ class PhantomReferenceCleanup {
                         nativePhantomReferenceList.remove(reference);
                     }
                 } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
             };
             Thread t = new Thread(r, "OpenSSL-Cleanup");

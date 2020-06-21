@@ -1,9 +1,6 @@
 package de.sfuhrm.openssl.jni;
 
-import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.nio.file.Path;
-import java.security.MessageDigestSpi;
 
 /**
  * MD5 message digest adapter to the OpenSSL MD5 functions.

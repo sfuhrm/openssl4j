@@ -8,7 +8,6 @@ import java.nio.file.Paths;
 import java.nio.file.attribute.PosixFilePermission;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -21,10 +20,10 @@ import java.util.Set;
 class ObjectTransfer {
 
     /** The destination temporary directory. */
-    private Path targetDirectory;
+    private final Path targetDirectory;
 
     /** The libraries copies. */
-    private List<Path> libraries;
+    private final List<Path> libraries;
 
     ObjectTransfer() throws IOException {
         targetDirectory = Files.createTempDirectory("native");
@@ -34,11 +33,13 @@ class ObjectTransfer {
                 try {
                     Files.delete(p);
                 } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
             try {
                 Files.delete(targetDirectory);
             } catch (IOException e) {
+                e.printStackTrace();
             }
         };
         Runtime.getRuntime().addShutdownHook(new Thread(removeTarget));
@@ -65,10 +66,8 @@ class ObjectTransfer {
             }
 
             try (InputStream inputStream = Files.newInputStream(Paths.get("target").resolve(libName))) {
-                if (inputStream != null) {
-                    transferTo(inputStream, targetLibraryPath);
-                    break;
-                }
+                transferTo(inputStream, targetLibraryPath);
+                break;
             }
         }
     }
