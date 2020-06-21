@@ -134,4 +134,57 @@ public abstract class AbstractMessageDigestSpiTest extends BasicTest {
 
         assertEquals(formatter.format(expectedDigest), formatter.format(actualDigest));
     }
+
+    @Test
+    public void updateWithLongArray() throws Exception {
+
+        byte[] data = new byte[1024*1024];
+        for (int i = 0; i < data.length; i++) {
+            data[i] = (byte)i;
+        }
+        int rounds = 16;
+
+        MessageDigest mdSpi = newTestMD();
+        for (int i=0; i < rounds; i++) {
+            mdSpi.update(data, 0, data.length);
+        }
+        byte[] actualDigest = mdSpi.digest();
+
+        MessageDigest messageDigest = newReferenceMD();
+        for (int i=0; i < rounds; i++) {
+            messageDigest.update(data, 0, data.length);
+        }
+        byte[] expectedDigest = messageDigest.digest();
+
+        assertEquals(formatter.format(expectedDigest), formatter.format(actualDigest));
+    }
+
+    @Test
+    public void updateWithLongDirectBB() throws Exception {
+
+        byte[] data = new byte[1024*1024];
+        for (int i = 0; i < data.length; i++) {
+            data[i] = (byte)i;
+        }
+        int rounds = 16;
+        ByteBuffer direct = ByteBuffer.allocateDirect(data.length);
+        direct.put(data);
+        direct.flip();
+
+        MessageDigest mdSpi = newTestMD();
+        for (int i=0; i < rounds; i++) {
+            mdSpi.update(direct);
+            direct.flip();
+        }
+        byte[] actualDigest = mdSpi.digest();
+
+        MessageDigest messageDigest = newReferenceMD();
+        for (int i=0; i < rounds; i++) {
+            messageDigest.update(direct);
+            direct.flip();
+        }
+        byte[] expectedDigest = messageDigest.digest();
+
+        assertEquals(formatter.format(expectedDigest), formatter.format(actualDigest));
+    }
 }
