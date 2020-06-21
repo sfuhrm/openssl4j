@@ -35,6 +35,7 @@
                 <argument>-s</argument>
                 <argument>${project.build.directory}</argument>
                 <argument>${project.build.sourceDirectory}/de/sfuhrm/openssl/jni/MD5Native.java</argument>
+                <argument>${project.build.sourceDirectory}/de/sfuhrm/openssl/jni/SHA1Native.java</argument>
               </arguments>
             </configuration>
           </execution>
@@ -50,14 +51,14 @@
                 <argument>-Wall</argument>
                 <argument>-Werror</argument>
                 <argument>-o</argument>
-                <argument>${project.build.directory}/libmd5native-${os.name}-${os.arch}.so</argument>
+                <argument>${project.build.directory}/libsslnative-${os.name}-${os.arch}.so</argument>
                 <argument>-lc</argument>
                 <argument>-lssl</argument>
                 <argument>-shared</argument>
                 <argument>-I${project.build.directory}/include</argument>
                 <argument>-I${env.JAVA_HOME}/include</argument>
                 <argument>-I${env.JAVA_HOME}/include/linux</argument>
-                <argument>${project.build.sourceDirectory}/../c/md5native.c</argument>
+                <argument>${project.build.sourceDirectory}/../c/sslnative.c</argument>
               </arguments>
             </configuration>
           </execution>

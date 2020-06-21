@@ -23,7 +23,7 @@ class NativeLoader {
     private ObjectTransfer objectTransfer;
 
     static final String[] OBJECTS = {
-            "libmd5native"
+            "libsslnative"
     };
 
     NativeLoader() throws IOException {

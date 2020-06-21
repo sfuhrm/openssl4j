@@ -28,24 +28,15 @@ import java.util.stream.Stream;
  */
 public class SpeedTest {
 
-    private static Provider sun;
-    private static Provider ssl;
-
-    @BeforeAll
-    protected static void init() throws IOException, NoSuchAlgorithmException {
-        sun = MessageDigest.getInstance("MD5").getProvider();
-        ssl = new OpenSSLProvider();
-    }
-
     static final int TIMES = 100;
 
-    private static Stream<Arguments> provideTestArguments() throws NoSuchAlgorithmException {
-        List<String> messageDigestNames = Arrays.asList("MD5");
+    private static Stream<Arguments> provideTestArguments() throws NoSuchAlgorithmException, IOException {
+        List<String> messageDigestNames = Arrays.asList("MD5", "SHA1");
         List<Integer> bufferSizes = Arrays.asList(1000, 100000, 1000000);
         List<Arguments> result = new ArrayList<>();
         Map<String, Provider> providerMap = new HashMap<>();
-        providerMap.put("OpenSSL", ssl);
-        providerMap.put("Sun", sun);
+        providerMap.put("OpenSSL", new OpenSSLProvider());
+        providerMap.put("Sun", MessageDigest.getInstance("MD5").getProvider());
 
         for (Map.Entry<String, Provider> providerEntry : providerMap.entrySet()) {
             for (String messageDigestName : messageDigestNames) {

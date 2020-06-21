@@ -69,6 +69,7 @@ public class OpenSSLProvider extends Provider {
     private static Map<String, String> getOpenSSLHashnames() {
         Map<String, String> map = new HashMap<>();
         map.put("MessageDigest.MD5", MD5Native.class.getCanonicalName());
+        map.put("MessageDigest.SHA1", SHA1Native.class.getCanonicalName());
 
         return map;
     }
