@@ -146,7 +146,10 @@ JNIEXPORT void JNICALL Java_de_sfuhrm_openssl_jni_AbstractNative_nativeFinal
 }
 
 
-/* func */
+/* Generates an initialization function.
+ * @param jni_func_name the function name as defined in the Javah-generated header files.
+ * @param openssl_evp_name the OpenSSL evp function name as defined in openssl/evp.h
+ */
 #define INIT_FUNC(jni_func_name, openssl_evp_name) JNIEXPORT void JNICALL jni_func_name \
   (JNIEnv *env, jobject obj, jobject context) { \
     EVP_MD_CTX* context_data = md_context_from(env, context); \
