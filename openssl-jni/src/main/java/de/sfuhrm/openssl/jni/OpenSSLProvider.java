@@ -77,6 +77,11 @@ public class OpenSSLProvider extends Provider {
         map.put("MessageDigest.SHA-512/224", SHA512_224Native.class.getCanonicalName());
         map.put("MessageDigest.SHA-512/256", SHA512_256Native.class.getCanonicalName());
 
+        map.put("MessageDigest.SHA3-224", SHA3_224Native.class.getCanonicalName());
+        map.put("MessageDigest.SHA3-256", SHA3_256Native.class.getCanonicalName());
+        map.put("MessageDigest.SHA3-384", SHA3_384Native.class.getCanonicalName());
+        map.put("MessageDigest.SHA3-512", SHA3_512Native.class.getCanonicalName());
+
         return map;
     }
 }

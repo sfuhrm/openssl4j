@@ -12,13 +12,17 @@ import java.security.MessageDigestSpi;
  */
 abstract class AbstractNative extends MessageDigestSpi {
 
-    /** Return the digest length in bytes. */
+    /** Return the digest length in bytes.
+     * @return the digest length in bytes.
+     * */
     protected abstract int digestLength();
 
     /** Removes a context allocated with {@linkplain #nativeContext()}. */
     static native void removeContext(ByteBuffer context);
 
-    /** Returns the context size in bytes. This is used to allocate the {@link #context direct ByteBuffer}. */
+    /** Returns the context size in bytes. This is used to allocate the {@link #context direct ByteBuffer}.
+     * @return a ByteBuffer containing the native message digest context.
+     * */
     protected native ByteBuffer nativeContext();
 
     /** Initialize the context.
