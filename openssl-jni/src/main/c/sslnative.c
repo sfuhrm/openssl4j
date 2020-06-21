@@ -3,9 +3,10 @@
 */
 
 #include <stdlib.h>
-#include <openssl/md5.h>
-#include <openssl/sha.h>
+#include <openssl/evp.h>
+#include <openssl/ossl_typ.h>
 
+#include "de_sfuhrm_openssl_jni_AbstractNative.h"
 #include "de_sfuhrm_openssl_jni_MD5Native.h"
 #include "de_sfuhrm_openssl_jni_SHA1Native.h"
 #include "de_sfuhrm_openssl_jni_SHA224Native.h"
@@ -35,110 +36,130 @@ static void* md_context_from(JNIEnv *env, jobject context) {
     return context_data;
 }
 
-/* md5 */
-#include "ssl_undef.h"
+JNIEXPORT jobject JNICALL Java_de_sfuhrm_openssl_jni_AbstractNative_nativeContext
+  (JNIEnv *env, jobject obj) {
+    EVP_MD_CTX *mdctx;
 
-#define DIGEST_LENGTH MD5_DIGEST_LENGTH
-#define CONTEXT_T MD5_CTX
-#define C_INIT_FUNC MD5_Init
-#define C_UPDATE_FUNC MD5_Update
-#define C_FINAL_FUNC MD5_Final
+	if ((mdctx = EVP_MD_CTX_new()) == NULL) {
+        throw_error(env, ILLEGAL_STATE_EXCEPTION, "Could not allocate context");
+        return NULL;
+	}
 
-#define NATIVE_CONTEXT_SIZE Java_de_sfuhrm_openssl_jni_MD5Native_nativeContextSize
-#define NATIVE_INIT Java_de_sfuhrm_openssl_jni_MD5Native_nativeInit
-#define NATIVE_UPDATE_BYTE Java_de_sfuhrm_openssl_jni_MD5Native_nativeUpdateWithByte
-#define NATIVE_UPDATE_BYTE_ARRAY Java_de_sfuhrm_openssl_jni_MD5Native_nativeUpdateWithByteArray
-#define NATIVE_UPDATE_BYTE_BUFFER Java_de_sfuhrm_openssl_jni_MD5Native_nativeUpdateWithByteBuffer
-#define NATIVE_FINAL Java_de_sfuhrm_openssl_jni_MD5Native_nativeFinal
+    /* TODO 256 is just to satisfy the call */
+    jobject result = (*env)->NewDirectByteBuffer(env, mdctx, 256);
+    if (result == NULL) {
+        throw_error(env, ILLEGAL_STATE_EXCEPTION, "Could not NewDirectByteBuffer()");
+    }
 
-#include "mdnative.h"
+    return result;
+}
 
-/* sha1 */
-#include "ssl_undef.h"
+/*
+ * Class:     de_sfuhrm_openssl_jni_AbstractNative
+ * Method:    removeContext
+ * Signature: (Ljava/nio/ByteBuffer;)V
+ */
+JNIEXPORT void JNICALL Java_de_sfuhrm_openssl_jni_AbstractNative_removeContext
+  (JNIEnv *env, jclass clazz, jobject context) {
+    EVP_MD_CTX *mdctx = md_context_from(env, context);
+	EVP_MD_CTX_free(mdctx);
+}
 
-#define DIGEST_LENGTH SHA_DIGEST_LENGTH
-#define CONTEXT_T SHA_CTX
-#define C_INIT_FUNC SHA1_Init
-#define C_UPDATE_FUNC SHA1_Update
-#define C_FINAL_FUNC SHA1_Final
+/*
+ * Class:     de_sfuhrm_openssl_jni_AbstractNative
+ * Method:    nativeUpdateWithByte
+ * Signature: (Ljava/nio/ByteBuffer;B)V
+ */
+JNIEXPORT void JNICALL Java_de_sfuhrm_openssl_jni_AbstractNative_nativeUpdateWithByte
+    (JNIEnv *env, jobject obj, jobject context, jbyte byteData) {
+      EVP_MD_CTX* context_data = md_context_from(env, context);
+      if (context_data != NULL) {
+  	    if (1 != EVP_DigestUpdate(context_data, &byteData, 1)) {
+             throw_error(env, ILLEGAL_STATE_EXCEPTION, "EVP_DigestUpdate failed");
+  	    }
+      }
+}
 
-#define NATIVE_CONTEXT_SIZE Java_de_sfuhrm_openssl_jni_SHA1Native_nativeContextSize
-#define NATIVE_INIT Java_de_sfuhrm_openssl_jni_SHA1Native_nativeInit
-#define NATIVE_UPDATE_BYTE Java_de_sfuhrm_openssl_jni_SHA1Native_nativeUpdateWithByte
-#define NATIVE_UPDATE_BYTE_ARRAY Java_de_sfuhrm_openssl_jni_SHA1Native_nativeUpdateWithByteArray
-#define NATIVE_UPDATE_BYTE_BUFFER Java_de_sfuhrm_openssl_jni_SHA1Native_nativeUpdateWithByteBuffer
-#define NATIVE_FINAL Java_de_sfuhrm_openssl_jni_SHA1Native_nativeFinal
+/*
+ * Class:     de_sfuhrm_openssl_jni_AbstractNative
+ * Method:    nativeUpdateWithByteArray
+ * Signature: (Ljava/nio/ByteBuffer;[BII)V
+ */
+JNIEXPORT void JNICALL Java_de_sfuhrm_openssl_jni_AbstractNative_nativeUpdateWithByteArray
+  (JNIEnv *env, jobject obj, jobject context, jbyteArray jarray, jint offset, jint length) {
+    EVP_MD_CTX* context_data = md_context_from(env, context);
+    if (context_data != NULL) {
+        jboolean isCopy = JNI_FALSE;
 
-#include "mdnative.h"
+        /* TODO this copies the whole array, even if length is 1 byte */
+        jbyte *carray = (*env)->GetByteArrayElements(env, jarray, &isCopy);
+        if (carray != NULL) {
+    	    if (1 != EVP_DigestUpdate(context_data, carray + offset, length)) {
+               throw_error(env, ILLEGAL_STATE_EXCEPTION, "EVP_DigestUpdate failed");
+	        }
+            /* JNI_ABORT: Don't copy back the array, nothing has changed */
+            (*env)->ReleaseByteArrayElements(env, jarray, carray, JNI_ABORT);
+        } else {
+            throw_error(env, ILLEGAL_STATE_EXCEPTION, "GetByteArrayElements for array failed");
+        }
+    }
+}
 
-/* sha-224 */
-#include "ssl_undef.h"
+/*
+ * Class:     de_sfuhrm_openssl_jni_AbstractNative
+ * Method:    nativeUpdateWithByteBuffer
+ * Signature: (Ljava/nio/ByteBuffer;Ljava/nio/ByteBuffer;II)V
+ */
+JNIEXPORT void JNICALL Java_de_sfuhrm_openssl_jni_AbstractNative_nativeUpdateWithByteBuffer
+  (JNIEnv *env, jobject obj, jobject context, jobject bb, jint offset, jint length) {
+    EVP_MD_CTX* context_data = md_context_from(env, context);
+    if (context_data != NULL) {
+        jbyte* buffer = (*env)->GetDirectBufferAddress(env, bb);
+        if (buffer != NULL) {
+            jbyte* offset_buffer = buffer + offset;
 
-#define DIGEST_LENGTH SHA224_DIGEST_LENGTH
-#define CONTEXT_T SHA256_CTX
-#define C_INIT_FUNC SHA224_Init
-#define C_UPDATE_FUNC SHA224_Update
-#define C_FINAL_FUNC SHA224_Final
+    	    if (1 != EVP_DigestUpdate(context_data, offset_buffer, length)) {
+               throw_error(env, ILLEGAL_STATE_EXCEPTION, "EVP_DigestUpdate failed");
+	        }
+        } else {
+            throw_error(env, ILLEGAL_STATE_EXCEPTION, "GetDirectBufferAddress for ByteBuffer failed");
+        }
+    }
+}
 
-#define NATIVE_CONTEXT_SIZE Java_de_sfuhrm_openssl_jni_SHA224Native_nativeContextSize
-#define NATIVE_INIT Java_de_sfuhrm_openssl_jni_SHA224Native_nativeInit
-#define NATIVE_UPDATE_BYTE Java_de_sfuhrm_openssl_jni_SHA224Native_nativeUpdateWithByte
-#define NATIVE_UPDATE_BYTE_ARRAY Java_de_sfuhrm_openssl_jni_SHA224Native_nativeUpdateWithByteArray
-#define NATIVE_UPDATE_BYTE_BUFFER Java_de_sfuhrm_openssl_jni_SHA224Native_nativeUpdateWithByteBuffer
-#define NATIVE_FINAL Java_de_sfuhrm_openssl_jni_SHA224Native_nativeFinal
+/*
+ * Class:     de_sfuhrm_openssl_jni_AbstractNative
+ * Method:    nativeFinal
+ * Signature: (Ljava/nio/ByteBuffer;[B)V
+ */
+JNIEXPORT void JNICALL Java_de_sfuhrm_openssl_jni_AbstractNative_nativeFinal
+  (JNIEnv *env, jobject obj, jobject context, jbyteArray jdigest) {
+    EVP_MD_CTX* context_data = md_context_from(env, context);
+    if (context_data != NULL) {
+        jbyte cdigest[EVP_MAX_MD_SIZE];
+        unsigned int actualSize;
+  	    if (1 != EVP_DigestFinal_ex(context_data, (unsigned char*)cdigest, &actualSize)) {
+            throw_error(env, ILLEGAL_STATE_EXCEPTION, "EVP_DigestFinal_ex failed");
+	    }
+        (*env)->SetByteArrayRegion(env, jdigest, 0, actualSize, cdigest);
+    }
+}
 
-#include "mdnative.h"
 
-/* sha-256 */
-#include "ssl_undef.h"
+/* func */
+#define INIT_FUNC(jni_func_name, openssl_evp_name) JNIEXPORT void JNICALL jni_func_name \
+  (JNIEnv *env, jobject obj, jobject context) { \
+    EVP_MD_CTX* context_data = md_context_from(env, context); \
+    if (context_data != NULL) { \
+    	if (1 != EVP_DigestInit_ex(context_data, openssl_evp_name(), NULL)) { \
+           throw_error(env, ILLEGAL_STATE_EXCEPTION, "EVP_DigestInit_ex failed"); \
+    	} \
+    } \
+}
 
-#define DIGEST_LENGTH SHA256_DIGEST_LENGTH
-#define CONTEXT_T SHA256_CTX
-#define C_INIT_FUNC SHA256_Init
-#define C_UPDATE_FUNC SHA256_Update
-#define C_FINAL_FUNC SHA256_Final
-
-#define NATIVE_CONTEXT_SIZE Java_de_sfuhrm_openssl_jni_SHA256Native_nativeContextSize
-#define NATIVE_INIT Java_de_sfuhrm_openssl_jni_SHA256Native_nativeInit
-#define NATIVE_UPDATE_BYTE Java_de_sfuhrm_openssl_jni_SHA256Native_nativeUpdateWithByte
-#define NATIVE_UPDATE_BYTE_ARRAY Java_de_sfuhrm_openssl_jni_SHA256Native_nativeUpdateWithByteArray
-#define NATIVE_UPDATE_BYTE_BUFFER Java_de_sfuhrm_openssl_jni_SHA256Native_nativeUpdateWithByteBuffer
-#define NATIVE_FINAL Java_de_sfuhrm_openssl_jni_SHA256Native_nativeFinal
-
-#include "mdnative.h"
-
-/* sha-384 */
-#include "ssl_undef.h"
-
-#define DIGEST_LENGTH SHA384_DIGEST_LENGTH
-#define CONTEXT_T SHA512_CTX
-#define C_INIT_FUNC SHA384_Init
-#define C_UPDATE_FUNC SHA384_Update
-#define C_FINAL_FUNC SHA384_Final
-
-#define NATIVE_CONTEXT_SIZE Java_de_sfuhrm_openssl_jni_SHA384Native_nativeContextSize
-#define NATIVE_INIT Java_de_sfuhrm_openssl_jni_SHA384Native_nativeInit
-#define NATIVE_UPDATE_BYTE Java_de_sfuhrm_openssl_jni_SHA384Native_nativeUpdateWithByte
-#define NATIVE_UPDATE_BYTE_ARRAY Java_de_sfuhrm_openssl_jni_SHA384Native_nativeUpdateWithByteArray
-#define NATIVE_UPDATE_BYTE_BUFFER Java_de_sfuhrm_openssl_jni_SHA384Native_nativeUpdateWithByteBuffer
-#define NATIVE_FINAL Java_de_sfuhrm_openssl_jni_SHA384Native_nativeFinal
-
-#include "mdnative.h"
-
-/* sha-512 */
-#include "ssl_undef.h"
-
-#define DIGEST_LENGTH SHA512_DIGEST_LENGTH
-#define CONTEXT_T SHA512_CTX
-#define C_INIT_FUNC SHA512_Init
-#define C_UPDATE_FUNC SHA512_Update
-#define C_FINAL_FUNC SHA512_Final
-
-#define NATIVE_CONTEXT_SIZE Java_de_sfuhrm_openssl_jni_SHA512Native_nativeContextSize
-#define NATIVE_INIT Java_de_sfuhrm_openssl_jni_SHA512Native_nativeInit
-#define NATIVE_UPDATE_BYTE Java_de_sfuhrm_openssl_jni_SHA512Native_nativeUpdateWithByte
-#define NATIVE_UPDATE_BYTE_ARRAY Java_de_sfuhrm_openssl_jni_SHA512Native_nativeUpdateWithByteArray
-#define NATIVE_UPDATE_BYTE_BUFFER Java_de_sfuhrm_openssl_jni_SHA512Native_nativeUpdateWithByteBuffer
-#define NATIVE_FINAL Java_de_sfuhrm_openssl_jni_SHA512Native_nativeFinal
-
-#include "mdnative.h"
+INIT_FUNC(Java_de_sfuhrm_openssl_jni_MD5Native_nativeInit,EVP_md5)
+INIT_FUNC(Java_de_sfuhrm_openssl_jni_SHA1Native_nativeInit,EVP_sha1)
+INIT_FUNC(Java_de_sfuhrm_openssl_jni_SHA224Native_nativeInit,EVP_sha224)
+INIT_FUNC(Java_de_sfuhrm_openssl_jni_SHA256Native_nativeInit,EVP_sha256)
+INIT_FUNC(Java_de_sfuhrm_openssl_jni_SHA384Native_nativeInit,EVP_sha384)
+INIT_FUNC(Java_de_sfuhrm_openssl_jni_SHA512Native_nativeInit,EVP_sha512)

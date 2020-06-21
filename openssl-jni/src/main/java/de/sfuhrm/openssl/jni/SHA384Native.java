@@ -13,10 +13,5 @@ public class SHA384Native extends AbstractNative {
         return 48;
     }
 
-    protected native int nativeContextSize();
     protected native void nativeInit(ByteBuffer context);
-    protected native void nativeUpdateWithByte(ByteBuffer context, byte byteData);
-    protected native void nativeUpdateWithByteArray(ByteBuffer context, byte[] byteArray, int offset, int length);
-    protected native void nativeUpdateWithByteBuffer(ByteBuffer context, ByteBuffer data, int offset, int length);
-    protected native void nativeFinal(ByteBuffer context, byte[] digest);
 }

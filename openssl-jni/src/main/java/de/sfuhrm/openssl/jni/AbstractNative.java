@@ -1,6 +1,8 @@
 package de.sfuhrm.openssl.jni;
 
 import java.io.IOException;
+import java.lang.ref.PhantomReference;
+import java.lang.ref.ReferenceQueue;
 import java.nio.ByteBuffer;
 import java.security.MessageDigestSpi;
 
@@ -13,8 +15,11 @@ abstract class AbstractNative extends MessageDigestSpi {
     /** Return the digest length in bytes. */
     protected abstract int digestLength();
 
+    /** Removes a context allocated with {@linkplain #nativeContext()}. */
+    static native void removeContext(ByteBuffer context);
+
     /** Returns the context size in bytes. This is used to allocate the {@link #context direct ByteBuffer}. */
-    protected abstract int nativeContextSize();
+    protected native ByteBuffer nativeContext();
 
     /** Initialize the context.
      * @param context the context as allocated in {@link #context}.
@@ -25,7 +30,7 @@ abstract class AbstractNative extends MessageDigestSpi {
      * @param context the context as allocated in {@link #context}.
      * @param byteData the byte to update the context with.
      * */
-    protected abstract void nativeUpdateWithByte(ByteBuffer context, byte byteData);
+    protected native void nativeUpdateWithByte(ByteBuffer context, byte byteData);
 
     /** Update the context with an array.
      * @param context the context as allocated in {@link #context}.
@@ -33,7 +38,7 @@ abstract class AbstractNative extends MessageDigestSpi {
      * @param offset the start offset of the array data to update the context with.
      * @param length the number of bytes to update the context with.
      * */
-    protected abstract void nativeUpdateWithByteArray(ByteBuffer context, byte[] byteArray, int offset, int length);
+    protected native void nativeUpdateWithByteArray(ByteBuffer context, byte[] byteArray, int offset, int length);
 
     /** Update the context with a direct byte buffer.
      * @param context the context as allocated in {@link #context}.
@@ -41,21 +46,24 @@ abstract class AbstractNative extends MessageDigestSpi {
      * @param offset the start offset of the buffer data to update the context with.
      * @param length the number of bytes to update the context with.
      * */
-    protected abstract void nativeUpdateWithByteBuffer(ByteBuffer context, ByteBuffer data, int offset, int length);
+    protected native void nativeUpdateWithByteBuffer(ByteBuffer context, ByteBuffer data, int offset, int length);
 
     /** Do the final digest calculation and return it.
      * @param context the context as allocated in {@link #context}.
      * @param digest the target array to write the digest data to.
      * */
-    protected abstract void nativeFinal(ByteBuffer context, byte[] digest);
+    protected native void nativeFinal(ByteBuffer context, byte[] digest);
 
     /** A MD5 context where the state of the current calculation is stored.  */
     private final ByteBuffer context;
 
+    private static final ReferenceQueue<PhantomReference<ByteBuffer>> BYTE_BUFFER_REFERENCE_QUEUE = new ReferenceQueue<>();
+
     public AbstractNative() {
         try {
             NativeLoader.loadAll();
-            context = ByteBuffer.allocateDirect(nativeContextSize());
+            context = nativeContext();
+            PhantomReferenceCleanup.enqueueForCleanup(context);
             engineReset();
         }
         catch (IOException e) {
