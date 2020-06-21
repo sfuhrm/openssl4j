@@ -1,16 +1,8 @@
 package de.sfuhrm.openssl.jni;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.LinkOption;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.security.MessageDigestSpi;
 import java.security.NoSuchAlgorithmException;
@@ -23,25 +15,10 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 public abstract class AbstractMessageDigestSpiTest extends BasicTest {
 
-    protected MessageDigestSpiAdapter newTestAdapter() throws NoSuchMethodException {
-        return new MessageDigestSpiAdapter(newTestMD());
-    }
-
-    /** Create a new test message digest that we're testing against a
-     * {@link #newReferenceMD() reference} implementation.
-     * */
-    protected abstract MessageDigestSpi newTestMD();
-
-    /** Create a new reference message digest that is known to work.
-     *  */
-    protected abstract MessageDigest newReferenceMD() throws NoSuchAlgorithmException;
-
     @Test
     public void digestWithNoData() throws Exception {
-        MessageDigestSpiAdapter mdSpi = newTestAdapter();
-
-        mdSpi.engineReset();
-        byte[] actualDigest = mdSpi.engineDigest();
+        MessageDigest mdSpi = newTestMD();
+        byte[] actualDigest = mdSpi.digest();
 
         MessageDigest reference = newReferenceMD();
         byte[] expectedDigest = reference.digest();
@@ -51,34 +28,26 @@ public abstract class AbstractMessageDigestSpiTest extends BasicTest {
 
     @Test
     public void digestWithReset() throws Exception {
-        MessageDigestSpiAdapter mdSpi = newTestAdapter();
-        mdSpi.engineReset();
+        MessageDigest mdSpi = newTestMD();
 
         byte[] data = "Franz jagt im komplett verwahrlosten Taxi quer durch Bayern".getBytes(ascii);
 
-        mdSpi.engineUpdate(data, 0, data.length);
-        byte[] actualDigest = mdSpi.engineDigest();
+        byte[] actualDigest = mdSpi.digest(data);
 
         MessageDigest reference = newReferenceMD();
         byte[] expectedDigest = reference.digest(data);
 
         assertEquals(formatter.format(expectedDigest), formatter.format(actualDigest));
-
-        mdSpi.engineReset();
-        mdSpi.engineUpdate(data, 0, data.length);
-        byte[] expectedDigest2 = mdSpi.engineDigest();
-        assertEquals(formatter.format(expectedDigest2), formatter.format(actualDigest));
     }
 
     @Test
     public void updateWithFullArray() throws Exception {
-        MessageDigestSpiAdapter mdSpi = newTestAdapter();
-        mdSpi.engineReset();
 
         byte[] data = "Franz jagt im komplett verwahrlosten Taxi quer durch Bayern".getBytes(ascii);
 
-        mdSpi.engineUpdate(data, 0, data.length);
-        byte[] actualDigest = mdSpi.engineDigest();
+        MessageDigest mdSpi = newTestMD();
+        mdSpi.update(data);
+        byte[] actualDigest = mdSpi.digest();
 
         MessageDigest reference = newReferenceMD();
         byte[] expectedDigest = reference.digest(data);
@@ -88,15 +57,14 @@ public abstract class AbstractMessageDigestSpiTest extends BasicTest {
 
     @Test
     public void updateWithSingleBytes() throws Exception {
-        MessageDigestSpiAdapter mdSpi = newTestAdapter();
-        mdSpi.engineReset();
 
         byte[] data = "Franz jagt im komplett verwahrlosten Taxi quer durch Bayern".getBytes(ascii);
 
+        MessageDigest mdSpi = newTestMD();
         for (byte val : data) {
-            mdSpi.engineUpdate(val);
+            mdSpi.update(val);
         }
-        byte actualDigest[] = mdSpi.engineDigest();
+        byte actualDigest[] = mdSpi.digest();
 
         MessageDigest reference = newReferenceMD();
         for (byte val : data) {
@@ -108,15 +76,14 @@ public abstract class AbstractMessageDigestSpiTest extends BasicTest {
 
     @Test
     public void updateWithHeapByteBuffer() throws Exception {
-        MessageDigestSpiAdapter mdSpi = newTestAdapter();
-        mdSpi.engineReset();
 
         byte[] data = "Franz jagt im komplett verwahrlosten Taxi quer durch Bayern".getBytes(ascii);
         ByteBuffer bb = ByteBuffer.wrap(data);
 
         ByteBuffer actualCopy = bb.duplicate();
-        mdSpi.engineUpdate(actualCopy);
-        byte actualDigest[] = mdSpi.engineDigest();
+        MessageDigest mdSpi = newTestMD();
+        mdSpi.update(actualCopy);
+        byte actualDigest[] = mdSpi.digest();
 
         MessageDigest reference = newReferenceMD();
         ByteBuffer expectedCopy = bb.duplicate();
@@ -131,8 +98,6 @@ public abstract class AbstractMessageDigestSpiTest extends BasicTest {
 
     @Test
     public void updateWithDirectByteBuffer() throws Exception {
-        MessageDigestSpiAdapter mdSpi = newTestAdapter();
-        mdSpi.engineReset();
 
         byte[] data = "Franz jagt im komplett verwahrlosten Taxi quer durch Bayern".getBytes(ascii);
         ByteBuffer bb = ByteBuffer.allocateDirect(data.length);
@@ -140,8 +105,9 @@ public abstract class AbstractMessageDigestSpiTest extends BasicTest {
         bb.flip();
 
         ByteBuffer actualCopy = bb.duplicate();
-        mdSpi.engineUpdate(actualCopy);
-        byte actualDigest[] = mdSpi.engineDigest();
+        MessageDigest mdSpi = newTestMD();
+        mdSpi.update(actualCopy);
+        byte actualDigest[] = mdSpi.digest();
 
         MessageDigest reference = newReferenceMD();
         ByteBuffer expectedCopy = bb.duplicate();
@@ -156,13 +122,12 @@ public abstract class AbstractMessageDigestSpiTest extends BasicTest {
 
     @Test
     public void updateWithFragmentedArray() throws Exception {
-        MessageDigestSpiAdapter mdSpi = newTestAdapter();
-        mdSpi.engineReset();
 
         byte[] dataInner = "Franz jagt im komplett verwahrlosten Taxi quer durch Bayern".getBytes(ascii);
         byte[] data = Arrays.copyOf(dataInner, dataInner.length * 2);
-        mdSpi.engineUpdate(data, 0, dataInner.length);
-        byte[] actualDigest = mdSpi.engineDigest();
+        MessageDigest mdSpi = newTestMD();
+        mdSpi.update(data, 0, dataInner.length);
+        byte[] actualDigest = mdSpi.digest();
 
         MessageDigest messageDigest = newReferenceMD();
         messageDigest.update(data, 0, dataInner.length);
@@ -170,5 +135,4 @@ public abstract class AbstractMessageDigestSpiTest extends BasicTest {
 
         assertEquals(formatter.format(expectedDigest), formatter.format(actualDigest));
     }
-
 }

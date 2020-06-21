@@ -32,11 +32,13 @@ public abstract class BasicTest {
         ascii = Charset.forName("ASCII");
     }
 
-    protected MessageDigestSpiAdapter newTestAdapter() throws NoSuchMethodException, NoSuchAlgorithmException, IOException {
-        return new MessageDigestSpiAdapter(newTestMD());
+    protected abstract String algorithmName();
+
+    protected MessageDigest newTestMD() throws NoSuchAlgorithmException, IOException {
+        return MessageDigest.getInstance(algorithmName(), new OpenSSLProvider());
     }
 
-    protected abstract MessageDigestSpi newTestMD() throws NoSuchAlgorithmException, IOException;
-    protected abstract MessageDigest newReferenceMD() throws NoSuchAlgorithmException;
-
+    protected MessageDigest newReferenceMD() throws NoSuchAlgorithmException {
+        return MessageDigest.getInstance(algorithmName());
+    }
 }

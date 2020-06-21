@@ -12,7 +12,10 @@
 static void throw_error(JNIEnv *env, const char *exceptionClassName, const char *message) {
     jclass exceptionClass = (*env)->FindClass(env, exceptionClassName);
     if (exceptionClass != NULL) {
-        jint ignored = (*env)->ThrowNew(env, exceptionClass, message);
+        jint success = (*env)->ThrowNew(env, exceptionClass, message);
+        if (!success) {
+            (*env)->FatalError(env, "Could not throw exception");
+        }
     } else {
         (*env)->FatalError(env, "Didn't find IllegalStateException class");
     }
@@ -27,12 +30,12 @@ static MD5_CTX* md_context_from(JNIEnv *env, jobject context) {
 }
 
 JNIEXPORT jint JNICALL Java_de_sfuhrm_openssl_jni_MD5Native_nativeContextSize
-  (JNIEnv *env, jclass clazz) {
+  (JNIEnv *env, jobject obj) {
     return sizeof(MD5_CTX);
 }
 
 JNIEXPORT void JNICALL Java_de_sfuhrm_openssl_jni_MD5Native_nativeInit
-  (JNIEnv *env, jclass clazz, jobject context) {
+  (JNIEnv *env, jobject obj, jobject context) {
     MD5_CTX* context_data = md_context_from(env, context);
     if (context_data != NULL) {
         MD5_Init(context_data);
@@ -40,7 +43,7 @@ JNIEXPORT void JNICALL Java_de_sfuhrm_openssl_jni_MD5Native_nativeInit
 }
 
 JNIEXPORT void JNICALL Java_de_sfuhrm_openssl_jni_MD5Native_nativeUpdateWithByte
-  (JNIEnv *env, jclass clazz, jobject context, jbyte byteData) {
+  (JNIEnv *env, jobject obj, jobject context, jbyte byteData) {
     MD5_CTX* context_data = md_context_from(env, context);
     if (context_data != NULL) {
         MD5_Update(context_data, &byteData, 1);
@@ -48,7 +51,7 @@ JNIEXPORT void JNICALL Java_de_sfuhrm_openssl_jni_MD5Native_nativeUpdateWithByte
 }
 
 JNIEXPORT void JNICALL Java_de_sfuhrm_openssl_jni_MD5Native_nativeUpdateWithByteArray
-  (JNIEnv *env, jclass clazz, jobject context, jbyteArray jarray, jint offset, jint length) {
+  (JNIEnv *env, jobject obj, jobject context, jbyteArray jarray, jint offset, jint length) {
     MD5_CTX* context_data = md_context_from(env, context);
     if (context_data != NULL) {
         jboolean isCopy = JNI_FALSE;
@@ -66,12 +69,11 @@ JNIEXPORT void JNICALL Java_de_sfuhrm_openssl_jni_MD5Native_nativeUpdateWithByte
 }
 
 JNIEXPORT void JNICALL Java_de_sfuhrm_openssl_jni_MD5Native_nativeUpdateWithByteBuffer
-  (JNIEnv *env, jclass clazz, jobject context, jobject bb, jint offset, jint length) {
+  (JNIEnv *env, jobject obj, jobject context, jobject bb, jint offset, jint length) {
     MD5_CTX* context_data = md_context_from(env, context);
     if (context_data != NULL) {
         jbyte* buffer = (*env)->GetDirectBufferAddress(env, bb);
         if (buffer != NULL) {
-            jlong capacity = (*env)->GetDirectBufferCapacity(env,  bb);
             jbyte* offset_buffer = buffer + offset;
 
             MD5_Update(context_data, offset_buffer, length);
@@ -82,12 +84,12 @@ JNIEXPORT void JNICALL Java_de_sfuhrm_openssl_jni_MD5Native_nativeUpdateWithByte
 }
 
 JNIEXPORT void JNICALL Java_de_sfuhrm_openssl_jni_MD5Native_nativeFinal
-  (JNIEnv *env, jclass clazz, jobject context, jbyteArray jdigest) {
+  (JNIEnv *env, jobject obj, jobject context, jbyteArray jdigest) {
     MD5_CTX* context_data = md_context_from(env, context);
     if (context_data != NULL) {
         jbyte cdigest[DIGEST_LENGTH];
 
-        MD5_Final(cdigest, context_data);
+        MD5_Final((unsigned char*)cdigest, context_data);
         (*env)->SetByteArrayRegion(env, jdigest, 0, DIGEST_LENGTH, cdigest);
     }
 }

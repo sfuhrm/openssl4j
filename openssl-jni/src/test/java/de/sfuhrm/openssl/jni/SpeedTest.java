@@ -26,7 +26,7 @@ import java.util.stream.Stream;
  * Benchmark testing the speed of multiple algorithm implementations.
  * @author Stephan Fuhrmann
  */
-public class SpeedTest extends BasicTest {
+public class SpeedTest {
 
     private static Provider sun;
     private static Provider ssl;
@@ -35,16 +35,6 @@ public class SpeedTest extends BasicTest {
     protected static void init() throws IOException, NoSuchAlgorithmException {
         sun = MessageDigest.getInstance("MD5").getProvider();
         ssl = new OpenSSLProvider();
-    }
-
-    @Override
-    protected MessageDigest newTestMD() throws NoSuchAlgorithmException, IOException {
-        return MessageDigest.getInstance("MD5", new OpenSSLProvider());
-    }
-
-    @Override
-    protected MessageDigest newReferenceMD() throws NoSuchAlgorithmException {
-        return MessageDigest.getInstance("MD5");
     }
 
     static final int TIMES = 100;
