@@ -14,7 +14,6 @@ public class GcTest {
     public void gc() {
         for (int i=0; i< 10000000; i++) {
             MD5Native md5Native = new MD5Native();
-            md5Native.digestLength();
             System.gc();
         }
     }

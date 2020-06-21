@@ -7,11 +7,5 @@ import java.nio.ByteBuffer;
  * @author Stephan Fuhrmann
  */
 public class SHA3_512Native extends AbstractNative {
-
-    @Override
-    protected int digestLength() {
-        return 64;
-    }
-
     protected native void nativeInit(ByteBuffer context);
 }

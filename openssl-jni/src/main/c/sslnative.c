@@ -43,6 +43,18 @@ static void* md_context_from(JNIEnv *env, jobject context) {
     return context_data;
 }
 
+/*
+ * Class:     de_sfuhrm_openssl_jni_AbstractNative
+ * Method:    digestLength
+ * Signature: (Ljava/nio/ByteBuffer;)I
+ */
+JNIEXPORT jint JNICALL Java_de_sfuhrm_openssl_jni_AbstractNative_digestLength
+  (JNIEnv *env, jclass clazz, jobject context) {
+    EVP_MD_CTX *mdctx = md_context_from(env, context);
+    return EVP_MD_CTX_size(mdctx);
+}
+
+
 JNIEXPORT jobject JNICALL Java_de_sfuhrm_openssl_jni_AbstractNative_nativeContext
   (JNIEnv *env, jobject obj) {
     EVP_MD_CTX *mdctx;

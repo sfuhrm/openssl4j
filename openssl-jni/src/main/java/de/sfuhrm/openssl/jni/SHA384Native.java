@@ -7,11 +7,5 @@ import java.nio.ByteBuffer;
  * @author Stephan Fuhrmann
  */
 public class SHA384Native extends AbstractNative {
-
-    @Override
-    protected int digestLength() {
-        return 48;
-    }
-
     protected native void nativeInit(ByteBuffer context);
 }

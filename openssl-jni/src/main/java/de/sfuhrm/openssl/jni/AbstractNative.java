@@ -15,7 +15,7 @@ abstract class AbstractNative extends MessageDigestSpi {
     /** Return the digest length in bytes.
      * @return the digest length in bytes.
      * */
-    protected abstract int digestLength();
+    static native int digestLength(ByteBuffer context);
 
     /** Removes a context allocated with {@linkplain #nativeContext()}. */
     static native void removeContext(ByteBuffer context);
@@ -106,7 +106,7 @@ abstract class AbstractNative extends MessageDigestSpi {
 
     @Override
     protected byte[] engineDigest() {
-        byte[] result = new byte[digestLength()];
+        byte[] result = new byte[digestLength(context)];
         nativeFinal(context, result);
         return result;
     }

@@ -7,11 +7,5 @@ import java.nio.ByteBuffer;
  * @author Stephan Fuhrmann
  */
 public class MD5Native extends AbstractNative {
-
-    @Override
-    protected int digestLength() {
-        return 16;
-    }
-
     protected native void nativeInit(ByteBuffer context);
 }
