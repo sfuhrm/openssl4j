@@ -15,6 +15,10 @@
 #include "de_sfuhrm_openssl_jni_SHA512Native.h"
 #include "de_sfuhrm_openssl_jni_SHA512_224Native.h"
 #include "de_sfuhrm_openssl_jni_SHA512_256Native.h"
+#include "de_sfuhrm_openssl_jni_SHA3_224Native.h"
+#include "de_sfuhrm_openssl_jni_SHA3_256Native.h"
+#include "de_sfuhrm_openssl_jni_SHA3_384Native.h"
+#include "de_sfuhrm_openssl_jni_SHA3_512Native.h"
 
 #define ILLEGAL_STATE_EXCEPTION "java/lang/IllegalStateException"
 
