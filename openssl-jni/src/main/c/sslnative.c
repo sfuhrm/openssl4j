@@ -21,6 +21,7 @@
 #include "de_sfuhrm_openssl_jni_SHA3_512Native.h"
 
 #define ILLEGAL_STATE_EXCEPTION "java/lang/IllegalStateException"
+#define UNSUPPORTED_OPERATION_EXCEPTION "java/lang/UnsupportedOperationException"
 
 static void throw_error(JNIEnv *env, const char *exceptionClassName, const char *message) {
     jclass exceptionClass = (*env)->FindClass(env, exceptionClassName);
@@ -166,7 +167,20 @@ JNIEXPORT void JNICALL Java_de_sfuhrm_openssl_jni_AbstractNative_nativeFinal
     } \
 }
 
+/* Generates an initialization function.
+ * @param jni_func_name the function name as defined in the Javah-generated header files.
+ */
+#define THROW_UNSUPPORTED_OPERATION_EXCEPTION(jni_func_name) JNIEXPORT void JNICALL jni_func_name \
+  (JNIEnv *env, jobject obj, jobject context) { \
+    throw_error(env, UNSUPPORTED_OPERATION_EXCEPTION, "Algorithm is not supported"); \
+}
+
+#ifndef OPENSSL_NO_MD5
 INIT_FUNC(Java_de_sfuhrm_openssl_jni_MD5Native_nativeInit,EVP_md5)
+#else
+THROW_UNSUPPORTED_OPERATION_EXCEPTION(Java_de_sfuhrm_openssl_jni_MD5Native_nativeInit)
+#endif
+
 INIT_FUNC(Java_de_sfuhrm_openssl_jni_SHA1Native_nativeInit,EVP_sha1)
 INIT_FUNC(Java_de_sfuhrm_openssl_jni_SHA224Native_nativeInit,EVP_sha224)
 INIT_FUNC(Java_de_sfuhrm_openssl_jni_SHA256Native_nativeInit,EVP_sha256)
