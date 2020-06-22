@@ -18,7 +18,9 @@ class OpenSSLMessageDigestNative extends MessageDigestSpi {
     /** Removes a context allocated with {@linkplain #nativeContext()}. */
     static native void removeContext(ByteBuffer context);
 
-    /** Get the list of MessageDigest algorithms supported by OpenSSL. */
+    /** Get the list of MessageDigest algorithms supported by OpenSSL.
+     * @result an array of supported message digest algorithms from the OpenSSL library.
+     * */
     protected final native static String[] listMessageDigests();
 
     /** Returns the context size in bytes. This is used to allocate the {@link #context direct ByteBuffer}.
