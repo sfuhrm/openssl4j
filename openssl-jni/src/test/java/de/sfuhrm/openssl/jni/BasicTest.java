@@ -23,14 +23,4 @@ public abstract class BasicTest {
         formatter = Formatter.getInstance();
         ascii = Charset.forName("ASCII");
     }
-
-    protected abstract String algorithmName();
-
-    protected MessageDigest newTestMD() throws NoSuchAlgorithmException, IOException {
-        return MessageDigest.getInstance(algorithmName(), new OpenSSLProvider());
-    }
-
-    protected MessageDigest newReferenceMD() throws NoSuchAlgorithmException {
-        return MessageDigest.getInstance(algorithmName());
-    }
 }
