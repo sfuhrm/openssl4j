@@ -6,6 +6,8 @@ import java.nio.ByteBuffer;
  * SHA3-256 message digest adapter to the OpenSSL SHA3-256 functions.
  * @author Stephan Fuhrmann
  */
-public class SHA3_256Native extends AbstractNative {
-    protected native void nativeInit(ByteBuffer context);
+public class SHA3_256Native extends OpenSSLMessageDigestNative {
+    public SHA3_256Native() {
+        super("SHA3-256");
+    }
 }

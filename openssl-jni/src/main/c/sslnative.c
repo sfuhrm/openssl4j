@@ -3,22 +3,11 @@
 */
 
 #include <stdlib.h>
+#include <string.h>
 #include <openssl/evp.h>
 #include <openssl/ossl_typ.h>
 
-#include "de_sfuhrm_openssl_jni_AbstractNative.h"
-#include "de_sfuhrm_openssl_jni_MD5Native.h"
-#include "de_sfuhrm_openssl_jni_SHA1Native.h"
-#include "de_sfuhrm_openssl_jni_SHA224Native.h"
-#include "de_sfuhrm_openssl_jni_SHA256Native.h"
-#include "de_sfuhrm_openssl_jni_SHA384Native.h"
-#include "de_sfuhrm_openssl_jni_SHA512Native.h"
-#include "de_sfuhrm_openssl_jni_SHA512_224Native.h"
-#include "de_sfuhrm_openssl_jni_SHA512_256Native.h"
-#include "de_sfuhrm_openssl_jni_SHA3_224Native.h"
-#include "de_sfuhrm_openssl_jni_SHA3_256Native.h"
-#include "de_sfuhrm_openssl_jni_SHA3_384Native.h"
-#include "de_sfuhrm_openssl_jni_SHA3_512Native.h"
+#include "de_sfuhrm_openssl_jni_OpenSSLMessageDigestNative.h"
 
 #define ILLEGAL_STATE_EXCEPTION "java/lang/IllegalStateException"
 #define UNSUPPORTED_OPERATION_EXCEPTION "java/lang/UnsupportedOperationException"
@@ -43,19 +32,82 @@ static void* md_context_from(JNIEnv *env, jobject context) {
     return context_data;
 }
 
-/*
- * Class:     de_sfuhrm_openssl_jni_AbstractNative
- * Method:    digestLength
- * Signature: (Ljava/nio/ByteBuffer;)I
- */
-JNIEXPORT jint JNICALL Java_de_sfuhrm_openssl_jni_AbstractNative_digestLength
+JNIEXPORT jint JNICALL Java_de_sfuhrm_openssl_jni_OpenSSLMessageDigestNative_digestLength
   (JNIEnv *env, jclass clazz, jobject context) {
     EVP_MD_CTX *mdctx = md_context_from(env, context);
     return EVP_MD_CTX_size(mdctx);
 }
 
+JNIEXPORT void JNICALL Java_de_sfuhrm_openssl_jni_OpenSSLMessageDigestNative_removeContext
+  (JNIEnv *env, jclass clazz, jobject context) {
+    EVP_MD_CTX *mdctx = md_context_from(env, context);
+	EVP_MD_CTX_free(mdctx);
+}
 
-JNIEXPORT jobject JNICALL Java_de_sfuhrm_openssl_jni_AbstractNative_nativeContext
+struct StringArrayPosition {
+    jint index;
+    jint length;
+    JNIEnv *env;
+    jobjectArray array;
+};
+
+
+/* Callback for EVP_MD_do_all_sorted that counts the number of MD algorithms. */
+static void EVP_MD_do_all_count_func(const EVP_MD *ciph, const char *from, const char *to, void *x) {
+    if (ciph != NULL) {
+        jint *numOfAlgos = (jint*)x;
+        (*numOfAlgos)++;
+    }
+}
+
+/* Callback for EVP_MD_do_all_sorted that sets the string array elements.
+** @param ciph cipher, can be NULL if this is an alias.
+** @param from the name of the algorithm.
+** @param to NULL if this is not an alias, or the target EVP_MD if this is a an alias.
+** @param x the last param passed to the EVP_MD_do_all_sorted() call.
+*/
+static void EVP_MD_do_all_string_array_set(const EVP_MD *ciph, const char *from, const char *to, void *x) {
+    struct StringArrayPosition *sap = (struct StringArrayPosition*)x;
+    if (ciph == NULL) {
+        // alias
+        return;
+    }
+    const char *evp_name = EVP_MD_name(ciph);
+
+    jstring algoNameString = (*sap->env)->NewStringUTF(sap->env, evp_name);
+    if (algoNameString == NULL) {
+        return;
+    }
+
+    (*sap->env)->SetObjectArrayElement(sap->env, sap->array, sap->index, algoNameString);
+    sap->index++;
+}
+
+JNIEXPORT jobjectArray JNICALL Java_de_sfuhrm_openssl_jni_OpenSSLMessageDigestNative_listMessageDigests
+  (JNIEnv *env, jclass clazz) {
+  struct StringArrayPosition sap;
+  jobjectArray result = NULL;
+
+  sap.index = 0;
+  sap.length = 0;
+  sap.env = env;
+  sap.array = NULL;
+
+  EVP_MD_do_all_sorted(EVP_MD_do_all_count_func, &sap.length);
+  jclass stringClass = (*env)->FindClass(env, "java/lang/String");
+  if (stringClass == NULL) {
+    return NULL;
+  }
+
+  result = (*env)->NewObjectArray(env, sap.length, stringClass, NULL);
+  sap.array = result;
+
+  EVP_MD_do_all_sorted(EVP_MD_do_all_string_array_set, &sap);
+
+  return result;
+}
+
+JNIEXPORT jobject JNICALL Java_de_sfuhrm_openssl_jni_OpenSSLMessageDigestNative_nativeContext
   (JNIEnv *env, jobject obj) {
     EVP_MD_CTX *mdctx;
 
@@ -73,23 +125,7 @@ JNIEXPORT jobject JNICALL Java_de_sfuhrm_openssl_jni_AbstractNative_nativeContex
     return result;
 }
 
-/*
- * Class:     de_sfuhrm_openssl_jni_AbstractNative
- * Method:    removeContext
- * Signature: (Ljava/nio/ByteBuffer;)V
- */
-JNIEXPORT void JNICALL Java_de_sfuhrm_openssl_jni_AbstractNative_removeContext
-  (JNIEnv *env, jclass clazz, jobject context) {
-    EVP_MD_CTX *mdctx = md_context_from(env, context);
-	EVP_MD_CTX_free(mdctx);
-}
-
-/*
- * Class:     de_sfuhrm_openssl_jni_AbstractNative
- * Method:    nativeUpdateWithByte
- * Signature: (Ljava/nio/ByteBuffer;B)V
- */
-JNIEXPORT void JNICALL Java_de_sfuhrm_openssl_jni_AbstractNative_nativeUpdateWithByte
+JNIEXPORT void JNICALL Java_de_sfuhrm_openssl_jni_OpenSSLMessageDigestNative_nativeUpdateWithByte
     (JNIEnv *env, jobject obj, jobject context, jbyte byteData) {
       EVP_MD_CTX* context_data = md_context_from(env, context);
       if (context_data != NULL) {
@@ -99,12 +135,7 @@ JNIEXPORT void JNICALL Java_de_sfuhrm_openssl_jni_AbstractNative_nativeUpdateWit
       }
 }
 
-/*
- * Class:     de_sfuhrm_openssl_jni_AbstractNative
- * Method:    nativeUpdateWithByteArray
- * Signature: (Ljava/nio/ByteBuffer;[BII)V
- */
-JNIEXPORT void JNICALL Java_de_sfuhrm_openssl_jni_AbstractNative_nativeUpdateWithByteArray
+JNIEXPORT void JNICALL Java_de_sfuhrm_openssl_jni_OpenSSLMessageDigestNative_nativeUpdateWithByteArray
   (JNIEnv *env, jobject obj, jobject context, jbyteArray jarray, jint offset, jint length) {
     EVP_MD_CTX* context_data = md_context_from(env, context);
     if (context_data != NULL) {
@@ -124,12 +155,7 @@ JNIEXPORT void JNICALL Java_de_sfuhrm_openssl_jni_AbstractNative_nativeUpdateWit
     }
 }
 
-/*
- * Class:     de_sfuhrm_openssl_jni_AbstractNative
- * Method:    nativeUpdateWithByteBuffer
- * Signature: (Ljava/nio/ByteBuffer;Ljava/nio/ByteBuffer;II)V
- */
-JNIEXPORT void JNICALL Java_de_sfuhrm_openssl_jni_AbstractNative_nativeUpdateWithByteBuffer
+JNIEXPORT void JNICALL Java_de_sfuhrm_openssl_jni_OpenSSLMessageDigestNative_nativeUpdateWithByteBuffer
   (JNIEnv *env, jobject obj, jobject context, jobject bb, jint offset, jint length) {
     EVP_MD_CTX* context_data = md_context_from(env, context);
     if (context_data != NULL) {
@@ -146,12 +172,7 @@ JNIEXPORT void JNICALL Java_de_sfuhrm_openssl_jni_AbstractNative_nativeUpdateWit
     }
 }
 
-/*
- * Class:     de_sfuhrm_openssl_jni_AbstractNative
- * Method:    nativeFinal
- * Signature: (Ljava/nio/ByteBuffer;[B)V
- */
-JNIEXPORT void JNICALL Java_de_sfuhrm_openssl_jni_AbstractNative_nativeFinal
+JNIEXPORT void JNICALL Java_de_sfuhrm_openssl_jni_OpenSSLMessageDigestNative_nativeFinal
   (JNIEnv *env, jobject obj, jobject context, jbyteArray jdigest) {
     EVP_MD_CTX* context_data = md_context_from(env, context);
     if (context_data != NULL) {
@@ -164,44 +185,35 @@ JNIEXPORT void JNICALL Java_de_sfuhrm_openssl_jni_AbstractNative_nativeFinal
     }
 }
 
+JNIEXPORT void JNICALL Java_de_sfuhrm_openssl_jni_OpenSSLMessageDigestNative_nativeInit
+  (JNIEnv *env, jobject obj, jobject context, jstring jalgoName) {
+    EVP_MD_CTX* context_data = md_context_from(env, context);
+    if (context_data == NULL) {
+        throw_error(env, ILLEGAL_STATE_EXCEPTION, "EVP_DigestInit_ex failed");
+        return;
+     }
 
-/* Generates an initialization function.
- * @param jni_func_name the function name as defined in the Javah-generated header files.
- * @param openssl_evp_name the OpenSSL evp function name as defined in openssl/evp.h
- */
-#define INIT_FUNC(jni_func_name, openssl_evp_name) JNIEXPORT void JNICALL jni_func_name \
-  (JNIEnv *env, jobject obj, jobject context) { \
-    EVP_MD_CTX* context_data = md_context_from(env, context); \
-    if (context_data != NULL) { \
-    	if (1 != EVP_DigestInit_ex(context_data, openssl_evp_name(), NULL)) { \
-           throw_error(env, ILLEGAL_STATE_EXCEPTION, "EVP_DigestInit_ex failed"); \
-    	} \
-    } \
+    jsize nameLength = (*env)->GetStringUTFLength(env, jalgoName);
+
+    char javaNameC[256];
+    if (nameLength > sizeof(javaNameC)) {
+        throw_error(env, ILLEGAL_STATE_EXCEPTION, "Algorithm name exceeds the limit");
+        return;
+    }
+
+    jboolean isCopy;
+    const char * cstr = (*env)->GetStringUTFChars(env, jalgoName, &isCopy);
+    strncpy(javaNameC, cstr, sizeof(javaNameC));
+    (*env)->ReleaseStringUTFChars(env, jalgoName, cstr);
+
+    const EVP_MD *evp_md = EVP_get_digestbyname(javaNameC);
+    if (evp_md == NULL) {
+        throw_error(env, ILLEGAL_STATE_EXCEPTION, "Named MessageDigest was not found");
+        return;
+    }
+
+    if (1 != EVP_DigestInit_ex(context_data, evp_md, NULL)) {
+        throw_error(env, ILLEGAL_STATE_EXCEPTION, "EVP_DigestInit_ex failed");
+        return;
+    }
 }
-
-/* Generates an initialization function.
- * @param jni_func_name the function name as defined in the Javah-generated header files.
- */
-#define THROW_UNSUPPORTED_OPERATION_EXCEPTION(jni_func_name) JNIEXPORT void JNICALL jni_func_name \
-  (JNIEnv *env, jobject obj, jobject context) { \
-    throw_error(env, UNSUPPORTED_OPERATION_EXCEPTION, "Algorithm is not supported"); \
-}
-
-#ifndef OPENSSL_NO_MD5
-INIT_FUNC(Java_de_sfuhrm_openssl_jni_MD5Native_nativeInit,EVP_md5)
-#else
-THROW_UNSUPPORTED_OPERATION_EXCEPTION(Java_de_sfuhrm_openssl_jni_MD5Native_nativeInit)
-#endif
-
-INIT_FUNC(Java_de_sfuhrm_openssl_jni_SHA1Native_nativeInit,EVP_sha1)
-INIT_FUNC(Java_de_sfuhrm_openssl_jni_SHA224Native_nativeInit,EVP_sha224)
-INIT_FUNC(Java_de_sfuhrm_openssl_jni_SHA256Native_nativeInit,EVP_sha256)
-INIT_FUNC(Java_de_sfuhrm_openssl_jni_SHA384Native_nativeInit,EVP_sha384)
-INIT_FUNC(Java_de_sfuhrm_openssl_jni_SHA512Native_nativeInit,EVP_sha512)
-INIT_FUNC(Java_de_sfuhrm_openssl_jni_SHA512_1224Native_nativeInit,EVP_sha512_224)
-INIT_FUNC(Java_de_sfuhrm_openssl_jni_SHA512_1256Native_nativeInit,EVP_sha512_256)
-
-INIT_FUNC(Java_de_sfuhrm_openssl_jni_SHA3_1224Native_nativeInit,EVP_sha3_224)
-INIT_FUNC(Java_de_sfuhrm_openssl_jni_SHA3_1256Native_nativeInit,EVP_sha3_256)
-INIT_FUNC(Java_de_sfuhrm_openssl_jni_SHA3_1384Native_nativeInit,EVP_sha3_384)
-INIT_FUNC(Java_de_sfuhrm_openssl_jni_SHA3_1512Native_nativeInit,EVP_sha3_512)

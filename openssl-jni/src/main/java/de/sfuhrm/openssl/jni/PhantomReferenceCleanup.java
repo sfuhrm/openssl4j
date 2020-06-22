@@ -9,33 +9,33 @@ import java.util.Set;
 
 /**
  * Frees native AbstractNative objects.
- * The ByteBuffer objects are allocated in {@linkplain AbstractNative#AbstractNative()}
+ * The ByteBuffer objects are allocated in {@linkplain OpenSSLMessageDigestNative#OpenSSLMessageDigestNative()}
  * and are not used any longer.
  * @author Stephan Fuhrmann
  */
 class PhantomReferenceCleanup {
 
     /** The reference queue of unused AbstractNative objects. */
-    private static final ReferenceQueue<AbstractNative> BYTE_BUFFER_REFERENCE_QUEUE = new ReferenceQueue<>();
+    private static final ReferenceQueue<OpenSSLMessageDigestNative> BYTE_BUFFER_REFERENCE_QUEUE = new ReferenceQueue<>();
 
     /** Is the thread running? */
     private static boolean running = false;
 
     private static final Set<NativePhantomReference> nativePhantomReferenceList = Collections.synchronizedSet(new HashSet<>());
 
-    private static class NativePhantomReference extends PhantomReference<AbstractNative> {
+    private static class NativePhantomReference extends PhantomReference<OpenSSLMessageDigestNative> {
         private final ByteBuffer byteBuffer;
-        NativePhantomReference(AbstractNative abstractNative, ByteBuffer context) {
+        NativePhantomReference(OpenSSLMessageDigestNative abstractNative, ByteBuffer context) {
             super(abstractNative, BYTE_BUFFER_REFERENCE_QUEUE);
             this.byteBuffer = context;
         }
         public void free() {
-            AbstractNative.removeContext(byteBuffer);
+            OpenSSLMessageDigestNative.removeContext(byteBuffer);
         }
     }
 
     /** Enqueues a AbstractNative for later cleanup. */
-    static void enqueueForCleanup(AbstractNative ref) {
+    static void enqueueForCleanup(OpenSSLMessageDigestNative ref) {
         NativePhantomReference phantomReference = new NativePhantomReference(ref, ref.getContext());
         nativePhantomReferenceList.add(phantomReference);
         startIfNeeded();

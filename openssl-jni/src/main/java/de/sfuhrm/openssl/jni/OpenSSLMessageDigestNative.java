@@ -1,16 +1,14 @@
 package de.sfuhrm.openssl.jni;
 
 import java.io.IOException;
-import java.lang.ref.PhantomReference;
-import java.lang.ref.ReferenceQueue;
 import java.nio.ByteBuffer;
 import java.security.MessageDigestSpi;
 
 /**
- * MD5 message digest adapter to the OpenSSL MD5 functions.
+ * An interface to OpenSSL message digest functions.
  * @author Stephan Fuhrmann
  */
-abstract class AbstractNative extends MessageDigestSpi {
+class OpenSSLMessageDigestNative extends MessageDigestSpi {
 
     /** Return the digest length in bytes.
      * @return the digest length in bytes.
@@ -20,21 +18,25 @@ abstract class AbstractNative extends MessageDigestSpi {
     /** Removes a context allocated with {@linkplain #nativeContext()}. */
     static native void removeContext(ByteBuffer context);
 
+    /** Get the list of MessageDigest algorithms supported by OpenSSL. */
+    protected final native static String[] listMessageDigests();
+
     /** Returns the context size in bytes. This is used to allocate the {@link #context direct ByteBuffer}.
      * @return a ByteBuffer containing the native message digest context.
      * */
-    protected native ByteBuffer nativeContext();
+    protected final native ByteBuffer nativeContext();
 
     /** Initialize the context.
      * @param context the context as allocated in {@link #context}.
+     * @param algorithmName the OpenSSL algorithm name as returned by {@linkplain #listMessageDigests()}.
      * */
-    protected abstract void nativeInit(ByteBuffer context);
+    protected final native void nativeInit(ByteBuffer context, String algorithmName);
 
     /** Update the context with a single byte.
      * @param context the context as allocated in {@link #context}.
      * @param byteData the byte to update the context with.
      * */
-    protected native void nativeUpdateWithByte(ByteBuffer context, byte byteData);
+    protected final native void nativeUpdateWithByte(ByteBuffer context, byte byteData);
 
     /** Update the context with an array.
      * @param context the context as allocated in {@link #context}.
@@ -42,7 +44,7 @@ abstract class AbstractNative extends MessageDigestSpi {
      * @param offset the start offset of the array data to update the context with.
      * @param length the number of bytes to update the context with.
      * */
-    protected native void nativeUpdateWithByteArray(ByteBuffer context, byte[] byteArray, int offset, int length);
+    protected final native void nativeUpdateWithByteArray(ByteBuffer context, byte[] byteArray, int offset, int length);
 
     /** Update the context with a direct byte buffer.
      * @param context the context as allocated in {@link #context}.
@@ -50,20 +52,24 @@ abstract class AbstractNative extends MessageDigestSpi {
      * @param offset the start offset of the buffer data to update the context with.
      * @param length the number of bytes to update the context with.
      * */
-    protected native void nativeUpdateWithByteBuffer(ByteBuffer context, ByteBuffer data, int offset, int length);
+    protected final native void nativeUpdateWithByteBuffer(ByteBuffer context, ByteBuffer data, int offset, int length);
 
     /** Do the final digest calculation and return it.
      * @param context the context as allocated in {@link #context}.
      * @param digest the target array to write the digest data to.
      * */
-    protected native void nativeFinal(ByteBuffer context, byte[] digest);
+    protected final native void nativeFinal(ByteBuffer context, byte[] digest);
 
     /** A MD5 context where the state of the current calculation is stored.  */
     private final ByteBuffer context;
 
-    public AbstractNative() {
+    /** The OpenSSL algorithm name as returned by {@linkplain #listMessageDigests()}. */
+    private final String algorithmName;
+
+    OpenSSLMessageDigestNative(String openSslName) {
         try {
             NativeLoader.loadAll();
+            algorithmName = openSslName;
             context = nativeContext();
             PhantomReferenceCleanup.enqueueForCleanup(this);
             engineReset();
@@ -74,12 +80,12 @@ abstract class AbstractNative extends MessageDigestSpi {
     }
 
     /** Get the native context that needs to be cleared at GC. */
-    ByteBuffer getContext() {
+    final ByteBuffer getContext() {
         return context;
     }
 
     @Override
-    protected void engineUpdate(ByteBuffer input) {
+    protected final void engineUpdate(ByteBuffer input) {
         if (!input.hasRemaining()) {
             return;
         }
@@ -95,24 +101,24 @@ abstract class AbstractNative extends MessageDigestSpi {
     }
 
     @Override
-    protected void engineUpdate(byte inputByte) {
+    protected final void engineUpdate(byte inputByte) {
         nativeUpdateWithByte(context, inputByte);
     }
 
     @Override
-    protected void engineUpdate(byte[] input, int offset, int len) {
+    protected final void engineUpdate(byte[] input, int offset, int len) {
         nativeUpdateWithByteArray(context, input, offset, len);
     }
 
     @Override
-    protected byte[] engineDigest() {
+    protected final byte[] engineDigest() {
         byte[] result = new byte[digestLength(context)];
         nativeFinal(context, result);
         return result;
     }
 
     @Override
-    protected void engineReset() {
-        nativeInit(context);
+    protected final void engineReset() {
+        nativeInit(context, algorithmName);
     }
 }
