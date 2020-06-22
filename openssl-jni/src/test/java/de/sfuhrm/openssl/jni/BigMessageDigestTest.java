@@ -73,14 +73,17 @@ public class BigMessageDigestTest {
         assertEquals(formatter.format(expectedDigest), formatter.format(actualDigest));
     }
 
+    private byte[] franzJagt() {
+        byte[] data = "Franz jagt im komplett verwahrlosten Taxi quer durch Bayern".getBytes(ascii);
+        return data;
+    }
+
     @ParameterizedTest
     @MethodSource("provideTestArguments")
     public void digestWithStringBytes(String digestName, MessageDigest testMD, MessageDigest referenceMD) {
 
-        byte[] data = "Franz jagt im komplett verwahrlosten Taxi quer durch Bayern".getBytes(ascii);
-
-        byte[] actualDigest = testMD.digest(data);
-        byte[] expectedDigest = referenceMD.digest(data);
+        byte[] actualDigest = testMD.digest(franzJagt());
+        byte[] expectedDigest = referenceMD.digest(franzJagt());
 
         assertEquals(formatter.format(expectedDigest), formatter.format(actualDigest));
     }
@@ -88,12 +91,10 @@ public class BigMessageDigestTest {
     @ParameterizedTest
     @MethodSource("provideTestArguments")
     public void updateWithFullArray(String digestName, MessageDigest testMD, MessageDigest referenceMD) throws Exception {
-        byte[] data = "Franz jagt im komplett verwahrlosten Taxi quer durch Bayern".getBytes(ascii);
-
-        testMD.update(data);
+        testMD.update(franzJagt());
         byte[] actualDigest = testMD.digest();
 
-        byte[] expectedDigest = referenceMD.digest(data);
+        byte[] expectedDigest = referenceMD.digest(franzJagt());
 
         assertEquals(formatter.format(expectedDigest), formatter.format(actualDigest));
     }
@@ -101,15 +102,12 @@ public class BigMessageDigestTest {
     @ParameterizedTest
     @MethodSource("provideTestArguments")
     public void updateWithSingleBytes(String digestName, MessageDigest testMD, MessageDigest referenceMD) throws Exception {
-
-        byte[] data = "Franz jagt im komplett verwahrlosten Taxi quer durch Bayern".getBytes(ascii);
-
-        for (byte val : data) {
+        for (byte val : franzJagt()) {
             testMD.update(val);
         }
         byte[] actualDigest = testMD.digest();
 
-        for (byte val : data) {
+        for (byte val : franzJagt()) {
             referenceMD.update(val);
         }
         byte[] expectedDigest = referenceMD.digest();
@@ -120,8 +118,7 @@ public class BigMessageDigestTest {
     @MethodSource("provideTestArguments")
     public void updateWithHeapByteBuffer(String digestName, MessageDigest testMD, MessageDigest referenceMD) throws Exception {
 
-        byte[] data = "Franz jagt im komplett verwahrlosten Taxi quer durch Bayern".getBytes(ascii);
-        ByteBuffer bb = ByteBuffer.wrap(data);
+        ByteBuffer bb = ByteBuffer.wrap(franzJagt());
 
         ByteBuffer actualCopy = bb.duplicate();
         testMD.update(actualCopy);
@@ -140,9 +137,8 @@ public class BigMessageDigestTest {
     @ParameterizedTest
     @MethodSource("provideTestArguments")
     public void updateWithDirectByteBuffer(String digestName, MessageDigest testMD, MessageDigest referenceMD) throws Exception {
-        byte[] data = "Franz jagt im komplett verwahrlosten Taxi quer durch Bayern".getBytes(ascii);
-        ByteBuffer bb = ByteBuffer.allocateDirect(data.length);
-        bb.put(data);
+        ByteBuffer bb = ByteBuffer.allocateDirect(franzJagt().length);
+        bb.put(franzJagt());
         bb.flip();
 
         ByteBuffer actualCopy = bb.duplicate();
@@ -162,7 +158,7 @@ public class BigMessageDigestTest {
     @ParameterizedTest
     @MethodSource("provideTestArguments")
     public void updateWithFragmentedArray(String digestName, MessageDigest testMD, MessageDigest referenceMD) throws Exception {
-        byte[] dataInner = "Franz jagt im komplett verwahrlosten Taxi quer durch Bayern".getBytes(ascii);
+        byte[] dataInner = franzJagt();
         byte[] data = Arrays.copyOf(dataInner, dataInner.length * 2);
         testMD.update(data, 0, dataInner.length);
         byte[] actualDigest = testMD.digest();
