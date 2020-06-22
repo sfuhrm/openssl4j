@@ -1,5 +1,7 @@
 package de.sfuhrm.openssl4j;
 
+import de.sfuhrm.openssl4j.PlatformHelper;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -58,14 +60,14 @@ class ObjectTransfer {
             String libName = toLibraryName(name);
             Path targetLibraryPath = targetDirectory.resolve(libName);
 
-            try (InputStream inputStream = getClass().getResourceAsStream(libName)) {
+            try (InputStream inputStream = getClass().getResourceAsStream("/objects/" + libName)) {
                 if (inputStream != null) {
                     transferTo(inputStream, targetLibraryPath);
                     break;
                 }
             }
 
-            try (InputStream inputStream = Files.newInputStream(Paths.get("target").resolve(libName))) {
+            try (InputStream inputStream = Files.newInputStream(Paths.get("src/main/resources/objects").resolve(libName))) {
                 transferTo(inputStream, targetLibraryPath);
                 break;
             }

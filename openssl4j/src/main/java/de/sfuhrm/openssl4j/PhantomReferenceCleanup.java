@@ -9,7 +9,7 @@ import java.util.Set;
 
 /**
  * Frees native AbstractNative objects.
- * The ByteBuffer objects are allocated in {@linkplain OpenSSLMessageDigestNative#OpenSSLMessageDigestNative()}
+ * The ByteBuffer objects are allocated in {@linkplain OpenSSLMessageDigestNative#OpenSSLMessageDigestNative(String)} ()}
  * and are not used any longer.
  * @author Stephan Fuhrmann
  */
