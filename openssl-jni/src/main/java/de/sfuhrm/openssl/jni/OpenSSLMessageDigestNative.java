@@ -13,10 +13,10 @@ class OpenSSLMessageDigestNative extends MessageDigestSpi {
     /** Return the digest length in bytes.
      * @return the digest length in bytes.
      * */
-    static native int digestLength(ByteBuffer context);
+    private static native int digestLength(ByteBuffer context);
 
     /** Removes a context allocated with {@linkplain #nativeContext()}. */
-    static native void removeContext(ByteBuffer context);
+    protected static native void removeContext(ByteBuffer context);
 
     /** Get the list of MessageDigest algorithms supported by OpenSSL.
      * @return  an array of supported message digest algorithms from the OpenSSL library.
@@ -26,19 +26,19 @@ class OpenSSLMessageDigestNative extends MessageDigestSpi {
     /** Returns the context size in bytes. This is used to allocate the {@link #context direct ByteBuffer}.
      * @return a ByteBuffer containing the native message digest context.
      * */
-    protected final native ByteBuffer nativeContext();
+    private final native ByteBuffer nativeContext();
 
     /** Initialize the context.
      * @param context the context as allocated in {@link #context}.
      * @param algorithmName the OpenSSL algorithm name as returned by {@linkplain #listMessageDigests()}.
      * */
-    protected final native void nativeInit(ByteBuffer context, String algorithmName);
+    private final native void nativeInit(ByteBuffer context, String algorithmName);
 
     /** Update the context with a single byte.
      * @param context the context as allocated in {@link #context}.
      * @param byteData the byte to update the context with.
      * */
-    protected final native void nativeUpdateWithByte(ByteBuffer context, byte byteData);
+    private final native void nativeUpdateWithByte(ByteBuffer context, byte byteData);
 
     /** Update the context with an array.
      * @param context the context as allocated in {@link #context}.
@@ -46,7 +46,7 @@ class OpenSSLMessageDigestNative extends MessageDigestSpi {
      * @param offset the start offset of the array data to update the context with.
      * @param length the number of bytes to update the context with.
      * */
-    protected final native void nativeUpdateWithByteArray(ByteBuffer context, byte[] byteArray, int offset, int length);
+    private final native void nativeUpdateWithByteArray(ByteBuffer context, byte[] byteArray, int offset, int length);
 
     /** Update the context with a direct byte buffer.
      * @param context the context as allocated in {@link #context}.
@@ -54,13 +54,13 @@ class OpenSSLMessageDigestNative extends MessageDigestSpi {
      * @param offset the start offset of the buffer data to update the context with.
      * @param length the number of bytes to update the context with.
      * */
-    protected final native void nativeUpdateWithByteBuffer(ByteBuffer context, ByteBuffer data, int offset, int length);
+    private final native void nativeUpdateWithByteBuffer(ByteBuffer context, ByteBuffer data, int offset, int length);
 
     /** Do the final digest calculation and return it.
      * @param context the context as allocated in {@link #context}.
      * @param digest the target array to write the digest data to.
      * */
-    protected final native void nativeFinal(ByteBuffer context, byte[] digest);
+    private final native void nativeFinal(ByteBuffer context, byte[] digest);
 
     /** A MD5 context where the state of the current calculation is stored.  */
     private final ByteBuffer context;
