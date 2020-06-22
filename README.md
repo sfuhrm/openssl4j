@@ -33,6 +33,13 @@ typically 67% to 102% faster than the pure Java version from SUN.
 * Functionality: There are some algorithms available in OpenSSL4J that are not available in the
 normal SUN crypto provider.
 
+## Restrictions
+
+* MessageDigest restriction: The current milestone only contains MessageDigest algorithms.
+* Restricted platforms: The code uses dynamic linking to an object library on the machine.
+  Native object code within the JAR file is used for binding the Java code to the native code.
+  There is a restricted amount of platforms supported (see below).
+
 ## Usage
 
 ### Dynamic security provider configuration
