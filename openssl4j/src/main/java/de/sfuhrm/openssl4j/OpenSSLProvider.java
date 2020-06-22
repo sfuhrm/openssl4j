@@ -17,6 +17,8 @@ import java.util.regex.Pattern;
  */
 public class OpenSSLProvider extends Provider {
 
+    private static final String VERSION = "0.1";
+
     /** The provider name as passed to JCA. */
     public final static String PROVIDER_NAME = "OpenSSL";
 
@@ -27,7 +29,7 @@ public class OpenSSLProvider extends Provider {
      * class can't be used.
      * */
     public OpenSSLProvider() throws IOException {
-        super(PROVIDER_NAME, 1.0, "OpenSSL-JNI provider v1.0, implementing "
+        super(PROVIDER_NAME, VERSION, "OpenSSL4J provider v" + VERSION + ", implementing "
                 + "multiple message digest algorithms.");
 
         NativeLoader.loadAll();
