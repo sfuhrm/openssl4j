@@ -1,40 +1,49 @@
-OpenSSL JNI Java Library
+OpenSSL4J JNI Java Library
 ===================
-![Travis CI Status](https://travis-ci.org/sfuhrm/openssl-jni.svg?branch=master)
-[![Javadoc](https://javadoc-badge.appspot.com/de.sfuhrm/openssl-jni.svg?label=javadoc)](http://api.sfuhrm.de/openssl-jni/)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/de.sfuhrm/openssl-jni/badge.svg)](https://maven-badges.herokuapp.com/maven-central/de.sfuhrm/openssl-jni) 
+![Travis CI Status](https://travis-ci.org/sfuhrm/openssl4j.svg?branch=master)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/de.sfuhrm/openssl4j/badge.svg)](https://maven-badges.herokuapp.com/maven-central/de.sfuhrm/openssl4j) 
 [![License: LGPL v3](https://img.shields.io/badge/License-LGPL%20v3-blue.svg)](https://www.gnu.org/licenses/lgpl-3.0)
 
-A Java bridge to the native C OpenSSL library. On the Java side you're
+OpenSSL4J is a Java bridge to the native C OpenSSL library. On the Java side you're
 using the conventional MessageDigest class, but in the
 background the nativ OpenSSL library is called with all its
 optimizations for performance reasons.
 
-## Building it
+## Building OpenSSL4J
 
 For building the application you need
 * JDK 8+,
 * Apache Maven,
-* GNU GCC
+* GNU Make,
+* GNU GCC,
 * OpenSSL development headers
-  
-Use the following command line:
+
+To build the C library, execute:
+
+    $ make
+
+To build the Java package, execute:
 
     $ mvn clean package
 
 ## Features
 
-The main feature is performance: The MD5-implementation of OpenSSL-JNI is
+* Performance: The main feature of OpenSSL4J is performance: The MD5-implementation of OpenSSL4J is
 typically 67% to 102% faster than the pure Java version from SUN.
+* Functionality: There are some algorithms available in OpenSSL4J that are not available in the
+normal SUN crypto provider.
 
 ## Usage
 
-The following example show how to create a MD5 message digest instance:
+### Dynamic security provider configuration
+
+The following example show how to create a MD5 message digest instance with the
+dynamically chosen security Provider:
 
 ---------------------------------------
 
 ```java
-import de.sfuhrm.openssl.jni.OpenSSLProvider;
+import de.sfuhrm.openssl4j.OpenSSLProvider;
 
 ...
 
@@ -45,9 +54,52 @@ byte[] digest = messageDigest.digest():
 
 ---------------------------------------
 
-## Including it in your projects
+### Installing it in the JDK
 
-Please note that the current version is experimental. 
+You can also install the provider in your JDK installation. Open the `java.security` file in an editor:
+* Linux, or macOS: `<java-home>/conf/security/java.security`
+* Windows: `<java-home>\conf\security\java.security`
+
+To be used effectively, insert it in front of the SUN provider. If this is how the original file looks
+
+---------------------------------------
+
+```
+security.provider.1=SUN
+security.provider.2=SunRsaSign
+security.provider.3=SunEC
+security.provider.4=SunJSSE
+security.provider.5=SunJCE
+security.provider.6=SunJGSS
+security.provider.7=SunSASL
+security.provider.8=XMLDSig
+security.provider.9=SunPCSC
+...
+```
+
+---------------------------------------
+
+then the new file could look like this after inserting and renumbering the entries:
+
+---------------------------------------
+
+```
+security.provider.1=OpenSSL
+security.provider.2=SUN
+security.provider.3=SunRsaSign
+security.provider.4=SunEC
+security.provider.5=SunJSSE
+security.provider.6=SunJCE
+security.provider.7=SunJGSS
+security.provider.8=SunSASL
+security.provider.9=XMLDSig
+security.provider.10=SunPCSC
+...
+```
+
+---------------------------------------
+
+## Including it with Maven
 
 The recommended way of including the library into your project is using maven:
 
@@ -56,15 +108,20 @@ The recommended way of including the library into your project is using maven:
 ```xml
 <dependency>
     <groupId>de.sfuhrm</groupId>
-    <artifactId>openssl-jni</artifactId>
+    <artifactId>openssl4j</artifactId>
     <version>0.x.y</version>
 </dependency>
 ```
 
 ---------------------------------------
 
-There are the following native implementations available:
+There are the following native implementations available inside the JAR file:
 * Linux-amd64
+* Linux-arm
+
+## Version notice
+
+Please note that the current version is experimental. 
 
 ## Versions
 

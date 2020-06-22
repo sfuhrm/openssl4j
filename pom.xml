@@ -2,14 +2,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>de.sfuhrm</groupId>
-  <artifactId>openssl-jni-parent</artifactId>
+  <artifactId>openssl4j-parent</artifactId>
   <version>0.1.1-SNAPSHOT</version>
-  <name>OpenSSL JNI Parent</name>
-  <description>OpenSSL JNI Parent POM</description>
-  <url>https://github.com/sfuhrm/openssl-jni</url>
+  <name>OpenSSL4J Parent</name>
+  <description>OpenSSL4J Parent POM</description>
+  <url>https://github.com/sfuhrm/openssl4j</url>
   <scm>
-    <url>https://github.com/sfuhrm/openssl-jna</url>
-    <connection>scm:git:https://github.com/sfuhrm/openssl-jni.git</connection>
+    <url>https://github.com/sfuhrm/openssl4j</url>
+    <connection>scm:git:https://github.com/sfuhrm/openssl4j.git</connection>
     <tag>HEAD</tag>
   </scm>
   <licenses>
@@ -35,8 +35,8 @@
   <packaging>pom</packaging>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>11</maven.compiler.source>
-    <maven.compiler.target>11</maven.compiler.target>
+    <maven.compiler.source>9</maven.compiler.source>
+    <maven.compiler.target>9</maven.compiler.target>
   </properties>
   <profiles>
     <profile>
@@ -126,7 +126,7 @@
           </execution>
         </executions>
         <configuration>
-          <source>8</source>
+          <source>9</source>
         </configuration>
       </plugin>
       <plugin>
@@ -163,6 +163,6 @@
     </dependency>
   </dependencies>
   <modules>
-    <module>openssl-jni</module>
+    <module>openssl4j</module>
   </modules>
 </project>
