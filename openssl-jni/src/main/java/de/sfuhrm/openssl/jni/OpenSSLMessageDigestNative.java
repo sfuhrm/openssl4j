@@ -19,7 +19,7 @@ class OpenSSLMessageDigestNative extends MessageDigestSpi {
     static native void removeContext(ByteBuffer context);
 
     /** Get the list of MessageDigest algorithms supported by OpenSSL.
-     * @result an array of supported message digest algorithms from the OpenSSL library.
+     * @return  an array of supported message digest algorithms from the OpenSSL library.
      * */
     protected final native static String[] listMessageDigests();
 
