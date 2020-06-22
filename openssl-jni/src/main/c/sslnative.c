@@ -116,7 +116,10 @@ JNIEXPORT jobject JNICALL Java_de_sfuhrm_openssl_jni_OpenSSLMessageDigestNative_
         return NULL;
 	}
 
-    /* TODO 256 is just to satisfy the call */
+    /* TODO 256 is just to satisfy the call.
+    ** As long as nobody writes in this buffer everything
+    ** is alright.
+     */
     jobject result = (*env)->NewDirectByteBuffer(env, mdctx, 256);
     if (result == NULL) {
         throw_error(env, ILLEGAL_STATE_EXCEPTION, "Could not NewDirectByteBuffer()");
