@@ -12,7 +12,7 @@ optimizations for performance reasons.
 ## Building OpenSSL4J
 
 For building the application you need
-* JDK 8+,
+* JDK 9+,
 * Apache Maven,
 * GNU Make,
 * GNU GCC,
