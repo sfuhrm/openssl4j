@@ -7,7 +7,7 @@
     <version>0.1.1-SNAPSHOT</version>
   </parent>
   <artifactId>openssl4j</artifactId>
-  <name>OpenSSL JNI</name>
+  <name>OpenSSL4J JNI</name>
   <description>Java binding to OpenSSL library functions</description>
   <build>
   </build>
