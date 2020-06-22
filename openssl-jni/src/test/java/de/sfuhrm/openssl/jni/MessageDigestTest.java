@@ -28,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * in this context (aka 'test').
  * @author Stephan Fuhrmann
  */
-public class BigMessageDigestTest {
+public class MessageDigestTest {
 
     private Formatter formatter;
     private Charset ascii;
@@ -118,6 +118,26 @@ public class BigMessageDigestTest {
     public void updateWithHeapByteBuffer(String digestName, MessageDigest testMD, MessageDigest referenceMD) throws Exception {
 
         ByteBuffer bb = ByteBuffer.wrap(franzJagt());
+
+        ByteBuffer actualCopy = bb.duplicate();
+        testMD.update(actualCopy);
+        byte[] actualDigest = testMD.digest();
+
+        ByteBuffer expectedCopy = bb.duplicate();
+        referenceMD.update(expectedCopy);
+
+        byte[] expectedDigest = referenceMD.digest();
+        assertEquals(expectedCopy.position(), actualCopy.position());
+        assertEquals(expectedCopy.limit(), actualCopy.limit());
+        assertEquals(expectedCopy.capacity(), actualCopy.capacity());
+        assertEquals(formatter.format(expectedDigest), formatter.format(actualDigest));
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideTestArguments")
+    public void updateWithDirectByteBufferNoRemaining(String digestName, MessageDigest testMD, MessageDigest referenceMD) throws Exception {
+        ByteBuffer bb = ByteBuffer.allocateDirect(franzJagt().length);
+        bb.put(franzJagt());
 
         ByteBuffer actualCopy = bb.duplicate();
         testMD.update(actualCopy);

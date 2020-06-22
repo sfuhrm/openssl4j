@@ -17,28 +17,28 @@ public final class OpenSSL {
         public SHA1() { super("SHA1"); }
     }
 
-    public final static class SHA224 extends OpenSSLMessageDigestNative {
-        public SHA224() { super("SHA224"); }
+    public final static class SHA_224 extends OpenSSLMessageDigestNative {
+        public SHA_224() { super("SHA224"); }
     }
 
-    public final static class SHA256 extends OpenSSLMessageDigestNative {
-        public SHA256() { super("SHA256"); }
+    public final static class SHA_256 extends OpenSSLMessageDigestNative {
+        public SHA_256() { super("SHA256"); }
     }
 
-    public final static class SHA384 extends OpenSSLMessageDigestNative {
-        public SHA384() { super("SHA384"); }
+    public final static class SHA_384 extends OpenSSLMessageDigestNative {
+        public SHA_384() { super("SHA384"); }
     }
 
-    public final static class SHA512 extends OpenSSLMessageDigestNative {
-        public SHA512() { super("SHA512"); }
+    public final static class SHA_512 extends OpenSSLMessageDigestNative {
+        public SHA_512() { super("SHA512"); }
     }
 
-    public final static class SHA512_224 extends OpenSSLMessageDigestNative {
-        public SHA512_224() { super("SHA512-224"); }
+    public final static class SHA_512_224 extends OpenSSLMessageDigestNative {
+        public SHA_512_224() { super("SHA512-224"); }
     }
 
-    public final static class SHA512_256 extends OpenSSLMessageDigestNative {
-        public SHA512_256() { super("SHA512-256"); }
+    public final static class SHA_512_256 extends OpenSSLMessageDigestNative {
+        public SHA_512_256() { super("SHA512-256"); }
     }
 
     public final static class SHA3_224 extends OpenSSLMessageDigestNative {
@@ -55,5 +55,29 @@ public final class OpenSSL {
 
     public final static class SHA3_512 extends OpenSSLMessageDigestNative {
         public SHA3_512() { super("SHA3-512"); }
+    }
+
+    public final static class BLAKE2b512 extends OpenSSLMessageDigestNative {
+        public BLAKE2b512() { super("BLAKE2b512"); }
+    }
+
+    public final static class BLAKE2s256 extends OpenSSLMessageDigestNative {
+        public BLAKE2s256() { super("BLAKE2s256"); }
+    }
+
+    public final static class MD4 extends OpenSSLMessageDigestNative {
+        public MD4() { super("MD4"); }
+    }
+
+    public final static class RIPEMD160 extends OpenSSLMessageDigestNative {
+        public RIPEMD160() { super("RIPEMD160"); }
+    }
+
+    public final static class SM3 extends OpenSSLMessageDigestNative {
+        public SM3() { super("SM3"); }
+    }
+
+    public final static class Whirlpool extends OpenSSLMessageDigestNative {
+        public Whirlpool() { super("whirlpool"); }
     }
 }
