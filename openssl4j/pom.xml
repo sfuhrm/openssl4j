@@ -4,7 +4,7 @@
   <parent>
     <groupId>de.sfuhrm</groupId>
     <artifactId>openssl4j-parent</artifactId>
-    <version>0.1.3-SNAPSHOT</version>
+    <version>0.1.1-SNAPSHOT</version>
   </parent>
   <artifactId>openssl4j</artifactId>
   <name>OpenSSL JNI</name>
