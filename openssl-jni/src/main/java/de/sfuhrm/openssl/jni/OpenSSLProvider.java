@@ -79,41 +79,41 @@ public class OpenSSLProvider extends Provider {
         Map<String, String> map = new HashMap<>();
 
         if (available.contains("MD5")) {
-            map.put("MessageDigest.MD5", MD5Native.class.getCanonicalName());
+            map.put("MessageDigest.MD5", OpenSSL.MD5.class.getName());
         }
         if (available.contains("SHA1")) {
-            map.put("MessageDigest.SHA1", SHA1Native.class.getCanonicalName());
+            map.put("MessageDigest.SHA1", OpenSSL.SHA1.class.getName());
         }
         if (available.contains("SHA224")) {
-            map.put("MessageDigest.SHA-224", SHA224Native.class.getCanonicalName());
+            map.put("MessageDigest.SHA-224", OpenSSL.SHA224.class.getName());
         }
         if (available.contains("SHA256")) {
-            map.put("MessageDigest.SHA-256", SHA256Native.class.getCanonicalName());
+            map.put("MessageDigest.SHA-256", OpenSSL.SHA256.class.getName());
         }
         if (available.contains("SHA384")) {
-            map.put("MessageDigest.SHA-384", SHA384Native.class.getCanonicalName());
+            map.put("MessageDigest.SHA-384", OpenSSL.SHA384.class.getName());
         }
         if (available.contains("SHA512")) {
-            map.put("MessageDigest.SHA-512", SHA512Native.class.getCanonicalName());
+            map.put("MessageDigest.SHA-512", OpenSSL.SHA512.class.getName());
         }
         if (available.contains("SHA512-224")) {
-            map.put("MessageDigest.SHA-512/224", SHA512_224Native.class.getCanonicalName());
+            map.put("MessageDigest.SHA-512/224", OpenSSL.SHA512_224.class.getName());
         }
         if (available.contains("SHA512-256")) {
-            map.put("MessageDigest.SHA-512/256", SHA512_256Native.class.getCanonicalName());
+            map.put("MessageDigest.SHA-512/256", OpenSSL.SHA512_256.class.getName());
         }
 
         if (available.contains("SHA3-224")) {
-            map.put("MessageDigest.SHA3-224", SHA3_224Native.class.getCanonicalName());
+            map.put("MessageDigest.SHA3-224", OpenSSL.SHA3_224.class.getName());
         }
         if (available.contains("SHA3-256")) {
-            map.put("MessageDigest.SHA3-256", SHA3_256Native.class.getCanonicalName());
+            map.put("MessageDigest.SHA3-256", OpenSSL.SHA3_256.class.getName());
         }
         if (available.contains("SHA3-384")) {
-            map.put("MessageDigest.SHA3-384", SHA3_384Native.class.getCanonicalName());
+            map.put("MessageDigest.SHA3-384", OpenSSL.SHA3_384.class.getName());
         }
         if (available.contains("SHA3-512")) {
-            map.put("MessageDigest.SHA3-512", SHA3_512Native.class.getCanonicalName());
+            map.put("MessageDigest.SHA3-512", OpenSSL.SHA3_512.class.getName());
         }
 
         return map;

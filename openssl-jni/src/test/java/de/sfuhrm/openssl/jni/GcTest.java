@@ -13,7 +13,7 @@ public class GcTest {
     @Disabled
     public void gc() {
         for (int i=0; i< 10000000; i++) {
-            MD5Native md5Native = new MD5Native();
+            OpenSSL.MD5 md5Native = new OpenSSL.MD5();
             System.gc();
         }
     }

@@ -85,6 +85,11 @@ class OpenSSLMessageDigestNative extends MessageDigestSpi {
     }
 
     @Override
+    protected int engineGetDigestLength() {
+        return digestLength(context);
+    }
+
+    @Override
     protected final void engineUpdate(ByteBuffer input) {
         if (!input.hasRemaining()) {
             return;
