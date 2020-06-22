@@ -17,5 +17,5 @@ target/include/de_sfuhrm_openssl_jni_OpenSSLMessageDigestNative.h: ${JNI_JAVA_SO
 	mkdir -p target/include
 	javac -classpath ${JNI_JAVA_SOURCES} -h target/include -d target -s target $<
 
-target/libsslnative-OSNAME-OSARCH.so: target/include/de_sfuhrm_openssl_jni_OpenSSLMessageDigestNatived.h
+target/libsslnative-OSNAME-OSARCH.so: target/include/de_sfuhrm_openssl_jni_OpenSSLMessageDigestNative.h
 	gcc -Wall -Werror -o target/libsslnative-OSNAME-OSARCH.so -lc -lssl -shared -Itarget/include/ -I${JAVA_HOME}/include -I${JAVA_HOME}/include/linux ${JNI_C_SOURCES}/sslnative.c
