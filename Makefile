@@ -13,7 +13,7 @@ all: target/libsslnative-OSNAME-OSARCH.so
 clean:
 	rm -fr target
 
-target/include/de_sfuhrm_openssl_jni_OpenSSLMessageDigestNatived.h: ${JNI_JAVA_SOURCES}/de/sfuhrm/openssl/jni/OpenSSLMessageDigestNative.java
+target/include/de_sfuhrm_openssl_jni_OpenSSLMessageDigestNative.h: ${JNI_JAVA_SOURCES}/de/sfuhrm/openssl/jni/OpenSSLMessageDigestNative.java
 	mkdir -p target/include
 	javac -classpath ${JNI_JAVA_SOURCES} -h target/include -d target -s target $<
 
