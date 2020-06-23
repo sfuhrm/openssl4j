@@ -21,6 +21,10 @@ For building the application you need
 To build the C library, execute:
 
     $ make
+    
+to put the build C library to the place for inclusion in the target JAR, execute:
+
+    $ make install
 
 To build the Java package, execute:
 
