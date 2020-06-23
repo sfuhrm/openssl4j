@@ -13,13 +13,18 @@ JAVA_OS_ARCH:=$(shell ${JAVA_HOME}/bin/java build-helper/OsArch.java )
 JNI_JAVA_SOURCES=openssl4j/src/main/java
 JNI_C_SOURCES=openssl4j/src/main/c
 TARGET=target
+INSTALL_TARGET=openssl4j/src/main/resources/objects
 
 .PHONY: all
 .PHONY: clean
+.PHONY: install
 
 all: ${TARGET}/libopenssl4j-${JAVA_OS_ARCH}.so
 clean:
 	rm -fr ${TARGET}
+
+install: ${TARGET}/libopenssl4j-${JAVA_OS_ARCH}.so
+	cp $< ${INSTALL_TARGET}
 
 ${TARGET}/include/de_sfuhrm_openssl4j_OpenSSLMessageDigestNative.h: ${JNI_JAVA_SOURCES}/de/sfuhrm/openssl4j/OpenSSLMessageDigestNative.java
 	mkdir -p ${TARGET}/include
