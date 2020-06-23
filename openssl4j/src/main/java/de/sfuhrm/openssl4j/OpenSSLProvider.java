@@ -7,7 +7,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -35,7 +34,7 @@ public class OpenSSLProvider extends Provider {
 
         NativeLoader.loadAll();
         if (openSslMessageDigestAlgorithms == null) {
-            openSslMessageDigestAlgorithms = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(OpenSSLMessageDigestNative.listMessageDigests())));
+            openSslMessageDigestAlgorithms = Set.of(OpenSSLMessageDigestNative.listMessageDigests());
         }
 
         Map<String,String> names = getNames(openSslMessageDigestAlgorithms);
@@ -78,7 +77,7 @@ public class OpenSSLProvider extends Provider {
     /** Name pairs mapping from SSL to Java.
      * First one is SSL name, second one is Java name.
      * */
-    private static String[] SSL_TO_JAVA_NAMES = {
+    private static final String[] SSL_TO_JAVA_NAMES = {
             "MD5", "MD5",
             "SHA1", "SHA1",
             "SHA224", "SHA-224",
@@ -108,7 +107,7 @@ public class OpenSSLProvider extends Provider {
         Map<String, String> map = new HashMap<>();
 
         for (int i = 0; i < SSL_TO_JAVA_NAMES.length; i+= 2) {
-            String sslName = SSL_TO_JAVA_NAMES[i + 0];
+            String sslName = SSL_TO_JAVA_NAMES[i];
             String javaName = SSL_TO_JAVA_NAMES[i + 1];
 
             // only if OpenSSL has the algorithm available, add it

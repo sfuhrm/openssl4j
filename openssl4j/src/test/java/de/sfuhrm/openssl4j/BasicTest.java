@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Test base.
@@ -19,6 +20,6 @@ public abstract class BasicTest {
         NativeLoader.loadAll();
 
         formatter = Formatter.getInstance();
-        ascii = Charset.forName("ASCII");
+        ascii = StandardCharsets.US_ASCII;
     }
 }

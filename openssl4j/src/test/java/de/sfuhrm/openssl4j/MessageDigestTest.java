@@ -8,6 +8,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.Provider;
@@ -31,7 +32,7 @@ public class MessageDigestTest {
     @BeforeEach
     public void init() {
         formatter = Formatter.getInstance();
-        ascii = Charset.forName("ASCII");
+        ascii = StandardCharsets.US_ASCII;
     }
 
     private static Stream<Arguments> provideTestArguments() throws NoSuchAlgorithmException, IOException {
@@ -84,7 +85,7 @@ public class MessageDigestTest {
 
     @ParameterizedTest
     @MethodSource("provideTestArguments")
-    public void updateWithFullArray(String digestName, MessageDigest testMD, MessageDigest referenceMD) throws Exception {
+    public void updateWithFullArray(String digestName, MessageDigest testMD, MessageDigest referenceMD) {
         testMD.update(franzJagt());
         byte[] actualDigest = testMD.digest();
 
@@ -95,7 +96,7 @@ public class MessageDigestTest {
 
     @ParameterizedTest
     @MethodSource("provideTestArguments")
-    public void updateWithSingleBytes(String digestName, MessageDigest testMD, MessageDigest referenceMD) throws Exception {
+    public void updateWithSingleBytes(String digestName, MessageDigest testMD, MessageDigest referenceMD) {
         for (byte val : franzJagt()) {
             testMD.update(val);
         }
@@ -110,7 +111,7 @@ public class MessageDigestTest {
 
     @ParameterizedTest
     @MethodSource("provideTestArguments")
-    public void updateWithHeapByteBuffer(String digestName, MessageDigest testMD, MessageDigest referenceMD) throws Exception {
+    public void updateWithHeapByteBuffer(String digestName, MessageDigest testMD, MessageDigest referenceMD) {
 
         ByteBuffer bb = ByteBuffer.wrap(franzJagt());
 
@@ -130,7 +131,7 @@ public class MessageDigestTest {
 
     @ParameterizedTest
     @MethodSource("provideTestArguments")
-    public void updateWithDirectByteBufferNoRemaining(String digestName, MessageDigest testMD, MessageDigest referenceMD) throws Exception {
+    public void updateWithDirectByteBufferNoRemaining(String digestName, MessageDigest testMD, MessageDigest referenceMD) {
         ByteBuffer bb = ByteBuffer.allocateDirect(franzJagt().length);
         bb.put(franzJagt());
 
@@ -150,7 +151,7 @@ public class MessageDigestTest {
 
     @ParameterizedTest
     @MethodSource("provideTestArguments")
-    public void updateWithDirectByteBuffer(String digestName, MessageDigest testMD, MessageDigest referenceMD) throws Exception {
+    public void updateWithDirectByteBuffer(String digestName, MessageDigest testMD, MessageDigest referenceMD) {
         ByteBuffer bb = ByteBuffer.allocateDirect(franzJagt().length);
         bb.put(franzJagt());
         bb.flip();
@@ -171,7 +172,7 @@ public class MessageDigestTest {
 
     @ParameterizedTest
     @MethodSource("provideTestArguments")
-    public void updateWithFragmentedArray(String digestName, MessageDigest testMD, MessageDigest referenceMD) throws Exception {
+    public void updateWithFragmentedArray(String digestName, MessageDigest testMD, MessageDigest referenceMD) {
         byte[] dataInner = franzJagt();
         byte[] data = Arrays.copyOf(dataInner, dataInner.length * 2);
         testMD.update(data, 0, dataInner.length);
@@ -185,7 +186,7 @@ public class MessageDigestTest {
 
     @ParameterizedTest
     @MethodSource("provideTestArguments")
-    public void updateWithLongArray(String digestName, MessageDigest testMD, MessageDigest referenceMD) throws Exception {
+    public void updateWithLongArray(String digestName, MessageDigest testMD, MessageDigest referenceMD) {
 
         byte[] data = new byte[1024*1024];
         for (int i = 0; i < data.length; i++) {
@@ -208,7 +209,7 @@ public class MessageDigestTest {
 
     @ParameterizedTest
     @MethodSource("provideTestArguments")
-    public void updateWithLongDirectBB(String digestName, MessageDigest testMD, MessageDigest referenceMD) throws Exception {
+    public void updateWithLongDirectBB(String digestName, MessageDigest testMD, MessageDigest referenceMD) {
 
         byte[] data = new byte[1024*1024];
         for (int i = 0; i < data.length; i++) {

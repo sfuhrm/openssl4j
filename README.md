@@ -5,8 +5,8 @@ OpenSSL4J JNI Java Library
 [![License: LGPL v3](https://img.shields.io/badge/License-LGPL%20v3-blue.svg)](https://www.gnu.org/licenses/lgpl-3.0)
 
 OpenSSL4J is a Java bridge to the native C OpenSSL library. On the Java side you're
-using the conventional MessageDigest class, but in the
-background the nativ OpenSSL library is called with all its
+using the conventional MessageDigest class, but calls in the
+background the native OpenSSL library with all its
 optimizations for performance reasons.
 
 ## Building OpenSSL4J
@@ -67,7 +67,7 @@ You can also install the provider in your JDK installation. Open the `java.secur
 * Linux, or macOS: `<java-home>/conf/security/java.security`
 * Windows: `<java-home>\conf\security\java.security`
 
-To be used effectively, insert it in front of the SUN provider. If this is how the original file looks
+To be used effectively, insert it in front of the SUN provider. If this is how the original file looks:
 
 ---------------------------------------
 
@@ -132,7 +132,7 @@ Please note that the current version is experimental.
 
 ## Versions
 
-The version numbers are chosen according to the
+The version numbers comply to the
 [semantic versioning](https://semver.org/) schema.
 Especially major version changes come with breaking API
 changes.

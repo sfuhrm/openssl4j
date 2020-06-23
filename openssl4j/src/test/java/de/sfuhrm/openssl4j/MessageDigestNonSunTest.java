@@ -7,6 +7,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.Provider;
@@ -29,10 +30,10 @@ public class MessageDigestNonSunTest {
     @BeforeEach
     public void init() {
         formatter = Formatter.getInstance();
-        ascii = Charset.forName("ASCII");
+        ascii = StandardCharsets.US_ASCII;
     }
 
-    private static String[] REFERENCES = new String[] {
+    private static final String[] REFERENCES = new String[] {
         "BLAKE2b512", "", "786a02f742015903c6c6fd852552d272912f4740e15847618a86e217f71f5419d25e1031afee585313896444934eb04b903a685b1448b755d56f701afe9be2ce",
         "BLAKE2b512", "The quick brown fox jumps over the lazy dog", "a8add4bdddfd93e4877d2746e62817b116364a1fa7bc148d95090bc7333b3673f82401cf7aa2e4cb1ecd90296e3f14cb5413f8ed77be73045b13914cdcd6a918",
         "BLAKE2b512", "The quick brown fox jumps over the lazy dof", "ab6b007747d8068c02e25a6008db8a77c218d94f3b40d2291a7dc8a62090a744c082ea27af01521a102e42f480a31e9844053f456b4b41e8aa78bbe5c12957bb",
@@ -52,14 +53,14 @@ public class MessageDigestNonSunTest {
         Provider openSsl = new OpenSSLProvider();
 
         for (int i=0; i < REFERENCES.length; i+= 3) {
-            String algorithm = REFERENCES[i + 0];
+            String algorithm = REFERENCES[i];
             String clearText = REFERENCES[i + 1];
             String expected =  REFERENCES[i + 2];
 
             result.add(Arguments.of(
                     algorithm,
                     MessageDigest.getInstance(algorithm, openSsl),
-                    clearText.getBytes(Charset.forName("ASCII")),
+                    clearText.getBytes(StandardCharsets.US_ASCII),
                     expected
                     ));
         }
