@@ -20,22 +20,26 @@ public final class OpenSSL4JProvider extends Provider {
     private static Set<String> openSslMessageDigestAlgorithms;
 
     /** Constructor for the JCA Provider for OpenSSL JNI.
-     * @throws IOException if the native object file can't be loaded and the
+     * @throws IllegalStateException if the native object file can't be loaded and the
      * class can't be used.
      * */
-    public OpenSSL4JProvider() throws IOException {
+    public OpenSSL4JProvider() {
         super(PROVIDER_NAME, PropertyAccessor.get("version", "unknown"),
                 "OpenSSL4J provider v"
                 + PropertyAccessor.get("version", "unknown") + ", implementing "
                 + "multiple message digest algorithms.");
 
-        NativeLoader.loadAll();
-        if (openSslMessageDigestAlgorithms == null) {
-            openSslMessageDigestAlgorithms = Set.of(OpenSSLMessageDigestNative.listMessageDigests());
-        }
+        try {
+            NativeLoader.loadAll();
+            if (openSslMessageDigestAlgorithms == null) {
+                openSslMessageDigestAlgorithms = Set.of(OpenSSLMessageDigestNative.listMessageDigests());
+            }
 
-        Map<String,String> names = getNames(openSslMessageDigestAlgorithms);
-        putAll(names);
+            Map<String,String> names = getNames(openSslMessageDigestAlgorithms);
+            putAll(names);
+        } catch (IOException e) {
+            throw new IllegalStateException("Could not initialize", e);
+        }
     }
 
     /** Gets the names and the aliases of all message digest
