@@ -6,6 +6,7 @@
 #include <string.h>
 #include <openssl/evp.h>
 #include <openssl/ossl_typ.h>
+#include <malloc.h>
 
 #include "de_sfuhrm_openssl4j_OpenSSLMessageDigestNative.h"
 
@@ -116,11 +117,8 @@ JNIEXPORT jobject JNICALL Java_de_sfuhrm_openssl4j_OpenSSLMessageDigestNative_na
         return NULL;
 	}
 
-    /* TODO 256 is just to satisfy the call.
-    ** As long as nobody writes in this buffer everything
-    ** is alright.
-     */
-    jobject result = (*env)->NewDirectByteBuffer(env, mdctx, 256);
+    size_t usableSize = malloc_usable_size(mdctx);
+    jobject result = (*env)->NewDirectByteBuffer(env, mdctx, usableSize);
     if (result == NULL) {
         throw_error(env, ILLEGAL_STATE_EXCEPTION, "Could not NewDirectByteBuffer()");
     }
