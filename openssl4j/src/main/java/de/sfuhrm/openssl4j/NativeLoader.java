@@ -47,7 +47,7 @@ class NativeLoader {
     }
 
     /** Loads an object file and remembers it was loaded. */
-    void load(Path name) {
+    final void load(Path name) {
         if (!loaded.contains(name)) {
             if (Files.isRegularFile(name)) {
                 System.load(name.toString());

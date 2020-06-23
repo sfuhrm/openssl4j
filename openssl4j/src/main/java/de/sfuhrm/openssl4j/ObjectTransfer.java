@@ -17,7 +17,7 @@ import java.util.Set;
  * will be deleted when the JVM shuts down.
  * @author Stephan Fuhrmann
  */
-class ObjectTransfer {
+final class ObjectTransfer {
 
     /** The destination temporary directory. */
     private final Path targetDirectory;
@@ -58,11 +58,11 @@ class ObjectTransfer {
         return name + "-" + getOsName() + "-" + getArchName() + ".so";
     }
 
-    public List<Path> getObjectFiles() {
+    final List<Path> getObjectFiles() {
         return Collections.unmodifiableList(libraries);
     }
 
-    public void transfer(String... names) throws IOException {
+    final void transfer(String... names) throws IOException {
         for (String name : names) {
             String libName = toLibraryName(name);
             Path targetLibraryPath = targetDirectory.resolve(libName);
