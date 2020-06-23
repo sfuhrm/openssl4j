@@ -93,7 +93,7 @@ class OpenSSLMessageDigestNative extends MessageDigestSpi {
     }
 
     @Override
-    protected final void engineUpdate(ByteBuffer input) {
+    protected final void engineUpdate(final ByteBuffer input) {
         if (!input.hasRemaining()) {
             return;
         }
@@ -109,12 +109,12 @@ class OpenSSLMessageDigestNative extends MessageDigestSpi {
     }
 
     @Override
-    protected final void engineUpdate(byte inputByte) {
+    protected final void engineUpdate(final byte inputByte) {
         nativeUpdateWithByte(context, inputByte);
     }
 
     @Override
-    protected final void engineUpdate(byte[] input, int offset, int len) {
+    protected final void engineUpdate(final byte[] input, final int offset, final int len) {
         nativeUpdateWithByteArray(context, input, offset, len);
     }
 
