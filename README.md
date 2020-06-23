@@ -95,7 +95,7 @@ then the new file could look like this after inserting and renumbering the entri
 ---------------------------------------
 
 ```
-security.provider.1=OpenSSL
+security.provider.1=OpenSSL4J
 security.provider.2=SUN
 security.provider.3=SunRsaSign
 security.provider.4=SunEC
