@@ -123,6 +123,7 @@ class OpenSSLMessageDigestNative extends MessageDigestSpi {
     protected final byte[] engineDigest() {
         byte[] result = new byte[digestLength(context)];
         nativeFinal(context, result);
+        engineReset();
         return result;
     }
 
