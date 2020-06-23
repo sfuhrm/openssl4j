@@ -58,18 +58,19 @@ public class OpenSSLProvider extends Provider {
      * */
     private static Map<String,String> createAliases(Map<String, String> map) {
         Map<String, String> aliases = new HashMap<>();
-        Pattern pattern = Pattern.compile("([^0-9]*)([0-9]+)");
+        Pattern pattern = Pattern.compile("([^0-9]*)-([0-9]+)");
+
         for (Map.Entry<String,String> entry : map.entrySet()) {
             Matcher matcher = pattern.matcher(entry.getKey());
             if (matcher.matches()) {
 
                 // adds for MessageDigest.SHA512 an alias like MessageDigest.SHA-512
                 aliases.put(
-                        matcher.group(1)+
-                                "-"+
-                                matcher.group(2), entry.getValue());
+                        matcher.group(1) + matcher.group(2),
+                        entry.getValue());
             }
         }
+        aliases.put("MessageDigest.SHA", map.get("MessageDigest.SHA1"));
         return aliases;
     }
 
