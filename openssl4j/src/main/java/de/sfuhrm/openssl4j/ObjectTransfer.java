@@ -1,7 +1,5 @@
 package de.sfuhrm.openssl4j;
 
-import de.sfuhrm.openssl4j.PlatformHelper;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -47,8 +45,17 @@ class ObjectTransfer {
         Runtime.getRuntime().addShutdownHook(new Thread(removeTarget));
     }
 
+    private static String getOsName() {
+        return System.getProperty("os.name");
+    }
+
+
+    private static String getArchName() {
+        return System.getProperty("os.arch");
+    }
+
     static String toLibraryName(String name) {
-        return name + "-" + PlatformHelper.getOsName() + "-" + PlatformHelper.getArchName() + ".so";
+        return name + "-" + getOsName() + "-" + getArchName() + ".so";
     }
 
     public List<Path> getObjectFiles() {
