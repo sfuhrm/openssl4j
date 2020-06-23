@@ -15,9 +15,6 @@ class NativeLoader {
     /** Which objects have already been loaded? */
     private final Set<Path> loaded;
 
-    /** The object files loaded.  */
-    private List<Path> objectFiles;
-
     private static boolean isLoaded = false;
 
     static final String[] OBJECTS = {
@@ -39,8 +36,7 @@ class NativeLoader {
         NativeLoader nativeLoader = new NativeLoader();
         ObjectTransfer objectTransfer = new ObjectTransfer();
         objectTransfer.transfer(OBJECTS);
-        nativeLoader.objectFiles = objectTransfer.getObjectFiles();
-        for (Path path : nativeLoader.objectFiles) {
+        for (Path path : objectTransfer.getObjectFiles()) {
             nativeLoader.load(path);
         }
         isLoaded = true;
