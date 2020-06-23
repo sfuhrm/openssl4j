@@ -7,9 +7,9 @@
  * There are multiple ways of using the library.
  *
  * <h4>Runtime configuration</h4>
- * {@code MessageDigest md5 = new MessageDigest("MD5", new OpenSSLProvider());}
+ * {@code MessageDigest md5 = new MessageDigest("MD5", new OpenSSL4JProvider());}
  *
  * <h4>Runtime configuration</h4>
- * {@code MessageDigest md5 = new MessageDigest("MD5", new OpenSSLProvider());}
+ * {@code MessageDigest md5 = new MessageDigest("MD5", new OpenSSL4JProvider());}
  */
 package de.sfuhrm.openssl4j;

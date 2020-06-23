@@ -50,7 +50,7 @@ public class MessageDigestNonSunTest {
 
     private static Stream<Arguments> provideTestArguments() throws NoSuchAlgorithmException, IOException {
         List<Arguments> result = new ArrayList<>();
-        Provider openSsl = new OpenSSLProvider();
+        Provider openSsl = new OpenSSL4JProvider();
 
         for (int i=0; i < REFERENCES.length; i+= 3) {
             String algorithm = REFERENCES[i];

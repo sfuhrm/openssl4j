@@ -3,9 +3,9 @@ package de.sfuhrm.openssl4j;
 /** Class definitions for the message digest spis.
  * @author Stephan Fuhrmann
  *  */
-public final class OpenSSL {
+public final class MessageDigest {
 
-    private OpenSSL() {
+    private MessageDigest() {
         // no instances allowed
     }
 

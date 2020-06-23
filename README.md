@@ -50,11 +50,11 @@ dynamically chosen security Provider:
 ---------------------------------------
 
 ```java
-import de.sfuhrm.openssl4j.OpenSSLProvider;
+import de.sfuhrm.openssl4j.OpenSSL4JProvider;
 
 ...
 
-MessageDigest messageDigest = MessageDigest.getInstance("MD5", new OpenSSLProvider());
+MessageDigest messageDigest = MessageDigest.getInstance("MD5", new OpenSSL4JProvider());
 messageDigest.update("hello world!".getBytes(Charset.forName("ASCII")));
 byte[] digest = messageDigest.digest():
 ```

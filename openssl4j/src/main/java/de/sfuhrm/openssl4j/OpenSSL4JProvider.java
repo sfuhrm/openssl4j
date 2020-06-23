@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
  * JCA provider directing all calls to the system native OpenSSL library.
  * @author Stephan Fuhrmann
  */
-public class OpenSSLProvider extends Provider {
+public final class OpenSSL4JProvider extends Provider {
 
     /** The provider name as passed to JCA. */
     public final static String PROVIDER_NAME = "OpenSSL4J";
@@ -23,7 +23,7 @@ public class OpenSSLProvider extends Provider {
      * @throws IOException if the native object file can't be loaded and the
      * class can't be used.
      * */
-    public OpenSSLProvider() throws IOException {
+    public OpenSSL4JProvider() throws IOException {
         super(PROVIDER_NAME, PropertyAccessor.get("version", "unknown"),
                 "OpenSSL4J provider v"
                 + PropertyAccessor.get("version", "unknown") + ", implementing "
@@ -109,7 +109,7 @@ public class OpenSSLProvider extends Provider {
 
             // only if OpenSSL has the algorithm available, add it
             if (available.contains(sslName)) {
-                String javaClass = OpenSSL.class.getName() + "$" +
+                String javaClass = MessageDigest.class.getName() + "$" +
                         (javaName.replaceAll("-", "_").replaceAll("/", "_"));
                 map.put("MessageDigest." + javaName, javaClass);
             }

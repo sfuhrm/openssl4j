@@ -33,7 +33,7 @@ public class SpeedTest {
         List<Integer> bufferSizes = Arrays.asList(1000, 100000, 1000000);
         List<Arguments> result = new ArrayList<>();
         Map<String, Provider> providerMap = new HashMap<>();
-        providerMap.put("OpenSSL", new OpenSSLProvider());
+        providerMap.put("OpenSSL", new OpenSSL4JProvider());
         providerMap.put("Sun", MessageDigest.getInstance("MD5").getProvider());
 
         for (Map.Entry<String, Provider> providerEntry : providerMap.entrySet()) {

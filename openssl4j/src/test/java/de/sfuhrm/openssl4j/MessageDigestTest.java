@@ -38,7 +38,7 @@ public class MessageDigestTest {
     private static Stream<Arguments> provideTestArguments() throws NoSuchAlgorithmException, IOException {
         List<String> messageDigestNames = Arrays.asList("MD5", "SHA1", "SHA-224", "SHA-256", "SHA-384", "SHA-512", "SHA-512/224", "SHA-512/256", "SHA3-224", "SHA3-256", "SHA3-384", "SHA3-512");
         List<Arguments> result = new ArrayList<>();
-        Provider openSsl = new OpenSSLProvider();
+        Provider openSsl = new OpenSSL4JProvider();
         Provider sun = MessageDigest.getInstance("MD5").getProvider();
 
             for (String messageDigestName : messageDigestNames) {
