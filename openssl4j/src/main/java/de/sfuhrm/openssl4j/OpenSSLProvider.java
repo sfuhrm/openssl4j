@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -17,10 +18,8 @@ import java.util.regex.Pattern;
  */
 public class OpenSSLProvider extends Provider {
 
-    private static final String VERSION = "0.1";
-
     /** The provider name as passed to JCA. */
-    public final static String PROVIDER_NAME = "OpenSSL";
+    public final static String PROVIDER_NAME = "OpenSSL4J";
 
     private static Set<String> openSslMessageDigestAlgorithms;
 
@@ -29,7 +28,9 @@ public class OpenSSLProvider extends Provider {
      * class can't be used.
      * */
     public OpenSSLProvider() throws IOException {
-        super(PROVIDER_NAME, VERSION, "OpenSSL4J provider v" + VERSION + ", implementing "
+        super(PROVIDER_NAME, PropertyAccessor.get("version", "unknown"),
+                "OpenSSL4J provider v"
+                + PropertyAccessor.get("version", "unknown") + ", implementing "
                 + "multiple message digest algorithms.");
 
         NativeLoader.loadAll();

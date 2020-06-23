@@ -10,5 +10,15 @@
   <name>OpenSSL4J JNI</name>
   <description>Java binding to OpenSSL library functions</description>
   <build>
+    <resources>
+      <resource>
+        <directory>${basedir}/src/main/resources</directory>
+        <filtering>false</filtering>
+      </resource>
+      <resource>
+        <directory>${basedir}/src/main/resources-filtered</directory>
+        <filtering>true</filtering>
+      </resource>
+    </resources>
   </build>
 </project>
