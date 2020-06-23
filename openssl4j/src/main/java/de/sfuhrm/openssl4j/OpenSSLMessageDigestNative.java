@@ -70,27 +70,26 @@ class OpenSSLMessageDigestNative extends MessageDigestSpi {
     /** The OpenSSL algorithm name as returned by {@linkplain #listMessageDigests()}. */
     private final String algorithmName;
 
+    /** The digest length as calculated by the engine. */
+    private final int digestLength;
+
     OpenSSLMessageDigestNative(String openSslName) {
         try {
             NativeLoader.loadAll();
             algorithmName = openSslName;
             context = nativeContext();
-            PhantomReferenceCleanup.enqueueForCleanup(this);
+            PhantomReferenceCleanup.enqueueForCleanup(this, context);
             engineReset();
+            digestLength = digestLength(context);
         }
         catch (IOException e) {
             throw new IllegalStateException(e);
         }
     }
 
-    /** Get the native context that needs to be cleared at GC. */
-    final ByteBuffer getContext() {
-        return context;
-    }
-
     @Override
-    protected int engineGetDigestLength() {
-        return digestLength(context);
+    protected final int engineGetDigestLength() {
+        return digestLength;
     }
 
     @Override
@@ -121,7 +120,7 @@ class OpenSSLMessageDigestNative extends MessageDigestSpi {
 
     @Override
     protected final byte[] engineDigest() {
-        byte[] result = new byte[digestLength(context)];
+        byte[] result = new byte[digestLength];
         nativeFinal(context, result);
         engineReset();
         return result;

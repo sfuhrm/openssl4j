@@ -5,6 +5,7 @@ import java.lang.ref.ReferenceQueue;
 import java.nio.ByteBuffer;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -35,8 +36,10 @@ class PhantomReferenceCleanup {
     }
 
     /** Enqueues a AbstractNative for later cleanup. */
-    static void enqueueForCleanup(OpenSSLMessageDigestNative ref) {
-        NativePhantomReference phantomReference = new NativePhantomReference(ref, ref.getContext());
+    static void enqueueForCleanup(OpenSSLMessageDigestNative ref, ByteBuffer context) {
+        NativePhantomReference phantomReference = new NativePhantomReference(
+                Objects.requireNonNull(ref),
+                Objects.requireNonNull(context));
         nativePhantomReferenceList.add(phantomReference);
         startIfNeeded();
     }
