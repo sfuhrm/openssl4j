@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * in this context (aka 'test').
  * @author Stephan Fuhrmann
  */
-public class MessageDigestTest {
+public class MessageDigestWithReferenceMDTest {
 
     private Formatter formatter;
     private Charset ascii;

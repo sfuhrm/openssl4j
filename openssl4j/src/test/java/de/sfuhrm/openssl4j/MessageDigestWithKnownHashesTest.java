@@ -22,15 +22,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * implementations with well known expected outputs.
  * @author Stephan Fuhrmann
  */
-public class MessageDigestNonSunTest {
+public class MessageDigestWithKnownHashesTest {
 
     private Formatter formatter;
-    private Charset ascii;
 
     @BeforeEach
     public void init() {
         formatter = Formatter.getInstance();
-        ascii = StandardCharsets.US_ASCII;
     }
 
     private static final String[] REFERENCES = new String[] {
