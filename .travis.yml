@@ -2,10 +2,7 @@ os: linux
 language: java
 
 before_install:
-  - sudo apt-get -y install apt-file
-  - sudo apt-file update
-  - sudo apt-file search libssl
-  - sudo apt-get -y install libssl1.0.0 libssl-dev
+  - sudo apt-get -y update
 
 jobs:
   include:
