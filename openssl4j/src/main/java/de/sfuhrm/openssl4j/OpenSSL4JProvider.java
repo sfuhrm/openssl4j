@@ -32,7 +32,7 @@ public final class OpenSSL4JProvider extends Provider {
         try {
             NativeLoader.loadAll();
             if (openSslMessageDigestAlgorithms == null) {
-                openSslMessageDigestAlgorithms = Set.of(OpenSSLMessageDigestNative.listMessageDigests());
+                openSslMessageDigestAlgorithms = OpenSSLMessageDigestNative.getMessageDigestList();
             }
 
             Map<String,String> names = getNames(openSslMessageDigestAlgorithms);
@@ -46,8 +46,8 @@ public final class OpenSSL4JProvider extends Provider {
      * algorithms.
      * @return a map mapping from algorithm name / alias to algorithm class.
      * */
-    private static Map<String, String> getNames(Set<String> available) {
-        Map<String,String> result = getOpenSSLHashnames(available);
+    private static Map<String, String> getNames(Set<String> availableOpenSslAlgorithmNames) {
+        Map<String,String> result = getOpenSSLHashnames(availableOpenSslAlgorithmNames);
         result.putAll(createAliases(result));
         return result;
     }
@@ -104,7 +104,7 @@ public final class OpenSSL4JProvider extends Provider {
      * OpenSSL-JNA.
      * @return mapping from algorithm name to class name.
      * */
-    private static Map<String, String> getOpenSSLHashnames(Set<String> available) {
+    private static Map<String, String> getOpenSSLHashnames(Set<String> availableOpenSslAlgos) {
         Map<String, String> map = new HashMap<>();
 
         for (int i = 0; i < SSL_TO_JAVA_NAMES.length; i+= 2) {
@@ -112,7 +112,7 @@ public final class OpenSSL4JProvider extends Provider {
             String javaName = SSL_TO_JAVA_NAMES[i + 1];
 
             // only if OpenSSL has the algorithm available, add it
-            if (available.contains(sslName)) {
+            if (availableOpenSslAlgos.contains(sslName)) {
                 String javaClass = MessageDigest.class.getName() + "$" +
                         (javaName.replaceAll("-", "_").replaceAll("/", "_"));
                 map.put("MessageDigest." + javaName, javaClass);

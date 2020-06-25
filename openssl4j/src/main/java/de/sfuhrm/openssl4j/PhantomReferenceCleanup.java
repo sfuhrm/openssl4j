@@ -31,7 +31,7 @@ class PhantomReferenceCleanup {
             this.byteBuffer = context;
         }
         public void free() {
-            OpenSSLMessageDigestNative.removeContext(byteBuffer);
+            OpenSSLMessageDigestNative.free(byteBuffer);
         }
     }
 

@@ -3,6 +3,11 @@ package de.sfuhrm.openssl4j;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.security.MessageDigestSpi;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
 /**
  * An interface to OpenSSL message digest functions.
@@ -18,12 +23,12 @@ class OpenSSLMessageDigestNative extends MessageDigestSpi {
     /** Removes a context allocated with {@linkplain #nativeContext()}.
      * @param context the context to free.
      * */
-    protected static native void removeContext(ByteBuffer context);
+    private static native void removeContext(ByteBuffer context);
 
     /** Get the list of MessageDigest algorithms supported by OpenSSL.
      * @return  an array of supported message digest algorithms from the OpenSSL library.
      * */
-    protected native static String[] listMessageDigests();
+    private native static String[] listMessageDigests();
 
     /** Returns the context size in bytes. This is used to allocate the {@link #context direct ByteBuffer}.
      * @return a ByteBuffer containing the native message digest context.
@@ -87,9 +92,26 @@ class OpenSSLMessageDigestNative extends MessageDigestSpi {
         }
     }
 
+    /** Free the native context that came from {@linkplain #nativeContext()}. */
+    protected static void free(ByteBuffer context) {
+        Objects.requireNonNull(context);
+        if (! context.isDirect()) {
+            throw new IllegalStateException("Illegal buffer passed in");
+        }
+        removeContext(context);
+    }
+
     @Override
     protected final int engineGetDigestLength() {
         return digestLength;
+    }
+
+    /** Get the list of digest algorithms supported by the OpenSSL library.
+     * @return a Set of supported message digest algorithms.
+     *  */
+    protected static Set<String> getMessageDigestList() {
+        String[] messageDigestAlgorithms = listMessageDigests();
+        return Set.of(messageDigestAlgorithms);
     }
 
     @Override
