@@ -10,6 +10,7 @@ import java.nio.ByteBuffer;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.Provider;
+import java.security.Security;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Formatter;
@@ -34,7 +35,7 @@ public class SpeedTest {
         List<Arguments> result = new ArrayList<>();
         Map<String, Provider> providerMap = new HashMap<>();
         providerMap.put("OpenSSL", new OpenSSL4JProvider());
-        providerMap.put("Sun", MessageDigest.getInstance("MD5").getProvider());
+        providerMap.put("Sun", Security.getProvider("SUN"));
 
         for (Map.Entry<String, Provider> providerEntry : providerMap.entrySet()) {
             for (String messageDigestName : messageDigestNames) {
