@@ -1,5 +1,8 @@
 language: java
 
+before_install:
+  - sudo apt-get -y install libssl1.1 libssl-dev
+
 matrix:
   include:
   - jdk: openjdk9
