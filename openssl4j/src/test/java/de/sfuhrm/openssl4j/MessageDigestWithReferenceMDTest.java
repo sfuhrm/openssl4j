@@ -224,14 +224,19 @@ public class MessageDigestWithReferenceMDTest extends BaseTest  {
         }, testMD, referenceMD);
     }
 
+    byte[] filledArray(int size) {
+        byte[] data = new byte[size];
+        for (int i = 0; i < data.length; i++) {
+            data[i] = (byte) i;
+        }
+        return data;
+    }
+
     @ParameterizedTest
     @MethodSource("provideTestArguments")
     public void updateWithLongArray(String digestName, MessageDigest testMD, MessageDigest referenceMD) {
         applyTo(md -> {
-            byte[] data = new byte[1024*1024];
-            for (int i = 0; i < data.length; i++) {
-                data[i] = (byte)i;
-            }
+            byte[] data = filledArray(1024 * 1024);
             int rounds = 16;
             for (int i=0; i < rounds; i++) {
                 md.update(data, 0, data.length);
@@ -243,10 +248,7 @@ public class MessageDigestWithReferenceMDTest extends BaseTest  {
     @MethodSource("provideTestArguments")
     public void updateWithLongDirectBB(String digestName, MessageDigest testMD, MessageDigest referenceMD) {
         applyTo(md -> {
-            byte[] data = new byte[1024*1024];
-            for (int i = 0; i < data.length; i++) {
-                data[i] = (byte)i;
-            }
+            byte[] data = filledArray(1024 * 1024);
             int rounds = 16;
             ByteBuffer direct = ByteBuffer.allocateDirect(data.length);
             direct.put(data);
