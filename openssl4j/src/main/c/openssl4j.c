@@ -63,7 +63,7 @@ struct StringArrayPosition {
 };
 
 
-/* Callback for EVP_MD_do_all_sorted that counts the number of MD algorithms. */
+/* Callback for EVP_MD_do_all that counts the number of MD algorithms. */
 static void EVP_MD_do_all_count_func(const EVP_MD *ciph, const char *from, const char *to, void *x) {
     if (ciph != NULL) {
         jint *numOfAlgos = (jint*)x;
@@ -71,11 +71,11 @@ static void EVP_MD_do_all_count_func(const EVP_MD *ciph, const char *from, const
     }
 }
 
-/* Callback for EVP_MD_do_all_sorted that sets the string array elements.
+/* Callback for EVP_MD_do_all that sets the string array elements.
 ** @param ciph cipher, can be NULL if this is an alias.
 ** @param from the name of the algorithm.
 ** @param to NULL if this is not an alias, or the target EVP_MD if this is a an alias.
-** @param x the last param passed to the EVP_MD_do_all_sorted() call.
+** @param x the last param passed to the EVP_MD_do_all() call.
 */
 static void EVP_MD_do_all_string_array_set(const EVP_MD *ciph, const char *from, const char *to, void *x) {
     struct StringArrayPosition *sap = (struct StringArrayPosition*)x;
@@ -104,7 +104,7 @@ JNIEXPORT jobjectArray JNICALL Java_de_sfuhrm_openssl4j_OpenSSLMessageDigestNati
   sap.env = env;
   sap.array = NULL;
 
-  EVP_MD_do_all_sorted(EVP_MD_do_all_count_func, &sap.length);
+  EVP_MD_do_all(EVP_MD_do_all_count_func, &sap.length);
   jclass stringClass = (*env)->FindClass(env, "java/lang/String");
   if (stringClass == NULL) {
     return NULL;
@@ -113,7 +113,7 @@ JNIEXPORT jobjectArray JNICALL Java_de_sfuhrm_openssl4j_OpenSSLMessageDigestNati
   result = (*env)->NewObjectArray(env, sap.length, stringClass, NULL);
   sap.array = result;
 
-  EVP_MD_do_all_sorted(EVP_MD_do_all_string_array_set, &sap);
+  EVP_MD_do_all(EVP_MD_do_all_string_array_set, &sap);
 
   return result;
 }
