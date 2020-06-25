@@ -1,12 +1,19 @@
 language: java
 
-os:
-  - linux
-  - osx
-
-compiler:
-  - gcc
-  - clang
+jobs:
+  include:
+  - os: linux
+    dist: bionic
+    compiler: gcc
+    env:
+      - CC=gcc
+      - MAKE=make
+  - os: linux
+    dist: xenial
+    compiler: gcc
+    env:
+      - CC=gcc
+      - MAKE=make
 
 script:
-  - make all
+  - ${MAKE} all
