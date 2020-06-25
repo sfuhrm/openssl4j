@@ -224,7 +224,7 @@ public class MessageDigestWithReferenceMDTest extends BaseTest  {
         }, testMD, referenceMD);
     }
 
-    byte[] filledArray(int size) {
+    static byte[] filledArray(int size) {
         byte[] data = new byte[size];
         for (int i = 0; i < data.length; i++) {
             data[i] = (byte) i;
@@ -257,5 +257,52 @@ public class MessageDigestWithReferenceMDTest extends BaseTest  {
                 md.update(direct);
             }
         }, testMD, referenceMD);
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideTestArguments")
+    public void updateWithDirectBBWalkingPosition(String digestName, MessageDigest testMD, MessageDigest referenceMD) {
+        int size = 10240;
+        for (int i = 0; i < size; i++) {
+            final int position = i;
+            applyTo(md -> {
+                byte[] array = filledArray(size);
+                ByteBuffer direct = ByteBuffer.allocateDirect(array.length);
+                direct.put(array);
+                direct.flip();
+                direct.position(position);
+                md.update(direct);
+            }, testMD, referenceMD);
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideTestArguments")
+    public void updateWithHeapBBWalkingPosition(String digestName, MessageDigest testMD, MessageDigest referenceMD) {
+        int size = 10240;
+        for (int i = 0; i < size; i++) {
+            final int position = i;
+            applyTo(md -> {
+                byte[] array = filledArray(size);
+                ByteBuffer direct = ByteBuffer.allocate(array.length);
+                direct.put(array);
+                direct.flip();
+                direct.position(position);
+                md.update(direct);
+            }, testMD, referenceMD);
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideTestArguments")
+    public void updateWithArrayWalkingPosition(String digestName, MessageDigest testMD, MessageDigest referenceMD) {
+        int size = 10240;
+        for (int i = 0; i < size; i++) {
+            final int position = i;
+            applyTo(md -> {
+                byte[] array = filledArray(size);
+                md.update(array, position, size - position);
+            }, testMD, referenceMD);
+        }
     }
 }
