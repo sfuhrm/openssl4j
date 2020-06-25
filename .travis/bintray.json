@@ -19,7 +19,7 @@
 
   "files":
       [
-      {"includePattern": "target/libopenssl4j-(.*)", "excludePattern": ".*/do-not-deploy/.*", "uploadPattern": "objects/$1"},
+      {"includePattern": "target/libopenssl4j-(.*)", "excludePattern": ".*/do-not-deploy/.*", "uploadPattern": "objects/$1"}
       ],
   "publish": true
 }
