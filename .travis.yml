@@ -5,6 +5,28 @@ jobs:
   - os: linux
     dist: bionic
     compiler: gcc
+    arch: amd64
+    env:
+      - CC=gcc
+      - MAKE=make
+  - os: linux
+    dist: bionic
+    compiler: gcc
+    arch: arm64
+    env:
+      - CC=gcc
+      - MAKE=make
+  - os: linux
+    dist: bionic
+    compiler: gcc
+    arch: ppc64le
+    env:
+      - CC=gcc
+      - MAKE=make
+  - os: linux
+    dist: bionic
+    compiler: gcc
+    arch: s390x
     env:
       - CC=gcc
       - MAKE=make
