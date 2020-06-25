@@ -1,6 +1,6 @@
 {
   "package": {
-      "name": "auto-upload",
+      "name": "openssl4j",
       "repo": "openssl4j",
       "subject": "sfuhrm",
       "desc": "Pushed by TravisCI"
