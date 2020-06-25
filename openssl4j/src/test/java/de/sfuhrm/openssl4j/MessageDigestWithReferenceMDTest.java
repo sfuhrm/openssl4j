@@ -295,6 +295,24 @@ public class MessageDigestWithReferenceMDTest extends BaseTest  {
 
     @ParameterizedTest
     @MethodSource("provideTestArguments")
+    public void updateWithReadOnlyBBWalkingPosition(String digestName, MessageDigest testMD, MessageDigest referenceMD) {
+        int size = 10240;
+        for (int i = 0; i < size; i++) {
+            final int position = i;
+            applyTo(md -> {
+                byte[] array = filledArray(size);
+                ByteBuffer direct = ByteBuffer.allocate(array.length);
+                direct.put(array);
+                direct.flip();
+                direct.position(position);
+                direct = direct.asReadOnlyBuffer();
+                md.update(direct);
+            }, testMD, referenceMD);
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideTestArguments")
     public void updateWithArrayWalkingPosition(String digestName, MessageDigest testMD, MessageDigest referenceMD) {
         int size = 10240;
         for (int i = 0; i < size; i++) {
