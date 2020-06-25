@@ -1,11 +1,11 @@
 /*
-** OpenSSL MD5 to Java Binding Code
+** OpenSSL MessageDigest to Java Binding Code
+** @author Stephan Fuhrmann
 */
 
 #include <stdlib.h>
 #include <string.h>
 #include <openssl/evp.h>
-#include <openssl/ossl_typ.h>
 #include <malloc.h>
 
 #include "de_sfuhrm_openssl4j_OpenSSLMessageDigestNative.h"
