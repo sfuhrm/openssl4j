@@ -17,3 +17,12 @@ jobs:
 
 script:
   - ${MAKE} all
+
+  
+deploy:
+  provider: bintray
+  file: "Path to a descriptor file, containing information for the Bintray upload"
+  user: "sfuhrm"
+  key: "${BINTRAY_API_KEY}"
+  passphrase: "Optional. In case a passphrase is configured on Bintray and GPG signing is used"
+  skip_cleanup: true # to upload artifacts created during the build
