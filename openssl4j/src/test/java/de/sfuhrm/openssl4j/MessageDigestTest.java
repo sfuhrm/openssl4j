@@ -15,6 +15,7 @@ import java.security.Provider;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -73,165 +74,195 @@ public class MessageDigestTest {
         return data;
     }
 
-    @ParameterizedTest
-    @MethodSource("provideTestArguments")
-    public void digestWithStringBytes(String digestName, MessageDigest testMD, MessageDigest referenceMD) {
-
-        byte[] actualDigest = testMD.digest(franzJagt());
-        byte[] expectedDigest = referenceMD.digest(franzJagt());
-
+    private void applyTo(Consumer<MessageDigest> consumer, MessageDigest testMD, MessageDigest referenceMD) {
+        consumer.accept(testMD);
+        consumer.accept(referenceMD);
+        byte[] actualDigest = testMD.digest();
+        byte[] expectedDigest = referenceMD.digest();
         assertEquals(formatter.format(expectedDigest), formatter.format(actualDigest));
     }
 
     @ParameterizedTest
     @MethodSource("provideTestArguments")
     public void updateWithFullArray(String digestName, MessageDigest testMD, MessageDigest referenceMD) {
-        testMD.update(franzJagt());
-        byte[] actualDigest = testMD.digest();
-
-        byte[] expectedDigest = referenceMD.digest(franzJagt());
-
-        assertEquals(formatter.format(expectedDigest), formatter.format(actualDigest));
+        applyTo(md -> md.update(franzJagt()), testMD, referenceMD);
     }
 
     @ParameterizedTest
     @MethodSource("provideTestArguments")
     public void updateWithSingleBytes(String digestName, MessageDigest testMD, MessageDigest referenceMD) {
-        for (byte val : franzJagt()) {
-            testMD.update(val);
-        }
-        byte[] actualDigest = testMD.digest();
-
-        for (byte val : franzJagt()) {
-            referenceMD.update(val);
-        }
-        byte[] expectedDigest = referenceMD.digest();
-        assertEquals(formatter.format(expectedDigest), formatter.format(actualDigest));
+        applyTo(md -> {
+            for (byte val : franzJagt()) {
+                md.update(val);
+            }
+        }, testMD, referenceMD);
     }
 
     @ParameterizedTest
     @MethodSource("provideTestArguments")
     public void updateWithHeapByteBuffer(String digestName, MessageDigest testMD, MessageDigest referenceMD) {
+        final List<ByteBuffer> list = new ArrayList<>();
+        applyTo(md -> {
+            ByteBuffer bb = ByteBuffer.wrap(franzJagt());
+            list.add(bb);
+            md.update(bb);
+        }, testMD, referenceMD);
+        ByteBuffer first = list.get(0);
+        ByteBuffer second = list.get(1);
+        assertEquals(first.position(), second.position());
+        assertEquals(first.limit(), second.limit());
+        assertEquals(first.capacity(), second.capacity());
+    }
 
-        ByteBuffer bb = ByteBuffer.wrap(franzJagt());
+    @ParameterizedTest
+    @MethodSource("provideTestArguments")
+    public void updateWithReadOnlyHeapByteBuffer(String digestName, MessageDigest testMD, MessageDigest referenceMD) {
+        final List<ByteBuffer> list = new ArrayList<>();
+        applyTo(md -> {
+            ByteBuffer bb = ByteBuffer.wrap(franzJagt());
+            bb = bb.asReadOnlyBuffer();
+            list.add(bb);
+            md.update(bb);
+        }, testMD, referenceMD);
+        ByteBuffer first = list.get(0);
+        ByteBuffer second = list.get(1);
+        assertEquals(first.position(), second.position());
+        assertEquals(first.limit(), second.limit());
+        assertEquals(first.capacity(), second.capacity());
+    }
 
-        ByteBuffer actualCopy = bb.duplicate();
-        testMD.update(actualCopy);
-        byte[] actualDigest = testMD.digest();
-
-        ByteBuffer expectedCopy = bb.duplicate();
-        referenceMD.update(expectedCopy);
-
-        byte[] expectedDigest = referenceMD.digest();
-        assertEquals(expectedCopy.position(), actualCopy.position());
-        assertEquals(expectedCopy.limit(), actualCopy.limit());
-        assertEquals(expectedCopy.capacity(), actualCopy.capacity());
-        assertEquals(formatter.format(expectedDigest), formatter.format(actualDigest));
+    @ParameterizedTest
+    @MethodSource("provideTestArguments")
+    public void updateWithReadOnlyMiddlePositionHeapByteBuffer(String digestName, MessageDigest testMD, MessageDigest referenceMD) {
+        final List<ByteBuffer> list = new ArrayList<>();
+        applyTo(md -> {
+            ByteBuffer bb = ByteBuffer.wrap(franzJagt());
+            bb = bb.asReadOnlyBuffer();
+            bb.position(bb.remaining() / 2);
+            list.add(bb);
+            md.update(bb);
+        }, testMD, referenceMD);
+        ByteBuffer first = list.get(0);
+        ByteBuffer second = list.get(1);
+        assertEquals(first.position(), second.position());
+        assertEquals(first.limit(), second.limit());
+        assertEquals(first.capacity(), second.capacity());
     }
 
     @ParameterizedTest
     @MethodSource("provideTestArguments")
     public void updateWithDirectByteBufferNoRemaining(String digestName, MessageDigest testMD, MessageDigest referenceMD) {
-        ByteBuffer bb = ByteBuffer.allocateDirect(franzJagt().length);
-        bb.put(franzJagt());
-
-        ByteBuffer actualCopy = bb.duplicate();
-        testMD.update(actualCopy);
-        byte[] actualDigest = testMD.digest();
-
-        ByteBuffer expectedCopy = bb.duplicate();
-        referenceMD.update(expectedCopy);
-
-        byte[] expectedDigest = referenceMD.digest();
-        assertEquals(expectedCopy.position(), actualCopy.position());
-        assertEquals(expectedCopy.limit(), actualCopy.limit());
-        assertEquals(expectedCopy.capacity(), actualCopy.capacity());
-        assertEquals(formatter.format(expectedDigest), formatter.format(actualDigest));
+        final List<ByteBuffer> list = new ArrayList<>();
+        applyTo(md -> {
+            ByteBuffer bb = ByteBuffer.allocateDirect(franzJagt().length);
+            bb.put(franzJagt());
+            list.add(bb);
+            md.update(bb);
+        }, testMD, referenceMD);
+        ByteBuffer first = list.get(0);
+        ByteBuffer second = list.get(1);
+        assertEquals(first.position(), second.position());
+        assertEquals(first.limit(), second.limit());
+        assertEquals(first.capacity(), second.capacity());
     }
 
     @ParameterizedTest
     @MethodSource("provideTestArguments")
     public void updateWithDirectByteBuffer(String digestName, MessageDigest testMD, MessageDigest referenceMD) {
-        ByteBuffer bb = ByteBuffer.allocateDirect(franzJagt().length);
-        bb.put(franzJagt());
-        bb.flip();
+        final List<ByteBuffer> list = new ArrayList<>();
+        applyTo(md -> {
+            ByteBuffer bb = ByteBuffer.allocateDirect(franzJagt().length);
+            bb.put(franzJagt());
+            bb.flip();
+            list.add(bb);
+            md.update(bb);
+        }, testMD, referenceMD);
+        ByteBuffer first = list.get(0);
+        ByteBuffer second = list.get(1);
+        assertEquals(first.position(), second.position());
+        assertEquals(first.limit(), second.limit());
+        assertEquals(first.capacity(), second.capacity());
+    }
 
-        ByteBuffer actualCopy = bb.duplicate();
-        testMD.update(actualCopy);
-        byte[] actualDigest = testMD.digest();
+    @ParameterizedTest
+    @MethodSource("provideTestArguments")
+    public void updateWithNonFullDirectByteBuffer(String digestName, MessageDigest testMD, MessageDigest referenceMD) {
+        final List<ByteBuffer> list = new ArrayList<>();
+        applyTo(md -> {
+            ByteBuffer bb = ByteBuffer.allocateDirect(franzJagt().length * 2);
+            bb.put(franzJagt());
+            bb.flip();
+            list.add(bb);
+            md.update(bb);
+        }, testMD, referenceMD);
+        ByteBuffer first = list.get(0);
+        ByteBuffer second = list.get(1);
+        assertEquals(first.position(), second.position());
+        assertEquals(first.limit(), second.limit());
+        assertEquals(first.capacity(), second.capacity());
+    }
 
-        ByteBuffer expectedCopy = bb.duplicate();
-        referenceMD.update(expectedCopy);
-
-        byte[] expectedDigest = referenceMD.digest();
-        assertEquals(expectedCopy.position(), actualCopy.position());
-        assertEquals(expectedCopy.limit(), actualCopy.limit());
-        assertEquals(expectedCopy.capacity(), actualCopy.capacity());
-        assertEquals(formatter.format(expectedDigest), formatter.format(actualDigest));
+    @ParameterizedTest
+    @MethodSource("provideTestArguments")
+    public void updateWithMiddlePositionDirectByteBuffer(String digestName, MessageDigest testMD, MessageDigest referenceMD) {
+        final List<ByteBuffer> list = new ArrayList<>();
+        applyTo(md -> {
+            ByteBuffer bb = ByteBuffer.allocateDirect(franzJagt().length);
+            bb.put(franzJagt());
+            bb.flip();
+            bb.position(bb.remaining() / 2);
+            list.add(bb);
+            md.update(bb);
+        }, testMD, referenceMD);
+        ByteBuffer first = list.get(0);
+        ByteBuffer second = list.get(1);
+        assertEquals(first.position(), second.position());
+        assertEquals(first.limit(), second.limit());
+        assertEquals(first.capacity(), second.capacity());
     }
 
     @ParameterizedTest
     @MethodSource("provideTestArguments")
     public void updateWithFragmentedArray(String digestName, MessageDigest testMD, MessageDigest referenceMD) {
-        byte[] dataInner = franzJagt();
-        byte[] data = Arrays.copyOf(dataInner, dataInner.length * 2);
-        testMD.update(data, 0, dataInner.length);
-        byte[] actualDigest = testMD.digest();
-
-        referenceMD.update(data, 0, dataInner.length);
-        byte[] expectedDigest = referenceMD.digest();
-
-        assertEquals(formatter.format(expectedDigest), formatter.format(actualDigest));
+        applyTo(md -> {
+            byte[] dataInner = franzJagt();
+            byte[] data = new byte[dataInner.length * 2];
+            int insertOffset = data.length / 4;
+            System.arraycopy(dataInner, 0, data, insertOffset, dataInner.length);
+            md.update(data, insertOffset, dataInner.length);
+        }, testMD, referenceMD);
     }
 
     @ParameterizedTest
     @MethodSource("provideTestArguments")
     public void updateWithLongArray(String digestName, MessageDigest testMD, MessageDigest referenceMD) {
-
-        byte[] data = new byte[1024*1024];
-        for (int i = 0; i < data.length; i++) {
-            data[i] = (byte)i;
-        }
-        int rounds = 16;
-
-        for (int i=0; i < rounds; i++) {
-            testMD.update(data, 0, data.length);
-        }
-        byte[] actualDigest = testMD.digest();
-
-        for (int i=0; i < rounds; i++) {
-            referenceMD.update(data, 0, data.length);
-        }
-        byte[] expectedDigest = referenceMD.digest();
-
-        assertEquals(formatter.format(expectedDigest), formatter.format(actualDigest));
+        applyTo(md -> {
+            byte[] data = new byte[1024*1024];
+            for (int i = 0; i < data.length; i++) {
+                data[i] = (byte)i;
+            }
+            int rounds = 16;
+            for (int i=0; i < rounds; i++) {
+                md.update(data, 0, data.length);
+            }
+        }, testMD, referenceMD);
     }
 
     @ParameterizedTest
     @MethodSource("provideTestArguments")
     public void updateWithLongDirectBB(String digestName, MessageDigest testMD, MessageDigest referenceMD) {
-
-        byte[] data = new byte[1024*1024];
-        for (int i = 0; i < data.length; i++) {
-            data[i] = (byte)i;
-        }
-        int rounds = 16;
-        ByteBuffer direct = ByteBuffer.allocateDirect(data.length);
-        direct.put(data);
-        direct.flip();
-
-        for (int i=0; i < rounds; i++) {
-            testMD.update(direct);
+        applyTo(md -> {
+            byte[] data = new byte[1024*1024];
+            for (int i = 0; i < data.length; i++) {
+                data[i] = (byte)i;
+            }
+            int rounds = 16;
+            ByteBuffer direct = ByteBuffer.allocateDirect(data.length);
+            direct.put(data);
             direct.flip();
-        }
-        byte[] actualDigest = testMD.digest();
-
-        for (int i=0; i < rounds; i++) {
-            referenceMD.update(direct);
-            direct.flip();
-        }
-        byte[] expectedDigest = referenceMD.digest();
-
-        assertEquals(formatter.format(expectedDigest), formatter.format(actualDigest));
+            for (int i=0; i < rounds; i++) {
+                md.update(direct);
+            }
+        }, testMD, referenceMD);
     }
 }
