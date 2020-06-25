@@ -1,9 +1,12 @@
+os: linux
+dist: xenial
+
 language: java
 
 before_install:
-  - sudo apt-get -y install libssl1.1 libssl-dev
+  - sudo apt-get -y install libssl libssl-dev
 
-matrix:
+jobs:
   include:
   - jdk: openjdk9
   - jdk: openjdk10
