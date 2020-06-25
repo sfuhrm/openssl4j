@@ -126,11 +126,18 @@ class OpenSSLMessageDigestNative extends MessageDigestSpi {
         int offset = input.position();
         if (input.isDirect()) {
             nativeUpdateWithByteBuffer(context, input, offset, remaining);
-        } else {
+            input.position(remaining);
+        } else if (input.hasArray()){
+            // buffer is heap based and has an array
             byte[] array = input.array();
+            nativeUpdateWithByteArray(context, array, offset, array.length);
+            input.position(remaining);
+        } else {
+            // neither direct nor array (read-only?)
+            byte[] array = new byte[remaining - offset];
+            input.get(array);
             nativeUpdateWithByteArray(context, array, 0, array.length);
         }
-        input.position(remaining);
     }
 
     @Override
