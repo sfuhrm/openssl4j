@@ -17,11 +17,4 @@ jobs:
 
 script:
   - ${MAKE} all
-
-  
-deploy:
-  provider: bintray
-  file: ".travis/bintray.json"
-  user: "sfuhrm"
-  key: "${BINTRAY_API_KEY}"
-  skip_cleanup: true # to upload artifacts created during the build
+  - curl -T target/libopenssl4j* -usfuhrm:${BINTRAY_API_KEY} https://api.bintray.com/content/sfuhrm/openssl4j/objects/0.0.0/libopenssl4j-$(uname -m)-$(uname -s)-$(uname -r)
