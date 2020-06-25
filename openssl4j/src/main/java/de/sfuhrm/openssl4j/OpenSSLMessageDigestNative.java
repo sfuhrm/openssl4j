@@ -69,7 +69,10 @@ class OpenSSLMessageDigestNative extends MessageDigestSpi {
      * */
     private final native void nativeFinal(ByteBuffer context, byte[] digest);
 
-    /** A MD5 context where the state of the current calculation is stored.  */
+    /** A native message digest context where the state of the current calculation is stored.
+     * Allocated with {@linkplain #nativeContext()}, freed by the
+     * {@linkplain PhantomReferenceCleanup} with {@linkplain #free(ByteBuffer)}.
+     * */
     private final ByteBuffer context;
 
     /** The OpenSSL algorithm name as returned by {@linkplain #listMessageDigests()}. */
@@ -81,7 +84,7 @@ class OpenSSLMessageDigestNative extends MessageDigestSpi {
     OpenSSLMessageDigestNative(String openSslName) {
         try {
             NativeLoader.loadAll();
-            algorithmName = openSslName;
+            algorithmName = Objects.requireNonNull(openSslName);
             context = nativeContext();
             PhantomReferenceCleanup.enqueueForCleanup(this, context);
             engineReset();
