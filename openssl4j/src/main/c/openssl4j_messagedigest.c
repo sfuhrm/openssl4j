@@ -14,6 +14,14 @@
 #define ILLEGAL_STATE_EXCEPTION "java/lang/IllegalStateException"
 #define UNSUPPORTED_OPERATION_EXCEPTION "java/lang/UnsupportedOperationException"
 
+#if OPENSSL_VERSION_NUMBER >= 0x0100100f
+#define OPENSSL_MD_NEW_FUNC EVP_MD_CTX_new
+#define OPENSSL_MD_FREE_FUNC EVP_MD_CTX_free
+#else
+#define OPENSSL_MD_NEW_FUNC EVP_MD_CTX_create
+#define OPENSSL_MD_FREE_FUNC EVP_MD_CTX_destroy
+#endif
+
 static void throw_error(JNIEnv *env, const char *exceptionClassName, const char *message) {
     jclass exceptionClass = (*env)->FindClass(env, exceptionClassName);
     if (exceptionClass != NULL) {
@@ -51,7 +59,7 @@ JNIEXPORT void JNICALL Java_de_sfuhrm_openssl4j_OpenSSLMessageDigestNative_remov
   (JNIEnv *env, jclass clazz, jobject context) {
     EVP_MD_CTX *mdctx = md_context_from(env, context);
     if (mdctx != NULL) {
-        EVP_MD_CTX_free(mdctx);
+        OPENSSL_MD_FREE_FUNC(mdctx);
     }
 }
 
@@ -122,7 +130,7 @@ JNIEXPORT jobject JNICALL Java_de_sfuhrm_openssl4j_OpenSSLMessageDigestNative_na
   (JNIEnv *env, jobject obj) {
     EVP_MD_CTX *mdctx;
 
-	if ((mdctx = EVP_MD_CTX_new()) == NULL) {
+	if ((mdctx = OPENSSL_MD_NEW_FUNC()) == NULL) {
         throw_error(env, ILLEGAL_STATE_EXCEPTION, "Could not allocate context");
         return NULL;
 	}
