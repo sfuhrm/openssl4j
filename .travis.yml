@@ -4,6 +4,9 @@ dist: xenial
 language: java
 
 before_install:
+  - sudo apt-get -y install apt-file
+  - sudo apt-file update
+  - sudo apt-file search libssl
   - sudo apt-get -y install libssl libssl-dev
 
 jobs:
