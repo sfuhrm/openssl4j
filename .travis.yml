@@ -1,19 +1,28 @@
 os: linux
-dist: xenial
-
 language: java
 
 before_install:
   - sudo apt-get -y install apt-file
   - sudo apt-file update
   - sudo apt-file search libssl
-  - sudo apt-get -y install libssl libssl-dev
+  - sudo apt-get -y install libssl1.0.0 libssl-dev
 
 jobs:
   include:
-  - jdk: openjdk9
+  - os: linux
+    dist: xenial
+    jdk: openjdk9
+    env: SSLVERSION: 1.0.0
   - jdk: openjdk10
-  - jdk: openjdk11
-  - jdk: openjdk12
+    dist: bionic
+    env: SSLVERSION: 1.1.0
+#  - jdk: openjdk11
+#  - jdk: openjdk12
 
-install: mvn install
+install:
+  - sudo apt-get -y install apt-file
+  - sudo apt-file update
+  - sudo apt-file search libssl
+  - sudo apt-get -y install libssl${SSLVERSION} libssl-dev
+  - make install
+  - mvn install
