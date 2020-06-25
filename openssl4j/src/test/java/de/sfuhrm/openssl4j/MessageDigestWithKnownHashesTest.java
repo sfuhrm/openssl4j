@@ -22,14 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * implementations with well known expected outputs.
  * @author Stephan Fuhrmann
  */
-public class MessageDigestWithKnownHashesTest {
-
-    private Formatter formatter;
-
-    @BeforeEach
-    public void init() {
-        formatter = Formatter.getInstance();
-    }
+public class MessageDigestWithKnownHashesTest extends BaseTest {
 
     private static final String[] REFERENCES = new String[] {
         "BLAKE2b512", "", "786a02f742015903c6c6fd852552d272912f4740e15847618a86e217f71f5419d25e1031afee585313896444934eb04b903a685b1448b755d56f701afe9be2ce",

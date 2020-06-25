@@ -25,16 +25,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * in this context (aka 'test').
  * @author Stephan Fuhrmann
  */
-public class MessageDigestWithReferenceMDTest {
-
-    private Formatter formatter;
-    private Charset ascii;
-
-    @BeforeEach
-    public void init() {
-        formatter = Formatter.getInstance();
-        ascii = StandardCharsets.US_ASCII;
-    }
+public class MessageDigestWithReferenceMDTest extends BaseTest  {
 
     private static Stream<Arguments> provideTestArguments() throws NoSuchAlgorithmException, IOException {
         List<String> messageDigestNames = Arrays.asList("MD5", "SHA1", "SHA-224", "SHA-256", "SHA-384", "SHA-512", "SHA-512/224", "SHA-512/256", "SHA3-224", "SHA3-256", "SHA3-384", "SHA3-512");

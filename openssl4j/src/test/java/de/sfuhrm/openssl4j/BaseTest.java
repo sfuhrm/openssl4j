@@ -10,7 +10,7 @@ import java.nio.charset.StandardCharsets;
  * Test base.
  * @author Stephan Fuhrmann
  */
-public abstract class BasicTest {
+public class BaseTest {
 
     Formatter formatter;
     Charset ascii;
