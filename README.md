@@ -4,7 +4,7 @@ OpenSSL4J JNI Java Library
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/de.sfuhrm/openssl4j/badge.svg)](https://maven-badges.herokuapp.com/maven-central/de.sfuhrm/openssl4j) 
 [![License: LGPL v3](https://img.shields.io/badge/License-LGPL%20v3-blue.svg)](https://www.gnu.org/licenses/lgpl-3.0)
 
-OpenSSL4J is a Java bridge to the native C OpenSSL library. On the Java side you're
+OpenSSL4J is a Java bridge to the native OpenSSL library. On the Java side you're
 using the conventional MessageDigest class, but calls in the
 background the native OpenSSL library with all its
 optimizations for performance reasons.
