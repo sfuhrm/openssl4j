@@ -14,7 +14,7 @@
 #define ILLEGAL_STATE_EXCEPTION "java/lang/IllegalStateException"
 #define UNSUPPORTED_OPERATION_EXCEPTION "java/lang/UnsupportedOperationException"
 
-#if OPENSSL_VERSION_NUMBER >= 0x0100100f
+#if OPENSSL_VERSION_NUMBER >= 0x10101000L
 #define OPENSSL_MD_NEW_FUNC EVP_MD_CTX_new
 #define OPENSSL_MD_FREE_FUNC EVP_MD_CTX_free
 #else
