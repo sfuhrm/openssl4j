@@ -21,7 +21,8 @@ fi
 echo BINTRAY_PACKAGE=${BINTRAY_PACKAGE}
 
 for FILE in ${OSSL4JNAME} ${OSSL4JNAME}.md5 ${OSSL4JNAME}.sha256; do
-  curl -T target/$FILE \
+  echo ${FILE}
+  curl -T target/${FILE} \
   -usfuhrm:${BINTRAY_API_KEY} \
-  https://api.bintray.com/content/sfuhrm/openssl4j/${BINTRAY_PACKAGE}/${POM_VERSION_BASE}/${TRAVIS_COMMIT}/$(uname -m)-$(uname -s)-${SSL_VERSION}/$FILE || exit 10
+  https://api.bintray.com/content/sfuhrm/openssl4j/${BINTRAY_PACKAGE}/${POM_VERSION_BASE}/${TRAVIS_COMMIT}/$(uname -m)-$(uname -s)-${SSL_VERSION}/${FILE} || exit 10
 done
