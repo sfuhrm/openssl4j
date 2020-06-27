@@ -6,10 +6,8 @@ services:
 jobs:
   include:
   - os: linux
-    compiler: gcc
     arch: amd64
   - os: linux
-    compiler: gcc
     arch: arm64
   - os: linux
     arch: ppc64le
