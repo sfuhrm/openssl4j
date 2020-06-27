@@ -21,4 +21,5 @@ script:
 - docker run --mount type=bind,source="$(pwd)",target=/build debian-adoptopenjdk:latest "/build/.travis/docker-build.sh"
 
 after_success:
-- .travis/travis-after_success.sh
+  - docker run --mount type=bind,source="$(pwd)",target=/build debian-adoptopenjdk:latest "/build/.travis/docker-pom-version.sh"
+  - .travis/travis-after_success.sh
