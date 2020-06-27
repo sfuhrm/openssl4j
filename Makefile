@@ -4,10 +4,6 @@
 #
 ####
 
-ifndef JAVA_HOME
-	echo "Need environment variable JAVA_HOME"; exit 1
-endif
-
 JAVA_OS_ARCH:=$(shell ${JAVA_HOME}/bin/java build-helper/OsArch.java )
 
 JNI_JAVA_SOURCES=openssl4j/src/main/java
