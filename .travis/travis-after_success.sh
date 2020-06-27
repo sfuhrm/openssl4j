@@ -10,12 +10,15 @@ POM_VERSION="$(cat target/pom.version)"
 
 POM_VERSION_BASE="$(echo $POM_VERSION | cut -d"-" -f1)"
 POM_VERSION_ADD="$(echo $POM_VERSION | cut -d"-" -f2)"
+echo POM_VERSION_BASE=${POM_VERSION_BASE}
+echo POM_VERSION_ADD=${POM_VERSION_ADD}
 
 if [ "${POM_VERSION_ADD}" = "SNAPSHOT" ]; then
   BINTRAY_PACKAGE=objects-snapshot
 else
   BINTRAY_PACKAGE=objects-release
 fi
+echo BINTRAY_PACKAGE=${BINTRAY_PACKAGE}
 
 curl -T ${OSSL4JNAME} \
 -usfuhrm:${BINTRAY_API_KEY} \
