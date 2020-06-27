@@ -17,7 +17,7 @@ jobs:
     arch: s390x
 
 before_install:
-- docker build -t debian-adoptopenjdk .
+- docker build -t debian-adoptopenjdk .travis
 #- docker run -d -p 127.0.0.1:80:4567 carlad/sinatra /bin/sh -c "cd /root/sinatra; bundle exec foreman start;"
 
 script:
