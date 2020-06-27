@@ -14,7 +14,7 @@ echo "JAVAC location: " $(which javac)
 javac -version || exit 5
 make clean || exit 10
 
-if [ "x" -eq "x$JAVA_HOME" ]; then
+if [ "x" = "x$JAVA_HOME" ]; then
   echo "No JAVA_HOME set"
   exit 10
 fi
