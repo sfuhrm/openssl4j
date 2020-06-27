@@ -95,7 +95,9 @@ class OpenSSLMessageDigestNative extends MessageDigestSpi {
         }
     }
 
-    /** Free the native context that came from {@linkplain #nativeContext()}. */
+    /** Free the native context that came from {@linkplain #nativeContext()}.
+     * @param context the context allocated with {@linkplain #nativeContext()}.
+     * */
     protected static void free(ByteBuffer context) {
         Objects.requireNonNull(context);
         if (! context.isDirect()) {
