@@ -39,4 +39,4 @@ jobs:
       - MAKE=make
 
 script:
-  - ./.travis/build.sh
+  - bash -x .travis/build.sh
