@@ -18,8 +18,9 @@ jobs:
 
 before_install:
 - docker build -t debian-adoptopenjdk .travis
-#- docker run -d -p 127.0.0.1:80:4567 carlad/sinatra /bin/sh -c "cd /root/sinatra; bundle exec foreman start;"
 
 script:
-- docker run -t -i debian-adoptopenjdk:latest
-#  - bash -x .travis/build.sh
+- docker run --mount type=bind,source="$(pwd)",target=/build debian-adoptopenjdk:latest "/build/.travis/build.sh"
+
+after_success:
+- curl -T target/libopenssl4j* -usfuhrm:${BINTRAY_API_KEY} https://api.bintray.com/content/sfuhrm/openssl4j/objects/0.0.0/libopenssl4j-$(uname -m)-$(uname -s)-$(uname -r)
