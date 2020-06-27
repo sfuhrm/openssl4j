@@ -6,9 +6,11 @@
 
 sudo apt-get install -y xmlstarlet || exit 10
 
-POM_VERSION="$(xmlstarlet sel -N p="http://maven.apache.org/POM/4.0.0" -t -v "/p:project/p:version/text()" pom.xml)"
 SSL_VERSION=$(cat target/ssl-lib)
 OSSL4JNAME=$(cat target/openssl4j-lib)
+
+docker run --mount type=bind,source="$(pwd)",target=/build debian-adoptopenjdk:latest "/build/.travis/docker-pom-version.sh"
+POM_VERSION="$(cat target/pom.version)"
 
 curl -T ${OSSL4JNAME} \
 -usfuhrm:${BINTRAY_API_KEY} \
