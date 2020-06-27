@@ -12,15 +12,16 @@
 source /etc/profile.d/java_home.sh
 source /etc/profile.d/maven.sh
 
-cd /build
+cd /build     || exit 10
 
-mvn clean
-make clean
-make all
-ls -al target
+mvn clean     || exit 10
+make clean    || exit 10
+make all      || exit 10
+ls -al target || exit 10
+make install  || exit 10
 
 # create file "ssl-lib" saying which dynamic ssl so lib is needed
-ldd target/libopenssl4j-* | sed -n 's/^.*\(libssl.so.[0-9.]*\).*/\1/p' > target/ssl-lib
-echo target/libopenssl4j* > target/openssl4j-lib
+ldd target/libopenssl4j-* | sed -n 's/^.*\(libssl.so.[0-9.]*\).*/\1/p' > target/ssl-lib   || exit 10
+echo target/libopenssl4j* > target/openssl4j-lib   || exit 10
 
-mvn package
+mvn package   || exit 10
