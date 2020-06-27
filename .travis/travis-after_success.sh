@@ -11,7 +11,7 @@ POM_VERSION="$(cat target/pom.version)"
 POM_VERSION_BASE="$(echo $POM_VERSION | cut -d"-" -f1)"
 POM_VERSION_ADD="$(echo $POM_VERSION | cut -d"-" -f2)"
 
-if [ " $POM_VERSION_ADD" = "SNAPSHOT"]; then
+if [ "${POM_VERSION_ADD}" = "SNAPSHOT" ]; then
   BINTRAY_PACKAGE=objects-snapshot
 else
   BINTRAY_PACKAGE=objects-release
