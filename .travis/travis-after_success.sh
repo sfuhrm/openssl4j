@@ -4,8 +4,6 @@
 # File is executed in travisci environment
 #
 
-sudo apt-get install -y xmlstarlet || exit 10
-
 SSL_VERSION=$(cat target/ssl-lib)
 OSSL4JNAME=$(cat target/openssl4j-lib)
 POM_VERSION="$(cat target/pom.version)"
