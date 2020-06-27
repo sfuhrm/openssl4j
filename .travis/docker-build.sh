@@ -14,4 +14,6 @@ make clean
 make all
 ls -al target
 
-# curl -T target/libopenssl4j* -usfuhrm:${BINTRAY_API_KEY} https://api.bintray.com/content/sfuhrm/openssl4j/objects/0.0.0/libopenssl4j-$(uname -m)-$(uname -s)-$(uname -r)
+# create file "ssl-lib" saying which dynamic ssl so lib is needed
+ldd target/libopenssl4j-* | sed -n 's/^.*\(libssl.so.[0-9.]*\).*/\1/p' > target/ssl-lib
+echo target/libopenssl4j* > target/openssl4j-lib

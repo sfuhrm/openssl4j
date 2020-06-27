@@ -20,7 +20,7 @@ before_install:
 - docker build -t debian-adoptopenjdk .travis
 
 script:
-- docker run --mount type=bind,source="$(pwd)",target=/build debian-adoptopenjdk:latest "/build/.travis/build.sh"
+- docker run --mount type=bind,source="$(pwd)",target=/build debian-adoptopenjdk:latest "/build/.travis/docker-build.sh"
 
 after_success:
-- curl -T target/libopenssl4j* -usfuhrm:${BINTRAY_API_KEY} https://api.bintray.com/content/sfuhrm/openssl4j/objects/0.0.0/libopenssl4j-$(uname -m)-$(uname -s)-$(uname -r)
+- .travis/travis-after_success.sh
