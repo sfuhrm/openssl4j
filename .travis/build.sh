@@ -9,11 +9,19 @@ echo "\$TRAVIS_CPU_ARCH: $TRAVIS_CPU_ARCH"
 #
 # install adopt openjdk
 #
+JDK_MAJOR=11
 sudo wget -qO - https://adoptopenjdk.jfrog.io/adoptopenjdk/api/gpg/key/public | sudo apt-key add -
 sudo add-apt-repository --yes https://adoptopenjdk.jfrog.io/adoptopenjdk/deb/
 sudo apt-get update
 sudo apt-get install -y software-properties-common
-sudo apt-get install  -y adoptopenjdk-11-hotspot
+sudo apt-get install  -y adoptopenjdk-${JDK_MAJOR}-hotspot
+
+#
+# now calculate JAVA_HOME
+#
+ls adoptopenjdk-${JDK_MAJOR}-hotspot-*
+JAVA_HOME=$(ls adoptopenjdk-${JDK_MAJOR}-hotspot-* | head -n1)
+export PATH="${JAVA_HOME}/bin:$PATH"
 
 echo "JAVA location: " $(which java)
 echo "JAVAC location: " $(which javac)
