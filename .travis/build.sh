@@ -5,7 +5,15 @@
 echo "\$TRAVIS_OS_NAME: $TRAVIS_OS_NAME"
 echo "\$TRAVIS_DIST: $TRAVIS_DIST"
 echo "\$TRAVIS_CPU_ARCH: $TRAVIS_CPU_ARCH"
-echo "\$JAVA_HOME: $JAVA_HOME"
+
+#
+# install adopt openjdk
+#
+sudo wget -qO - https://adoptopenjdk.jfrog.io/adoptopenjdk/api/gpg/key/public | sudo apt-key add -
+sudo add-apt-repository --yes https://adoptopenjdk.jfrog.io/adoptopenjdk/deb/
+sudo apt-get update
+sudo apt-get install -y software-properties-common
+sudo apt-get install  -y adoptopenjdk-11-hotspot
 
 echo "JAVA location: " $(which java)
 echo "JAVAC location: " $(which javac)
