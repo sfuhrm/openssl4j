@@ -1,42 +1,25 @@
-#language: java
-language: c
+language: ruby
+
+services:
+  - docker
 
 jobs:
   include:
   - os: linux
-    dist: bionic
     compiler: gcc
     arch: amd64
-    env:
-      - CC=gcc
-      - MAKE=make
   - os: linux
-    dist: bionic
     compiler: gcc
     arch: arm64
-    env:
-      - CC=gcc
-      - MAKE=make
   - os: linux
-    dist: bionic
-    compiler: gcc
     arch: ppc64le
-    env:
-      - CC=gcc
-      - MAKE=make
   - os: linux
-    dist: bionic
-    compiler: gcc
     arch: s390x
-    env:
-      - CC=gcc
-      - MAKE=make
-  - os: linux
-    dist: xenial
-    compiler: gcc
-    env:
-      - CC=gcc
-      - MAKE=make
+
+before_install:
+- docker build -t debian-adoptopenjdk .
+#- docker run -d -p 127.0.0.1:80:4567 carlad/sinatra /bin/sh -c "cd /root/sinatra; bundle exec foreman start;"
 
 script:
-  - bash -x .travis/build.sh
+- docker run -t -i debian-adoptopenjdk:latest
+#  - bash -x .travis/build.sh
