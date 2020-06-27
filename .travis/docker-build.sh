@@ -22,6 +22,6 @@ make install  || exit 10
 
 # create file "ssl-lib" saying which dynamic ssl so lib is needed
 ldd target/libopenssl4j-* | sed -n 's/^.*\(libssl.so.[0-9.]*\).*/\1/p' > target/ssl-lib   || exit 10
-echo target/libopenssl4j* > target/openssl4j-lib   || exit 10
+(cd target && echo libopenssl4j*) > target/openssl4j-lib   || exit 10
 
 mvn package   || exit 10
