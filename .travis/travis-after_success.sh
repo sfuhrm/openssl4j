@@ -25,4 +25,12 @@ for FILE in ${OSSL4JNAME} ${OSSL4JNAME}.txt; do
   curl -T target/${FILE} \
   -usfuhrm:${BINTRAY_API_KEY} \
   https://api.bintray.com/content/sfuhrm/openssl4j/${BINTRAY_PACKAGE}/${POM_VERSION_BASE}/${TRAVIS_COMMIT}/$(uname -m)-$(uname -s)-${SSL_VERSION}/${FILE} || exit 10
+
+  curl -X DELETE \
+  -usfuhrm:${BINTRAY_API_KEY} \
+  https://api.bintray.com/content/sfuhrm/openssl4j/${BINTRAY_PACKAGE}/${POM_VERSION_BASE}/latest/$(uname -m)-$(uname -s)-${SSL_VERSION}/${FILE}
+
+  curl -T target/${FILE} \
+  -usfuhrm:${BINTRAY_API_KEY} \
+  https://api.bintray.com/content/sfuhrm/openssl4j/${BINTRAY_PACKAGE}/${POM_VERSION_BASE}/latest/$(uname -m)-$(uname -s)-${SSL_VERSION}/${FILE} || exit 10
 done
