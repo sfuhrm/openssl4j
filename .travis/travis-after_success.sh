@@ -22,4 +22,4 @@ echo BINTRAY_PACKAGE=${BINTRAY_PACKAGE}
 
 curl -T ${OSSL4JNAME} \
 -usfuhrm:${BINTRAY_API_KEY} \
-https://api.bintray.com/content/sfuhrm/openssl4j/${BINTRAY_PACKAGE}/${POM_VERSION_BASE}/libopenssl4j-$(uname -m)-$(uname -s)-${SSL_VERSION} || exit 10
+https://api.bintray.com/content/sfuhrm/openssl4j/${BINTRAY_PACKAGE}/${POM_VERSION_BASE}/${TRAVIS_COMMIT}/libopenssl4j-$(uname -m)-$(uname -s)-${SSL_VERSION} || exit 10
