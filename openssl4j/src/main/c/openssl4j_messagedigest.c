@@ -1,5 +1,8 @@
 /*
-** OpenSSL MessageDigest to Java Binding Code
+** OpenSSL MessageDigest to Java Binding Code.
+**
+** See here for an example of the EVP API:
+** https://wiki.openssl.org/index.php/EVP_Message_Digests
 ** @author Stephan Fuhrmann
 */
 

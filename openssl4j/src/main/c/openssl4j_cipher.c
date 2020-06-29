@@ -1,5 +1,7 @@
 /*
 ** OpenSSL Cipher to Java Binding Code
+** See here for an example of the EVP API:
+** https://wiki.openssl.org/index.php/EVP_Symmetric_Encryption_and_Decryption
 ** @author Stephan Fuhrmann
 */
 
