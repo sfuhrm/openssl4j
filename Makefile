@@ -31,5 +31,6 @@ ${TARGET}/include/%.h: ${JNI_JAVA_FILES}
 ${TARGET}/libopenssl4j-${JAVA_OS_ARCH}.so: ${JNI_HEADER_FILES}
 	gcc -Wall -Werror -fPIC -o $@ -lc -lssl -shared -I${TARGET}/include/ \
 	-I${JAVA_HOME}/include -I${JAVA_HOME}/include/linux \
+	${JNI_C_SOURCES}/openssl4j_common.c \
 	${JNI_C_SOURCES}/openssl4j_messagedigest.c \
 	${JNI_C_SOURCES}/openssl4j_cipher.c

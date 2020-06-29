@@ -8,44 +8,9 @@
 #include <openssl/evp.h>
 #include <malloc.h>
 
+#include "openssl4j.h"
+
 #include "de_sfuhrm_openssl4j_OpenSSLCipherNative.h"
-
-#define NULL_POINTER_EXCEPTION "java/lang/NullPointerException"
-#define ILLEGAL_STATE_EXCEPTION "java/lang/IllegalStateException"
-#define UNSUPPORTED_OPERATION_EXCEPTION "java/lang/UnsupportedOperationException"
-
-/*
-static void throw_error(JNIEnv *env, const char *exceptionClassName, const char *message) {
-    jclass exceptionClass = (*env)->FindClass(env, exceptionClassName);
-    if (exceptionClass != NULL) {
-        jint success = (*env)->ThrowNew(env, exceptionClass, message);
-        if (0 != success) {
-            (*env)->FatalError(env, "Could not throw exception");
-        }
-    } else {
-        (*env)->FatalError(env, "Didn't find IllegalStateException class");
-    }
-}
-
-static void* cipher_context_from(JNIEnv *env, jobject context) {
-    if (context == NULL) {
-        throw_error(env, NULL_POINTER_EXCEPTION, "context is NULL");
-        return NULL;
-    }
-    void* context_data = (void*) (*env)->GetDirectBufferAddress(env, context);
-    if (context_data == NULL) {
-        throw_error(env, ILLEGAL_STATE_EXCEPTION, "GetDirectBufferAddress() for Context failed");
-    }
-    return context_data;
-}
-*/
-
-struct StringArrayPosition {
-    jint index;
-    jint length;
-    JNIEnv *env;
-    jobjectArray array;
-};
 
 /* Callback for EVP_CIPHER_do_all that counts the number of CIPHER algorithms. */
 static void EVP_CIPHER_do_all_count_func(const EVP_CIPHER *ciph, const char *from, const char *to, void *x) {

@@ -8,11 +8,9 @@
 #include <openssl/evp.h>
 #include <malloc.h>
 
-#include "de_sfuhrm_openssl4j_OpenSSLMessageDigestNative.h"
+#include "openssl4j.h"
 
-#define NULL_POINTER_EXCEPTION "java/lang/NullPointerException"
-#define ILLEGAL_STATE_EXCEPTION "java/lang/IllegalStateException"
-#define UNSUPPORTED_OPERATION_EXCEPTION "java/lang/UnsupportedOperationException"
+#include "de_sfuhrm_openssl4j_OpenSSLMessageDigestNative.h"
 
 #if OPENSSL_VERSION_NUMBER >= 0x10101000L
 #define OPENSSL_MD_NEW_FUNC EVP_MD_CTX_new
@@ -22,33 +20,9 @@
 #define OPENSSL_MD_FREE_FUNC EVP_MD_CTX_destroy
 #endif
 
-static void throw_error(JNIEnv *env, const char *exceptionClassName, const char *message) {
-    jclass exceptionClass = (*env)->FindClass(env, exceptionClassName);
-    if (exceptionClass != NULL) {
-        jint success = (*env)->ThrowNew(env, exceptionClass, message);
-        if (0 != success) {
-            (*env)->FatalError(env, "Could not throw exception");
-        }
-    } else {
-        (*env)->FatalError(env, "Didn't find IllegalStateException class");
-    }
-}
-
-static void* md_context_from(JNIEnv *env, jobject context) {
-    if (context == NULL) {
-        throw_error(env, NULL_POINTER_EXCEPTION, "context is NULL");
-        return NULL;
-    }
-    void* context_data = (void*) (*env)->GetDirectBufferAddress(env, context);
-    if (context_data == NULL) {
-        throw_error(env, ILLEGAL_STATE_EXCEPTION, "GetDirectBufferAddress() for Context failed");
-    }
-    return context_data;
-}
-
 JNIEXPORT jint JNICALL Java_de_sfuhrm_openssl4j_OpenSSLMessageDigestNative_digestLength
   (JNIEnv *env, jclass clazz, jobject context) {
-    EVP_MD_CTX *mdctx = md_context_from(env, context);
+    EVP_MD_CTX *mdctx = get_context_from(env, context);
     if (mdctx != NULL) {
         return EVP_MD_CTX_size(mdctx);
     }
@@ -57,18 +31,11 @@ JNIEXPORT jint JNICALL Java_de_sfuhrm_openssl4j_OpenSSLMessageDigestNative_diges
 
 JNIEXPORT void JNICALL Java_de_sfuhrm_openssl4j_OpenSSLMessageDigestNative_removeContext
   (JNIEnv *env, jclass clazz, jobject context) {
-    EVP_MD_CTX *mdctx = md_context_from(env, context);
+    EVP_MD_CTX *mdctx = get_context_from(env, context);
     if (mdctx != NULL) {
         OPENSSL_MD_FREE_FUNC(mdctx);
     }
 }
-
-struct StringArrayPosition {
-    jint index;
-    jint length;
-    JNIEnv *env;
-    jobjectArray array;
-};
 
 
 /* Callback for EVP_MD_do_all that counts the number of MD algorithms. */
@@ -146,7 +113,7 @@ JNIEXPORT jobject JNICALL Java_de_sfuhrm_openssl4j_OpenSSLMessageDigestNative_na
 
 JNIEXPORT void JNICALL Java_de_sfuhrm_openssl4j_OpenSSLMessageDigestNative_nativeUpdateWithByte
     (JNIEnv *env, jobject obj, jobject context, jbyte byteData) {
-      EVP_MD_CTX* context_data = md_context_from(env, context);
+      EVP_MD_CTX* context_data = get_context_from(env, context);
       if (context_data != NULL) {
   	    if (1 != EVP_DigestUpdate(context_data, &byteData, 1)) {
              throw_error(env, ILLEGAL_STATE_EXCEPTION, "EVP_DigestUpdate failed");
@@ -161,7 +128,7 @@ JNIEXPORT void JNICALL Java_de_sfuhrm_openssl4j_OpenSSLMessageDigestNative_nativ
         return;
     }
 
-    EVP_MD_CTX* context_data = md_context_from(env, context);
+    EVP_MD_CTX* context_data = get_context_from(env, context);
     if (context_data != NULL) {
         jboolean isCopy = JNI_FALSE;
 
@@ -185,7 +152,7 @@ JNIEXPORT void JNICALL Java_de_sfuhrm_openssl4j_OpenSSLMessageDigestNative_nativ
         throw_error(env, NULL_POINTER_EXCEPTION, "ByteBuffer is NULL");
         return;
     }
-    EVP_MD_CTX* context_data = md_context_from(env, context);
+    EVP_MD_CTX* context_data = get_context_from(env, context);
     if (context_data != NULL) {
         jbyte* buffer = (*env)->GetDirectBufferAddress(env, bb);
         if (buffer != NULL) {
@@ -202,7 +169,7 @@ JNIEXPORT void JNICALL Java_de_sfuhrm_openssl4j_OpenSSLMessageDigestNative_nativ
 
 JNIEXPORT void JNICALL Java_de_sfuhrm_openssl4j_OpenSSLMessageDigestNative_nativeFinal
   (JNIEnv *env, jobject obj, jobject context, jbyteArray jdigest) {
-    EVP_MD_CTX* context_data = md_context_from(env, context);
+    EVP_MD_CTX* context_data = get_context_from(env, context);
     if (jdigest == NULL) {
         throw_error(env, NULL_POINTER_EXCEPTION, "Digest array is NULL");
         return;
@@ -223,7 +190,7 @@ JNIEXPORT void JNICALL Java_de_sfuhrm_openssl4j_OpenSSLMessageDigestNative_nativ
         throw_error(env, NULL_POINTER_EXCEPTION, "Algorithm name is NULL");
         return;
     }
-    EVP_MD_CTX* context_data = md_context_from(env, context);
+    EVP_MD_CTX* context_data = get_context_from(env, context);
     if (context_data == NULL) {
         throw_error(env, ILLEGAL_STATE_EXCEPTION, "EVP_DigestInit_ex failed");
         return;
