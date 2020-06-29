@@ -3,10 +3,6 @@ language: ruby
 services:
   - docker
 
-cache:
-    directories:
-     - /var/lib/docker
-
 jobs:
   include:
   - os: linux
