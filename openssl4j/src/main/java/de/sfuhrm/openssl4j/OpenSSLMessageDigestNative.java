@@ -86,7 +86,7 @@ class OpenSSLMessageDigestNative extends MessageDigestSpi {
             NativeLoader.loadAll();
             algorithmName = Objects.requireNonNull(openSslName);
             context = nativeContext();
-            PhantomReferenceCleanup.enqueueForCleanup(this, context);
+            PhantomReferenceCleanup.enqueueForCleanup(this, OpenSSLMessageDigestNative::free, context);
             engineReset();
             digestLength = digestLength(context);
         }

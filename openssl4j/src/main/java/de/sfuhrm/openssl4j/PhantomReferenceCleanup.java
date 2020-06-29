@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.Consumer;
 
 /**
  * Frees native AbstractNative objects.
@@ -17,28 +18,31 @@ import java.util.Set;
 class PhantomReferenceCleanup {
 
     /** The reference queue of unused AbstractNative objects. */
-    private static final ReferenceQueue<OpenSSLMessageDigestNative> BYTE_BUFFER_REFERENCE_QUEUE = new ReferenceQueue<>();
+    private static final ReferenceQueue<Object> BYTE_BUFFER_REFERENCE_QUEUE = new ReferenceQueue<>();
 
     /** Is the thread running? */
     private static boolean running = false;
 
     private static final Set<NativePhantomReference> nativePhantomReferenceList = Collections.synchronizedSet(new HashSet<>());
 
-    private static class NativePhantomReference extends PhantomReference<OpenSSLMessageDigestNative> {
+    private static class NativePhantomReference extends PhantomReference<Object> {
+        private final Consumer<ByteBuffer> freeFunction;
         private final ByteBuffer byteBuffer;
-        NativePhantomReference(OpenSSLMessageDigestNative abstractNative, ByteBuffer context) {
+        NativePhantomReference(Object abstractNative, Consumer<ByteBuffer> freeFunction, ByteBuffer context) {
             super(abstractNative, BYTE_BUFFER_REFERENCE_QUEUE);
+            this.freeFunction = freeFunction;
             this.byteBuffer = context;
         }
         public void free() {
-            OpenSSLMessageDigestNative.free(byteBuffer);
+            freeFunction.accept(byteBuffer);
         }
     }
 
     /** Enqueues a AbstractNative for later cleanup. */
-    static void enqueueForCleanup(OpenSSLMessageDigestNative ref, ByteBuffer context) {
+    static void enqueueForCleanup(Object ref, Consumer<ByteBuffer> freeFunction, ByteBuffer context) {
         NativePhantomReference phantomReference = new NativePhantomReference(
                 Objects.requireNonNull(ref),
+                Objects.requireNonNull(freeFunction),
                 Objects.requireNonNull(context));
         nativePhantomReferenceList.add(phantomReference);
         startIfNeeded();

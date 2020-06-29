@@ -25,4 +25,10 @@ public class OpenSSLCipherNativeTest {
         Assertions.assertNotEquals(0, sslAlgos.size());
         Assertions.assertTrue(sslAlgos.contains("AES-256-OCB"));
     }
+
+    @Test
+    public void newInstance() {
+        OpenSSLCipherNative openSSLCipherNative = new OpenSSLCipherNative("AES-256-OCB");
+        Assertions.assertNotNull(openSSLCipherNative);
+    }
 }

@@ -68,3 +68,29 @@ JNIEXPORT jobjectArray JNICALL Java_de_sfuhrm_openssl4j_OpenSSLCipherNative_list
 
   return result;
 }
+
+JNIEXPORT jobject JNICALL Java_de_sfuhrm_openssl4j_OpenSSLCipherNative_nativeContext
+  (JNIEnv *env, jobject obj) {
+    EVP_CIPHER_CTX *cipherctx;
+
+	if ((cipherctx = EVP_CIPHER_CTX_new()) == NULL) {
+        throw_error(env, ILLEGAL_STATE_EXCEPTION, "Could not allocate context");
+        return NULL;
+	}
+
+    size_t usableSize = malloc_usable_size(cipherctx);
+    jobject result = (*env)->NewDirectByteBuffer(env, cipherctx, usableSize);
+    if (result == NULL) {
+        throw_error(env, ILLEGAL_STATE_EXCEPTION, "Could not NewDirectByteBuffer()");
+    }
+
+    return result;
+}
+
+JNIEXPORT void JNICALL Java_de_sfuhrm_openssl4j_OpenSSLCipherNative_removeContext
+  (JNIEnv *env, jclass clazz, jobject context) {
+    EVP_CIPHER_CTX *cipherctx = get_context_from(env, context);
+    if (cipherctx != NULL) {
+        EVP_CIPHER_CTX_free(cipherctx);
+    }
+}
