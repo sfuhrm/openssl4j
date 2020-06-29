@@ -127,6 +127,9 @@ The recommended way of including the library into your project is using maven:
 ---------------------------------------
 
 There are the following native implementations available inside the JAR file:
+* Linux-aarch64
+* Linux-ppc64le
+* Linux-s390x
 * Linux-amd64
 * Linux-arm
 
