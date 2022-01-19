@@ -46,4 +46,6 @@ jobs:
           outputs: "type=tar,dest=image.tar"
       -
         name: Show it
-        run: ls -alR image.tar
+        run: |
+          ls -alR image.tar
+          tar -tvf image.tar
