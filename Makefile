@@ -4,7 +4,7 @@
 #
 ####
 
-JAVA_OS_ARCH:=$(shell ${JAVA_HOME}/bin/java build-helper/OsArch.java )
+JAVA_OS_ARCH:=$(shell java build-helper/OsArch.java )
 
 JNI_JAVA_SOURCES=openssl4j/src/main/java
 JNI_C_SOURCES=openssl4j/src/main/c
