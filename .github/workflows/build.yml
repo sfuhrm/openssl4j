@@ -46,6 +46,6 @@ jobs:
           tags: my/image
 
       - name: Copy docker contents
-        run:
+        run: |
           docker cp my/image:openssl4j /tmp/openssl4j
           ls /tmp/openssl4j
