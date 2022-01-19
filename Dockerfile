@@ -9,3 +9,4 @@ export JAVA_HOME=$(apt-file show ${JAVA_PACKAGE} | cut -d" " -f2 | cut -d"/" -f1
 echo "JAVA_PACKAGE is ${JAVA_PACKAGE}" && \
 echo "JAVA_HOME    is ${JAVA_HOME}" && \
 make
+RUN cd openssl4j/target && ls -al
