@@ -47,5 +47,6 @@ jobs:
 
       - name: Copy docker contents
         run: |
-          docker cp my/image:openssl4j /tmp/openssl4j
+          docker run --name my_container my/image 
+          docker cp my_container:openssl4j /tmp/openssl4j
           ls /tmp/openssl4j
