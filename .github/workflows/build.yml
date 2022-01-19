@@ -37,4 +37,4 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: .
-          platforms: ${{ steps.qemu.outputs.platforms }}
+          platforms: linux/amd64,linux/arm64
