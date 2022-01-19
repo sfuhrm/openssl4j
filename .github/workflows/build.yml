@@ -43,10 +43,4 @@ jobs:
         with:
           context: .
           platforms: ${{ matrix.platform }}
-          tags: my/image
-
-      - name: Copy docker contents
-        run: |
-          docker run --name my_container my/image 
-          docker cp my_container:openssl4j /tmp/openssl4j
-          ls /tmp/openssl4j
+          outputs: "type=local,dest=."
