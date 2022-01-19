@@ -44,3 +44,6 @@ jobs:
           context: .
           platforms: ${{ matrix.platform }}
           outputs: "type=local,dest=."
+      -
+        name: Show it
+        run: ls -alR .
