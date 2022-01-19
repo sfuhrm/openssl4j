@@ -43,7 +43,7 @@ jobs:
         with:
           context: .
           platforms: ${{ matrix.platform }}
-          outputs: "type=local,dest=."
+          outputs: "type=tar,dest=image.tar"
       -
         name: Show it
-        run: ls -alR .
+        run: ls -alR image.tar
