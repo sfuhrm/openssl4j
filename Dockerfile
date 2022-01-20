@@ -1,5 +1,5 @@
-FROM debian:11
-ENV JAVA_PACKAGE=openjdk-17-jdk-headless
+FROM debian:10
+ENV JAVA_PACKAGE=openjdk-11-jdk-headless
 RUN apt-get update && apt-get install -y \
 apt-file make gcc libssl1.1 libssl-dev ${JAVA_PACKAGE} maven
 RUN apt-file update
