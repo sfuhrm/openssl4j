@@ -38,6 +38,7 @@ jobs:
           - platform: linux/arm/v7
             jdk_url:  https://github.com/adoptium/temurin11-binaries/releases/download/jdk-11.0.13%2B8/OpenJDK11U-jdk_arm_linux_hotspot_11.0.13_8.tar.gz
           - platform: linux/arm/v6
+            jdk_url:  https://github.com/adoptium/temurin11-binaries/releases/download/jdk-11.0.13%2B8/OpenJDK11U-jdk_arm_linux_hotspot_11.0.13_8.tar.gz
           - platform: linux/ppc64le
             jdk_url:  https://github.com/adoptium/temurin11-binaries/releases/download/jdk-11.0.13%2B8/OpenJDK11U-jdk_ppc64le_linux_hotspot_11.0.13_8.tar.gz
           #- platform: linux/riscv64
