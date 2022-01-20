@@ -1,7 +1,7 @@
 FROM debian:10
 ENV JAVA_PACKAGE=openjdk-11-jdk-headless
 RUN apt-get update && apt-get install -y \
-apt-file make gcc libssl1.1 libssl-dev ${JAVA_PACKAGE} maven
+apt-file make gcc libssl1.1 libssl-dev ${JAVA_PACKAGE}
 RUN apt-file update
 COPY . openssl4j
 RUN cd openssl4j && \
