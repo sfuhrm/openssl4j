@@ -5,7 +5,7 @@ ARG JDK_URL
 
 RUN apt-get update && apt-get install -y \
 tar curl make gcc libssl1.1 libssl-dev
-RUN mkdir jdk && cd jdk && curl --location ${JDK_URL} -o- | tar --strip-components=1 -xzvf-
+RUN mkdir jdk && cd jdk && curl --insecure --location ${JDK_URL} -o- | tar --strip-components=1 -xzvf-
 COPY . openssl4j
 RUN cd openssl4j && \
 export JAVA_HOME=/jdk && \
