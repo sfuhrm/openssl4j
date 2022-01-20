@@ -1,12 +1,14 @@
 FROM debian:10
+
 ENV JAVA_PACKAGE=openjdk-11-jdk-headless
+ARG JDK_URL
+
 RUN apt-get update && apt-get install -y \
-apt-file make gcc libssl1.1 libssl-dev ${JAVA_PACKAGE}
-RUN apt-file update
+tar curl make gcc libssl1.1 libssl-dev
+RUN mkdir jdk && cd jdk && curl --location ${JDK_URL} -o- | tar --strip-components=1 -xzvf-
 COPY . openssl4j
 RUN cd openssl4j && \
-export JAVA_HOME=$(apt-file show ${JAVA_PACKAGE} | cut -d" " -f2 | cut -d"/" -f1-5 | head -n1) && \
-echo "JAVA_PACKAGE is ${JAVA_PACKAGE}" && \
+export JAVA_HOME=/jdk && \
 echo "JAVA_HOME    is ${JAVA_HOME}" && \
 make
 RUN cd openssl4j/target && ls -al
