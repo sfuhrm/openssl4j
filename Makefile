@@ -16,12 +16,12 @@ JNI_HEADER_FILES=${TARGET}/include/de_sfuhrm_openssl4j_OpenSSLMessageDigestNativ
 .PHONY: clean
 .PHONY: install
 
-all: ${TARGET}/libopenssl4j-${JAVA_OS_ARCH}.so
-clean:
-	rm -fr ${TARGET}
-
 install: ${TARGET}/libopenssl4j-${JAVA_OS_ARCH}.so
+	mkdir -p ${INSTALL_TARGET}
 	cp $< ${INSTALL_TARGET}
+
+clean:
+	rm -fr ${TARGET} ${INSTALL_TARGET}
 
 ${TARGET}/include/%.h: ${JNI_JAVA_FILES}
 	mkdir -p ${TARGET}/include
