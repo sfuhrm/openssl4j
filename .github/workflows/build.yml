@@ -53,7 +53,7 @@ jobs:
         id: qemu
         uses: docker/setup-qemu-action@v1
         with:
-          image: tonistiigi/binfmt:latest
+          image: tonistiigi/binfmt:qemu-v6.0.0
           platforms: ${{ matrix.platform }}
       -
         name: Available platforms
