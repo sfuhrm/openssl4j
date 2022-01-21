@@ -18,14 +18,10 @@ For building the application you need
 * GNU GCC,
 * OpenSSL development headers
 
-To build the C library, execute:
+To build the C library and install it to the right place in `openssl4j/src/main/resources/objects`, execute:
 
     $ make
     
-to put the build C library to the place for inclusion in the target JAR, execute:
-
-    $ make install
-
 To build the Java package, execute:
 
     $ mvn clean package
@@ -42,7 +38,8 @@ normal SUN crypto provider.
 * MessageDigest restriction: The current milestone only contains MessageDigest algorithms.
 * Restricted platforms: The code uses dynamic linking to an object library on the machine.
   Native object code within the JAR file is used for binding the Java code to the native code.
-  There is a restricted amount of platforms supported (see below).
+  There is a restricted amount of platforms supported by the Github Actions
+  builder (see below).
 
 ## Usage
 
@@ -128,10 +125,10 @@ The recommended way of including the library into your project is using maven:
 
 There are the following native implementations available inside the JAR file:
 * Linux-aarch64
-* Linux-ppc64le
-* Linux-s390x
 * Linux-amd64
 * Linux-arm
+* Linux-ppc64le
+* Linux-s390x
 
 ## Version notice
 
