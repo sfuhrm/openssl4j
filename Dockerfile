@@ -7,10 +7,9 @@ RUN apt-get update && apt-get install -y \
 tar curl make gcc libssl1.1 libssl-dev
 RUN mkdir jdk && cd jdk && curl --insecure --location ${JDK_URL} -o- | tar --strip-components=1 -xzvf-
 COPY . openssl4j
-RUN export JAVA_HOME=/jdk && \
-echo "JAVA_HOME    is ${JAVA_HOME}"
-RUN export OS_ARCH=$(${JAVA_HOME}/bin/java build-helper/OsArch.java) && \
-echo "OS_ARCH      is ${OS_ARCH}" && \
+ENV JAVA_HOME=/jdk
+RUN echo "JAVA_HOME    is ${JAVA_HOME}"
+RUN echo "OS_ARCH      is $(${JAVA_HOME}/bin/java build-helper/OsArch.java)" && \
 RUN cd openssl4j && \
 make
 RUN cd openssl4j/target && ls -al
