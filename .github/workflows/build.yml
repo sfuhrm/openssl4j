@@ -120,8 +120,19 @@ jobs:
       - 
         name: Build with Maven
         run: mvn -B package --file pom.xml
-
-      - uses: actions/upload-artifact@v2
+      - 
+        uses: actions/upload-artifact@v2
         with:
           name: build
           path: openssl4j/target/*.jar
+      - 
+        name: Deploy with Maven to SONATYPE OSS Snapshot if secrets are set
+        env:
+          SONATYPE_USER: ${{ secrets.SONATYPE_USER }}
+          SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+        run: |
+          if [ "${SONATYPE_USER}" != "" -a "${SONATYPE_PASSWORD}" != "" ]; then
+            mvn -B deploy -P sonatype-oss-snapshot -s .github/settings.xml
+          else
+            echo "Not deploying, secrets SONATYPE_USER and SONATYPE_PASSWORD not provided"
+          fi
