@@ -25,7 +25,7 @@ install: ${TARGET}/libopenssl4j-${JAVA_OS_ARCH}.so
 
 ${TARGET}/include/%.h: ${JNI_JAVA_FILES}
 	mkdir -p ${TARGET}/include
-	${JAVA_HOME}/bin/javac -classpath ${JNI_JAVA_SOURCES} -h ${TARGET}/include -d ${TARGET} -s ${TARGET} ${JNI_JAVA_FILES}
+	${JAVA_HOME}/bin/javac -J-Xint -classpath ${JNI_JAVA_SOURCES} -h ${TARGET}/include -d ${TARGET} -s ${TARGET} ${JNI_JAVA_FILES}
 
 ${TARGET}/libopenssl4j-${JAVA_OS_ARCH}.so: ${JNI_HEADER_FILES}
 	gcc -Wall -Werror -fPIC -o $@ -lc -lssl -shared -I${TARGET}/include/ \
