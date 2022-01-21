@@ -9,6 +9,8 @@ RUN mkdir jdk && cd jdk && curl --insecure --location ${JDK_URL} -o- | tar --str
 COPY . openssl4j
 RUN cd openssl4j && \
 export JAVA_HOME=/jdk && \
+export OS_ARCH=$(${JAVA_HOME}/bin/java build-helper/OsArch.java) && \
 echo "JAVA_HOME    is ${JAVA_HOME}" && \
+echo "OS_ARCH      is ${OS_ARCH}" && \
 make
 RUN cd openssl4j/target && ls -al
