@@ -124,4 +124,4 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: build
-          path: target/*.jar
+          path: openssl4j/target/*.jar
