@@ -3,14 +3,14 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>de.sfuhrm</groupId>
   <artifactId>openssl4j-parent</artifactId>
-  <version>0.2.1</version>
+  <version>0.2.1-SNAPSHOT</version>
   <name>OpenSSL4J Parent</name>
   <description>OpenSSL4J Parent POM</description>
   <url>https://github.com/sfuhrm/openssl4j</url>
   <scm>
     <url>https://github.com/sfuhrm/openssl4j</url>
     <connection>scm:git:https://github.com/sfuhrm/openssl4j.git</connection>
-    <tag>openssl4j-parent-0.2.1</tag>
+    <tag>HEAD</tag>
   </scm>
   <licenses>
     <license>
