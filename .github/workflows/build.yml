@@ -107,7 +107,7 @@ jobs:
         uses: actions/setup-java@v2
         with:
           distribution: 'adopt'
-          java-version: 8
+          java-version: 11
       -
         name: Cache local Maven repository
         uses: actions/cache@v2
