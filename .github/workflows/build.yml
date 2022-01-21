@@ -102,6 +102,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: shared_objects
+          path: openssl4j/src/main/resources/objects
       - 
         name: Set up JDK
         uses: actions/setup-java@v2
