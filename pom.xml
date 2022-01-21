@@ -39,17 +39,16 @@
     <maven.compiler.target>9</maven.compiler.target>
   </properties>
   <profiles>
-    <profiles>
-      <profile>
-          <id>snapshot</id>
-          <distributionManagement>
-            <snapshotRepository>
-              <id>sonatype</id>
-              <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-            </snapshotRepository>
-          </distributionManagement>
-      </profile>
-      <profile>
+    <profile>
+      <id>snapshot</id>
+      <distributionManagement>
+        <snapshotRepository>
+          <id>sonatype</id>
+          <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+      </distributionManagement>
+    </profile>
+    <profile>
       <id>release</id>
       <distributionManagement>
         <snapshotRepository>
