@@ -143,7 +143,7 @@ changes.
 
 ## Author
 
-Written 2020 by Stephan Fuhrmann. You can reach me via email to s (at) sfuhrm.de
+Written 2020-2022 by Stephan Fuhrmann. You can reach me via email to s (at) sfuhrm.de
 
 ## License
 
