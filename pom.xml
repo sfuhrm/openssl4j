@@ -8,7 +8,7 @@
   <description>OpenSSL4J Parent POM</description>
   <url>https://github.com/sfuhrm/openssl4j</url>
   <scm>
-    <url>git@github.com:sfuhrm/openssl4j</url>
+    <url>https://github.com/sfuhrm/openssl4j</url>
     <connection>scm:git:https://github.com/sfuhrm/openssl4j.git</connection>
     <tag>HEAD</tag>
   </scm>
