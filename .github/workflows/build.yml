@@ -35,7 +35,7 @@ jobs:
           #- platform: linux/arm/v6
           - platform: linux/ppc64le
           #- platform: linux/riscv64
-          - platform: linux/386
+          #- platform: linux/386
           #- platform: linux/mips64le
     steps:
       -
