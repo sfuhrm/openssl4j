@@ -1,4 +1,8 @@
-FROM openjdk:17-jdk
+FROM debian:10
+
+ENV JAVA_HOME=/opt/java/openjdk
+COPY --from=eclipse-temurin:17 $JAVA_HOME $JAVA_HOME
+ENV PATH="${JAVA_HOME}/bin:${PATH}"
 
 RUN apt-get update && apt-get install -y \
 make gcc libssl1.1 libssl-dev
