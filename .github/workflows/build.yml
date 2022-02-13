@@ -57,6 +57,11 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      -
+        name: Test pull image before hand
+        run: docker pull elipse-temurin:17-jdk
+
       -
         name: Build on ${{ matrix.platform }}
         uses: docker/build-push-action@v2
