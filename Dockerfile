@@ -1,4 +1,4 @@
-FROM elipse-temurin:17-jdk
+FROM openjdk:17-jdk
 
 RUN apt-get update && apt-get install -y \
 make gcc libssl1.1 libssl-dev
