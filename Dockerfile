@@ -1,13 +1,9 @@
-FROM debian:10
-
-ENV JAVA_PACKAGE=openjdk-11-jdk-headless
-ARG JDK_URL
+FROM elipse-temurin:17-jdk
 
 RUN apt-get update && apt-get install -y \
-tar curl make gcc libssl1.1 libssl-dev
-RUN mkdir jdk && cd jdk && curl --insecure --location ${JDK_URL} -o- | tar --strip-components=1 -xzvf-
+make gcc libssl1.1 libssl-dev
 COPY . openssl4j
-ENV JAVA_HOME=/jdk
+ENV JAVA_HOME=/opt/java/openjdk/
 RUN echo "JAVA_HOME    is ${JAVA_HOME}"
 RUN echo "OS_ARCH      is $(cd openssl4j/build-helper && ${JAVA_HOME}/bin/java -Xint OsArch.java)"
 RUN cd openssl4j && \

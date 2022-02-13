@@ -2,7 +2,7 @@ name: Platform Build
 
 on:
   push:
-    branches: [ master ]
+    branches: *
   pull_request:
     branches: [ master ]
 
@@ -33,17 +33,11 @@ jobs:
       matrix:
         include:
           - platform: linux/amd64
-            jdk_url:  https://github.com/adoptium/temurin11-binaries/releases/download/jdk-11.0.13%2B8/OpenJDK11U-jdk_x64_linux_hotspot_11.0.13_8.tar.gz
           - platform: linux/arm64
-            jdk_url:  https://github.com/adoptium/temurin11-binaries/releases/download/jdk-11.0.13%2B8/OpenJDK11U-jdk_aarch64_linux_hotspot_11.0.13_8.tar.gz
           - platform: linux/s390x
-            jdk_url:  https://github.com/adoptium/temurin11-binaries/releases/download/jdk-11.0.13%2B8/OpenJDK11U-jdk_s390x_linux_hotspot_11.0.13_8.tar.gz
           - platform: linux/arm/v7
-            jdk_url:  https://github.com/adoptium/temurin11-binaries/releases/download/jdk-11.0.13%2B8/OpenJDK11U-jdk_arm_linux_hotspot_11.0.13_8.tar.gz
           #- platform: linux/arm/v6
-          #  jdk_url:  https://github.com/adoptium/temurin11-binaries/releases/download/jdk-11.0.13%2B8/OpenJDK11U-jdk_arm_linux_hotspot_11.0.13_8.tar.gz
           - platform: linux/ppc64le
-            jdk_url:  https://github.com/adoptium/temurin11-binaries/releases/download/jdk-11.0.13%2B8/OpenJDK11U-jdk_ppc64le_linux_hotspot_11.0.13_8.tar.gz
           #- platform: linux/riscv64
           #- platform: linux/386
           #- platform: linux/mips64le
@@ -74,7 +68,6 @@ jobs:
           context: .
           platforms: ${{ matrix.platform }}
           outputs: "type=tar,dest=image.tar"
-          build-args: JDK_URL=${{ matrix.jdk_url }}
       -
         name: Show it
         run: |
