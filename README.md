@@ -16,6 +16,18 @@ optimizations for performance reasons.
 typically 67% to 102% faster than the pure Java version from SUN.
 * Functionality: There are some algorithms available in OpenSSL4J that are not available in the normal SUN crypto provider.
 
+## Performance
+
+The following picture shows a comparison of
+
+* BouncyCastle crypto provider (version 1.70)
+* Adoptium JDK SUN crypto provider (JDK 17.0.6)
+* OpenSSL4j (version 0.30)
+
+conducted on a i7-3840QM CPU.
+
+![bc-sun-ossl-performance.png](./images/bc-sun-ossl-performance.png)
+
 ## Building OpenSSL4J for your platform
 
 For building the application you need
