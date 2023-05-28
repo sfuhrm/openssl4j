@@ -35,11 +35,12 @@ jobs:
           - platform: linux/arm64
           - platform: linux/s390x
           - platform: linux/arm/v7
-          #- platform: linux/arm/v6
+          - platform: linux/arm/v6
           - platform: linux/ppc64le
-          #- platform: linux/riscv64
-          #- platform: linux/386
-          #- platform: linux/mips64le
+          - platform: linux/riscv64
+          - platform: linux/386
+          - platform: linux/mips64le
+          - platform: linux/mips64
     steps:
       -
         name: Checkout
