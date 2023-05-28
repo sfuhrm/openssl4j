@@ -9,8 +9,8 @@ JNI_JAVA_SOURCES=openssl4j/src/main/java
 JNI_C_SOURCES=openssl4j/src/main/c
 TARGET=target
 INSTALL_TARGET=openssl4j/src/main/resources/objects
-JNI_JAVA_FILES=${JNI_JAVA_SOURCES}/de/sfuhrm/openssl4j/OpenSSLMessageDigestNative.java
-JNI_HEADER_FILES=${TARGET}/include/de_sfuhrm_openssl4j_OpenSSLMessageDigestNative.h
+JNI_JAVA_FILES=${JNI_JAVA_SOURCES}/de/sfuhrm/openssl4j/OpenSSLMessageDigestNative.java ${JNI_JAVA_SOURCES}/de/sfuhrm/openssl4j/OpenSSLCipherNative.java
+JNI_HEADER_FILES=${TARGET}/include/de_sfuhrm_openssl4j_OpenSSLMessageDigestNative.h ${TARGET}/include/de_sfuhrm_openssl4j_OpenSSLCipherNative.h
 
 .PHONY: all
 .PHONY: clean
@@ -34,7 +34,8 @@ ${TARGET}/%.o: ${JNI_C_SOURCES}/%.c ${JNI_HEADER_FILES}
 	-I${JAVA_HOME}/include/linux \
 	$<
 
-${TARGET}/libopenssl4j-${JAVA_OS_ARCH}.so: ${TARGET}/openssl4j_common.o ${TARGET}/openssl4j_messagedigest.o
+${TARGET}/libopenssl4j-${JAVA_OS_ARCH}.so: ${TARGET}/openssl4j_common.o ${TARGET}/openssl4j_messagedigest.o ${TARGET}/openssl4j_cipher.o
 	ld --verbose --pic-executable -fPIC -shared -o $@ -lc -lssl \
 	${TARGET}/openssl4j_common.o \
-	${TARGET}/openssl4j_messagedigest.o
+	${TARGET}/openssl4j_messagedigest.o \
+	${TARGET}/openssl4j_cipher.o
