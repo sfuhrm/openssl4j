@@ -1,6 +1,7 @@
 OpenSSL4J JNI Java Library
 ===================
-[![Platform Build](https://github.com/sfuhrm/openssl4j/actions/workflows/build.yml/badge.svg)](https://github.com/sfuhrm/openssl4j/actions/workflows/build.yml)
+[![Java Build](https://github.com/sfuhrm/openssl4j/actions/workflows/build-java.yml/badge.svg)](https://github.com/sfuhrm/openssl4j/actions/workflows/build-java.yml)
+[![Crossplatform Build](https://github.com/sfuhrm/openssl4j/actions/workflows/build-crossplatform.yml/badge.svg)](https://github.com/sfuhrm/openssl4j/actions/workflows/build-crossplatform.yml)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/de.sfuhrm/openssl4j/badge.svg)](https://maven-badges.herokuapp.com/maven-central/de.sfuhrm/openssl4j) 
 [![License: LGPL v3](https://img.shields.io/badge/License-LGPL%20v3-blue.svg)](https://www.gnu.org/licenses/lgpl-3.0)
 
