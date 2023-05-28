@@ -10,7 +10,13 @@ using the conventional MessageDigest class, but calls in the
 background the native OpenSSL library with all its
 optimizations for performance reasons.
 
-## Building OpenSSL4J
+## Features
+
+* Performance: The main feature of OpenSSL4J is performance: The MD5-implementation of OpenSSL4J is
+typically 67% to 102% faster than the pure Java version from SUN.
+* Functionality: There are some algorithms available in OpenSSL4J that are not available in the normal SUN crypto provider.
+
+## Building OpenSSL4J for your platform
 
 For building the application you need
 * JDK 9+,
@@ -19,8 +25,7 @@ For building the application you need
 * GNU GCC,
 * OpenSSL development headers
 
-To build the C library, wrap it into a maven artifact (openssl4j-objects),
-build the java parts (openssl4j), execute:
+To build the C library for your current platform, wrap it into a maven artifact (openssl4j-objects), build the java parts (openssl4j), execute:
 
 ```bash
 $ build.sh
@@ -37,11 +42,23 @@ $ build.sh
 [INFO] ------------------------------------------------------------------------    
 ```
 
-## Features
+## Building OpenSSL4J for cross-platform
 
-* Performance: The main feature of OpenSSL4J is performance: The MD5-implementation of OpenSSL4J is
-typically 67% to 102% faster than the pure Java version from SUN.
-* Functionality: There are some algorithms available in OpenSSL4J that are not available in the normal SUN crypto provider.
+The current cross-platform build is driven by github actions, using QEMU
+to build different platform shared object library.
+The github actions are visible to everyone.
+For the cross-platform build to work with your fork, there
+are some project secrets needed to be set in your
+Github fork settings:
+
+* DOCKERHUB_USERNAME: Dockerhub username for getting the parent of the build image.
+* DOCKERHUB_TOKEN: Dockerhub secret token.
+* GH_USER: Github username for storing artifacts.
+* GH_PASSWORD: Github password for storing artifacts.
+* SONATYPE_USER: (optional) sonatype username for pushing snapshots.
+* SONATYPE_PASSWORD: (optional) sonatype password for pushing snapshots.
+
+(Date of last update: 2023-05-28)
 
 ## Restrictions
 
