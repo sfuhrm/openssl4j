@@ -16,9 +16,39 @@
         <filtering>false</filtering>
       </resource>
       <resource>
+        <directory>${basedir}/target/openssl4j-objects</directory>
+        <filtering>false</filtering>
+      </resource>
+      <resource>
         <directory>${basedir}/src/main/resources-filtered</directory>
         <filtering>true</filtering>
       </resource>
     </resources>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>copy-shared-objects</id>
+            <phase>validate</phase>
+            <goals>
+              <goal>unpack</goal>
+            </goals>
+            <configuration>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>de.sfuhrm</groupId>
+                  <artifactId>openssl4j-objects</artifactId>
+                  <version>0</version>
+                </artifactItem>
+              </artifactItems>
+              <outputDirectory>target/openssl4j-objects</outputDirectory>
+              <stripVersion>true</stripVersion>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
   </build>
 </project>
