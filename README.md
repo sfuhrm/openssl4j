@@ -19,6 +19,7 @@ typically 67% to 102% faster than the pure Java version from SUN.
 ## Building OpenSSL4J for your platform
 
 For building the application you need
+
 * JDK 9+,
 * Apache Maven,
 * GNU Make,
