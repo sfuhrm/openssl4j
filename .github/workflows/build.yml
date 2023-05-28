@@ -3,7 +3,7 @@ name: Platform Build
 on: push
 
 env:
-  QEMU_IMAGE: tonistiigi/binfmt:qemu-v5.0.1
+  QEMU_IMAGE: tonistiigi/binfmt:qemu-v7.0.0
 
 jobs:
   #
