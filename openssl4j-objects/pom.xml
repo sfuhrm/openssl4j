@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>de.sfuhrm</groupId>
+  <artifactId>openssl4j-objects</artifactId>
+  <version>1-SNAPSHOT</version>
+  <name>OpenSSL4J Shared Libraries</name>
+  <description>OpenSSL4J Shared Library Objecs</description>
+  <url>https://github.com/sfuhrm/openssl4j</url>
+  <scm>
+    <url>git@github.com:sfuhrm/openssl4j</url>
+    <connection>scm:git:git@github.com:sfuhrm/openssl4j.git</connection>
+    <tag>HEAD</tag>
+  </scm>
+  <licenses>
+    <license>
+      <name>GNU Lesser General Public License, Version 3.0</name>
+      <url>https://www.gnu.org/licenses/lgpl-3.0.en.html</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <id>stephan</id>
+      <name>Stephan Fuhrmann</name>
+      <email>s@sfuhrm.de</email>
+    </developer>
+  </developers>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+  <profiles>
+    <profile>
+      <id>github</id>
+      <distributionManagement>
+        <repository>
+          <id>github</id>
+          <name>GitHub Packages</name>
+          <url>https://maven.pkg.github.com/sfuhrm/openssl4j</url>
+        </repository>
+      </distributionManagement>
+   </profile>
+  </profiles>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.2.0</version>
+        <configuration>
+          <archive>
+            <manifest>
+              <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+              <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+            </manifest>
+            <manifestEntries>
+              <Build-Number>${project.version}</Build-Number>
+              <Build-Directory>${basedir}</Build-Directory>
+            </manifestEntries>
+          </archive>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

@@ -6,9 +6,9 @@
 JAVA_OS_ARCH:=$(shell cd build-helper && ${JAVA_HOME}/bin/java -Xint OsArch.java )
 
 JNI_JAVA_SOURCES=openssl4j/src/main/java
-JNI_C_SOURCES=openssl4j/src/main/c
+JNI_C_SOURCES=openssl4j-objects/src/main/c
 TARGET=target
-INSTALL_TARGET=openssl4j/src/main/resources/objects
+INSTALL_TARGET=openssl4j-objects/src/main/resources/objects
 JNI_JAVA_FILES=${JNI_JAVA_SOURCES}/de/sfuhrm/openssl4j/OpenSSLMessageDigestNative.java ${JNI_JAVA_SOURCES}/de/sfuhrm/openssl4j/OpenSSLCipherNative.java
 JNI_HEADER_FILES=${TARGET}/include/de_sfuhrm_openssl4j_OpenSSLMessageDigestNative.h ${TARGET}/include/de_sfuhrm_openssl4j_OpenSSLCipherNative.h
 

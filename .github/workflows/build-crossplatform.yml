@@ -1,9 +1,10 @@
-name: Platform Build
+name: Cross-Platform Build
 
 on: push
 
 env:
   QEMU_IMAGE: tonistiigi/binfmt:qemu-v5.0.1
+  BUILD_JDK: 11
 
 jobs:
   #
@@ -26,6 +27,9 @@ jobs:
         name: Available platforms
         run: echo ${{ steps.qemu.outputs.platforms }}
 
+  #
+  # build the different platforms using QEMU
+  #
   qemu_platform_object_files:
     runs-on: ubuntu-latest
     strategy:
@@ -83,8 +87,11 @@ jobs:
         with:
           name: shared_objects
           path: openssl4j/target/*.so
-          
-  build_jar:
+
+  #
+  # deploy the openssl4j-objects artifact to github packages
+  #          
+  deploy_openssl4j_objects:
     needs: qemu_platform_object_files
     runs-on: ubuntu-latest
     steps:
@@ -95,13 +102,13 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: shared_objects
-          path: openssl4j/src/main/resources/objects
-      - 
+          path: openssl4j-objects/src/main/resources/objects
+      -
         name: Set up JDK
         uses: actions/setup-java@v3
         with:
           distribution: 'adopt'
-          java-version: 11
+          java-version: ${{ env.BUILD_JDK }}
       -
         name: Cache local Maven repository
         uses: actions/cache@v3
@@ -113,28 +120,16 @@ jobs:
       - 
         name: Build with Maven
         run: mvn -B package --file pom.xml
+        working-directory: openssl4j-objects
 
       -
-        name: Archive Test Results
-        if: always()
         uses: actions/upload-artifact@v3
         with:
-          name: target
-          path: openssl4j/target
-
-      - 
-        uses: actions/upload-artifact@v3
-        with:
-          name: build
-          path: openssl4j/target/*.jar
-      - 
-        name: Deploy with Maven to SONATYPE OSS Snapshot if secrets are set
+          name: openssl4j-objects
+          path: openssl4j-objects/target/*.jar
+      -
+        name: Publish package to Github
+        run: mvn -Pgithub --batch-mode deploy
+        working-directory: openssl4j-objects
         env:
-          SONATYPE_USER: ${{ secrets.SONATYPE_USER }}
-          SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
-        run: |
-          if [ "${SONATYPE_USER}" != "" -a "${SONATYPE_PASSWORD}" != "" ]; then
-            mvn -B deploy -P snapshot -s .github/settings.xml
-          else
-            echo "Not deploying, secrets SONATYPE_USER and SONATYPE_PASSWORD not provided"
-          fi
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
