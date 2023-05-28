@@ -10,29 +10,56 @@ using the conventional MessageDigest class, but calls in the
 background the native OpenSSL library with all its
 optimizations for performance reasons.
 
-## Building OpenSSL4J
+## Features
+
+* Performance: The main feature of OpenSSL4J is performance: The MD5-implementation of OpenSSL4J is
+typically 67% to 102% faster than the pure Java version from SUN.
+* Functionality: There are some algorithms available in OpenSSL4J that are not available in the normal SUN crypto provider.
+
+## Building OpenSSL4J for your platform
 
 For building the application you need
+
 * JDK 9+,
 * Apache Maven,
 * GNU Make,
 * GNU GCC,
 * OpenSSL development headers
 
-To build the C library and install it to the right place in `openssl4j/src/main/resources/objects`, execute:
+To build the C library for your current platform, wrap it into a maven artifact (openssl4j-objects), build the java parts (openssl4j), execute:
 
-    $ make
-    
-To build the Java package, execute:
+```bash
+$ build.sh
+...
+[INFO] Reactor Summary for OpenSSL4J Parent 0.2.1-SNAPSHOT:
+[INFO] 
+[INFO] OpenSSL4J Parent ................................... SUCCESS [  0.953 s]
+[INFO] OpenSSL4J JNI ...................................... SUCCESS [  5.859 s]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  6.912 s
+[INFO] Finished at: 2023-05-28T20:38:43+02:00
+[INFO] ------------------------------------------------------------------------    
+```
 
-    $ mvn clean package
+## Building OpenSSL4J for cross-platform
 
-## Features
+The current cross-platform build is driven by github actions, using QEMU
+to build different platform shared object library.
+The github actions are visible to everyone.
+For the cross-platform build to work with your fork, there
+are some project secrets needed to be set in your
+Github fork settings:
 
-* Performance: The main feature of OpenSSL4J is performance: The MD5-implementation of OpenSSL4J is
-typically 67% to 102% faster than the pure Java version from SUN.
-* Functionality: There are some algorithms available in OpenSSL4J that are not available in the
-normal SUN crypto provider.
+* DOCKERHUB_USERNAME: Dockerhub username for getting the parent of the build image.
+* DOCKERHUB_TOKEN: Dockerhub secret token.
+* GH_USER: Github username for storing artifacts.
+* GH_PASSWORD: Github password for storing artifacts.
+* SONATYPE_USER: (optional) sonatype username for pushing snapshots.
+* SONATYPE_PASSWORD: (optional) sonatype password for pushing snapshots.
+
+(Date of last update: 2023-05-28)
 
 ## Restrictions
 
@@ -66,6 +93,7 @@ byte[] digest = messageDigest.digest():
 ### Installing it in the JDK
 
 You can also install the provider in your JDK installation. Open the `java.security` file in an editor:
+
 * Linux, or macOS: `<java-home>/conf/security/java.security`
 * Windows: `<java-home>\conf\security\java.security`
 
@@ -118,13 +146,14 @@ The recommended way of including the library into your project is using maven:
 <dependency>
     <groupId>de.sfuhrm</groupId>
     <artifactId>openssl4j</artifactId>
-    <version>0.2.0</version>
+    <version>0.3.0</version>
 </dependency>
 ```
 
 ---------------------------------------
 
 There are the following native implementations available inside the JAR file:
+
 * Linux-aarch64
 * Linux-amd64
 * Linux-arm
@@ -133,18 +162,21 @@ There are the following native implementations available inside the JAR file:
 
 ## Version notice
 
-Please note that the current version is experimental. 
+Please note that the current version is experimental.
 
 ## Versions
 
-The version numbers comply to the
+The version numbers used by `openssl4j` itself comply to the
 [semantic versioning](https://semver.org/) schema.
 Especially major version changes come with breaking API
 changes.
 
+The temporary internal `openssl4j-objects` artifact is using
+date-derived versions, but it is invisible to maven users.
+
 ## Author
 
-Written 2020-2022 by Stephan Fuhrmann. You can reach me via email to s (at) sfuhrm.de
+Written 2020-2023 by Stephan Fuhrmann. You can reach me via email to s (at) sfuhrm.de
 
 ## License
 

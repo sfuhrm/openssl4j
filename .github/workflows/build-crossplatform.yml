@@ -5,6 +5,7 @@ on: push
 env:
   QEMU_IMAGE: tonistiigi/binfmt:qemu-v5.0.1
   BUILD_JDK: 11
+  VERSION_SUFFIX: '-CIPHER'
 
 jobs:
   #
@@ -117,6 +118,10 @@ jobs:
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
             ${{ runner.os }}-maven-
+      -
+        name: Set by-date version with Maven
+        run: mvn versions:set -DnewVersion=$(date +"%Y-%m-%d-%H-%M-%S")${{ env.VERSION_SUFFIX }}
+        working-directory: openssl4j-objects
       - 
         name: Build with Maven
         run: mvn -B package --file pom.xml

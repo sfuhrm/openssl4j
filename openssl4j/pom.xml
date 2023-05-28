@@ -4,11 +4,14 @@
   <parent>
     <groupId>de.sfuhrm</groupId>
     <artifactId>openssl4j-parent</artifactId>
-    <version>0.2.1-SNAPSHOT</version>
+    <version>0.3.1-SNAPSHOT</version>
   </parent>
   <artifactId>openssl4j</artifactId>
   <name>OpenSSL4J JNI</name>
   <description>Java binding to OpenSSL library functions</description>
+  <properties>
+    <openssl4j-objects.version>2023-05-28-18-05-08</openssl4j-objects.version>
+  </properties>
   <build>
     <resources>
       <resource>
@@ -40,7 +43,7 @@
                 <artifactItem>
                   <groupId>de.sfuhrm</groupId>
                   <artifactId>openssl4j-objects</artifactId>
-                  <version>1-CIPHER-SNAPSHOT</version>
+                  <version>${openssl4j-objects.version}</version>
                 </artifactItem>
               </artifactItems>
               <outputDirectory>target/openssl4j-objects</outputDirectory>
