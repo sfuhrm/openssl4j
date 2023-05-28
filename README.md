@@ -1,6 +1,6 @@
 OpenSSL4J JNI Java Library
 ===================
-![Travis CI Status](https://travis-ci.org/sfuhrm/openssl4j.svg?branch=master)
+[![Platform Build](https://github.com/sfuhrm/openssl4j/actions/workflows/build.yml/badge.svg)](https://github.com/sfuhrm/openssl4j/actions/workflows/build.yml)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/de.sfuhrm/openssl4j/badge.svg)](https://maven-badges.herokuapp.com/maven-central/de.sfuhrm/openssl4j) 
 [![License: LGPL v3](https://img.shields.io/badge/License-LGPL%20v3-blue.svg)](https://www.gnu.org/licenses/lgpl-3.0)
 
