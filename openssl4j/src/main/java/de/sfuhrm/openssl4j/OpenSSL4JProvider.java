@@ -91,7 +91,6 @@ public final class OpenSSL4JProvider extends Provider {
             "SHA3-256", "SHA3-256",
             "SHA3-384", "SHA3-384",
             "SHA3-512", "SHA3-512",
-            "SHA3-512", "SHA3-512",
             "BLAKE2b512", "BLAKE2b512",
             "BLAKE2s256", "BLAKE2s256",
             "MD4", "MD4",
