@@ -9,31 +9,6 @@ env:
 
 jobs:
   #
-  # compile OsArch.java build helper
-  #
-  build_helper:
-    runs-on: ubuntu-latest
-    steps:
-      -
-        name: Checkout
-        uses: actions/checkout@v3
-      -
-        name: Set up JDK
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'adopt'
-          java-version: ${{ env.BUILD_JDK }}
-      -
-        name: Compile OsArch
-        run: javac OsArch.java
-        working-directory: build-helper
-      -
-        uses: actions/upload-artifact@v3
-        with:
-          name: build_helper
-          path: build-helper/*.class
-
-  #
   # show the available qemu platforms to have a list of all platforms
   #
   qemu_show_platform_info:
@@ -57,7 +32,6 @@ jobs:
   # build the different platforms using QEMU
   #
   qemu_platform_object_files:
-    needs: build_helper
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -75,13 +49,6 @@ jobs:
       -
         name: Checkout
         uses: actions/checkout@v3
-
-      - 
-        uses: actions/download-artifact@v3
-        with:
-          name: build_helper
-          path: build-helper
-
       -
         name: Set up QEMU for ${{ matrix.platform }}
         id: qemu
