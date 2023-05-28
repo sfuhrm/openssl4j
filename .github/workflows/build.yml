@@ -6,6 +6,9 @@ env:
   QEMU_IMAGE: tonistiigi/binfmt:qemu-v5.0.1
 
 jobs:
+  #
+  # show the available qemu platforms to have a list of all platforms
+  #
   qemu_show_platform_info:
     runs-on: ubuntu-latest
     steps:
@@ -110,6 +113,15 @@ jobs:
       - 
         name: Build with Maven
         run: mvn -B package --file pom.xml
+
+      -
+        name: Archive Test Results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: target
+          path: openssl4j/target
+
       - 
         uses: actions/upload-artifact@v3
         with:
