@@ -19,11 +19,13 @@ For building the application you need
 * GNU GCC,
 * OpenSSL development headers
 
-To build the C library and install it to the right place in `openssl4j/src/main/resources/objects`, execute:
+1. To build the C library and deploy it as a Maven Artifact in your local .m2 directory, execute:
 
-    $ make
+    $ make && ( cd openssl4j-objects; mvn install )
     
-To build the Java package, execute:
+2. Ensure that you are using the right snapshot version of the openssl4j-objects in openssl4j/pom.xml.
+
+3. To build the Java package, execute:
 
     $ mvn clean package
 
