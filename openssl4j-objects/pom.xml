@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>de.sfuhrm</groupId>
   <artifactId>openssl4j-objects</artifactId>
-  <version>0</version>
+  <version>1-SNAPSHOT</version>
   <name>OpenSSL4J Shared Libraries</name>
   <description>OpenSSL4J Shared Library Objecs</description>
   <url>https://github.com/sfuhrm/openssl4j</url>
