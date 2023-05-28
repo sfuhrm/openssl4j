@@ -1,3 +1,9 @@
+#
+# Dockerfile for building a per-platform build
+# in github actions.
+#
+# See .github/workflows/build.yml
+#
 FROM debian:11
 
 ENV JAVA_HOME=/opt/java/openjdk
