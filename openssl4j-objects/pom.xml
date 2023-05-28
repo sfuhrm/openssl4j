@@ -37,7 +37,7 @@
   </properties>
   <profiles>
     <profile>
-      <id>release</id>
+      <id>github</id>
       <distributionManagement>
         <repository>
           <id>github</id>
