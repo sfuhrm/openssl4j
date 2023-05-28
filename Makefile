@@ -3,7 +3,7 @@
 # Makefile for generating the native C library
 #
 ####
-JAVA_OS_ARCH:=$(shell cd build-helper && ${JAVA_HOME}/bin/java -Xint OsArch.java )
+JAVA_OS_ARCH:=$(shell cd build-helper && ${JAVA_HOME}/bin/java -Xint OsArch )
 
 JNI_JAVA_SOURCES=openssl4j/src/main/java
 JNI_C_SOURCES=openssl4j-objects/src/main/c
