@@ -36,7 +36,7 @@ jobs:
         env:
           GITHUB_USER: ${{ secrets.GH_USER }}
           GITHUB_PASSWORD: ${{ secrets.GH_PASSWORD }}
-        run: mvn -B package --file pom.xml
+        run: mvn -B package --file pom.xml -s .github/settings.xml
 
       -
         name: Archive Test Results
@@ -56,8 +56,6 @@ jobs:
         env:
           SONATYPE_USER: ${{ secrets.SONATYPE_USER }}
           SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
-          GITHUB_USER: none
-          GITHUB_PASSWORD: none
         run: |
           if [ "${SONATYPE_USER}" != "" -a "${SONATYPE_PASSWORD}" != "" ]; then
             mvn -B deploy -P snapshot -s .github/settings.xml
