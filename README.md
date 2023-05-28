@@ -18,13 +18,13 @@ typically 67% to 102% faster than the pure Java version from SUN.
 
 ## Performance
 
-The following picture shows a comparison of
+The following picture shows a performance comparison of
 
 * BouncyCastle crypto provider (version 1.70)
 * Adoptium JDK SUN crypto provider (JDK 17.0.6)
 * OpenSSL4j (version 0.30)
 
-conducted on a i7-3840QM CPU.
+conducted on a i7-3840QM CPU. Each bar shows the megabytes per second throughput.
 
 ![bc-sun-ossl-performance.png](./images/bc-sun-ossl-performance.png)
 
