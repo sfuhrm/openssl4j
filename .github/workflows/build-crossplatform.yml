@@ -117,6 +117,10 @@ jobs:
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
             ${{ runner.os }}-maven-
+      -
+        name: Set by-date version with Maven
+        run: mvn versions:set -DnewVersion=$(date --iso-8601=seconds)
+        working-directory: openssl4j-objects
       - 
         name: Build with Maven
         run: mvn -B package --file pom.xml
