@@ -40,7 +40,7 @@
                 <artifactItem>
                   <groupId>de.sfuhrm</groupId>
                   <artifactId>openssl4j-objects</artifactId>
-                  <version>0</version>
+                  <version>1-CIPHER-SNAPSHOT</version>
                 </artifactItem>
               </artifactItems>
               <outputDirectory>target/openssl4j-objects</outputDirectory>
