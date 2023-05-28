@@ -28,6 +28,8 @@ Each bar shows different throughputs in megabytes per second.
 The per-bar throughputs contain multiple different test scenarios
 regarding blocks sizes and data structures used for
 data passing (byte, array, direct ByteBuffer, heap ByteBuffer).
+The median of the tests is presented by a dark-blue horizontal line
+within the bar.
 
 ![bc-sun-ossl-performance.png](./images/bc-sun-ossl-performance.png)
 
