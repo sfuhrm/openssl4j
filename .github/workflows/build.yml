@@ -114,7 +114,7 @@ jobs:
       - 
         name: Build with Maven
         run: mvn -B package --file pom.xml
-        working-directory: openssl4-objects
+        working-directory: openssl4j-objects
 
       -
         uses: actions/upload-artifact@v3
@@ -124,7 +124,7 @@ jobs:
       -
         name: Publish package to Github
         run: mvn -Pgithub --batch-mode deploy
-        working-directory: openssl4-objects
+        working-directory: openssl4j-objects
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
