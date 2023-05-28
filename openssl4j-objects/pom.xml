@@ -19,12 +19,6 @@
       <distribution>repo</distribution>
     </license>
   </licenses>
-  <distributionManagement>
-    <snapshotRepository>
-      <id>ossrh</id>
-      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-    </snapshotRepository>
-  </distributionManagement>
   <developers>
     <developer>
       <id>stephan</id>
