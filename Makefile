@@ -27,8 +27,14 @@ ${TARGET}/include/%.h: ${JNI_JAVA_FILES}
 	mkdir -p ${TARGET}/include
 	${JAVA_HOME}/bin/javac -J-Xint -classpath ${JNI_JAVA_SOURCES} -h ${TARGET}/include -d ${TARGET} -s ${TARGET} ${JNI_JAVA_FILES}
 
-${TARGET}/libopenssl4j-${JAVA_OS_ARCH}.so: ${JNI_HEADER_FILES}
-	gcc -Wall -Werror -fPIC -o $@ -lc -lssl -shared -I${TARGET}/include/ \
-	-I${JAVA_HOME}/include -I${JAVA_HOME}/include/linux \
-	${JNI_C_SOURCES}/openssl4j_common.c \
-	${JNI_C_SOURCES}/openssl4j_messagedigest.c
+${TARGET}/%.o: ${JNI_C_SOURCES}/%.c ${JNI_HEADER_FILES}
+	gcc -Wall -Werror -fPIC -c -o $@ \
+	-I${TARGET}/include/ \
+	-I${JAVA_HOME}/include \
+	-I${JAVA_HOME}/include/linux \
+	$<
+
+${TARGET}/libopenssl4j-${JAVA_OS_ARCH}.so: ${TARGET}/openssl4j_common.o ${TARGET}/openssl4j_messagedigest.o
+	gcc -fPIC -o $@ -lc -lssl -shared \
+	${TARGET}/openssl4j_common.o \
+	${TARGET}/openssl4j_messagedigest.o
