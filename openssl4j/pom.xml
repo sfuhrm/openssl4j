@@ -40,7 +40,7 @@
                 <artifactItem>
                   <groupId>de.sfuhrm</groupId>
                   <artifactId>openssl4j-objects</artifactId>
-                  <version>0</version>
+                  <version>2023-05-28-18-05-08</version>
                 </artifactItem>
               </artifactItems>
               <outputDirectory>target/openssl4j-objects</outputDirectory>
