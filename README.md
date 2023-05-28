@@ -19,22 +19,29 @@ For building the application you need
 * GNU GCC,
 * OpenSSL development headers
 
-1. To build the C library and deploy it as a Maven Artifact in your local .m2 directory, execute:
+To build the C library, wrap it into a maven artifact (openssl4j-objects),
+build the java parts (openssl4j), execute:
 
-    $ make && ( cd openssl4j-objects; mvn install )
-    
-2. Ensure that you are using the right snapshot version of the openssl4j-objects in openssl4j/pom.xml.
-
-3. To build the Java package, execute:
-
-    $ mvn clean package
+```bash
+$ build.sh
+...
+[INFO] Reactor Summary for OpenSSL4J Parent 0.2.1-SNAPSHOT:
+[INFO] 
+[INFO] OpenSSL4J Parent ................................... SUCCESS [  0.953 s]
+[INFO] OpenSSL4J JNI ...................................... SUCCESS [  5.859 s]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  6.912 s
+[INFO] Finished at: 2023-05-28T20:38:43+02:00
+[INFO] ------------------------------------------------------------------------    
+```
 
 ## Features
 
 * Performance: The main feature of OpenSSL4J is performance: The MD5-implementation of OpenSSL4J is
 typically 67% to 102% faster than the pure Java version from SUN.
-* Functionality: There are some algorithms available in OpenSSL4J that are not available in the
-normal SUN crypto provider.
+* Functionality: There are some algorithms available in OpenSSL4J that are not available in the normal SUN crypto provider.
 
 ## Restrictions
 
@@ -68,6 +75,7 @@ byte[] digest = messageDigest.digest():
 ### Installing it in the JDK
 
 You can also install the provider in your JDK installation. Open the `java.security` file in an editor:
+
 * Linux, or macOS: `<java-home>/conf/security/java.security`
 * Windows: `<java-home>\conf\security\java.security`
 
@@ -127,6 +135,7 @@ The recommended way of including the library into your project is using maven:
 ---------------------------------------
 
 There are the following native implementations available inside the JAR file:
+
 * Linux-aarch64
 * Linux-amd64
 * Linux-arm
@@ -135,18 +144,21 @@ There are the following native implementations available inside the JAR file:
 
 ## Version notice
 
-Please note that the current version is experimental. 
+Please note that the current version is experimental.
 
 ## Versions
 
-The version numbers comply to the
+The version numbers used by `openssl4j` itself comply to the
 [semantic versioning](https://semver.org/) schema.
 Especially major version changes come with breaking API
 changes.
 
+The temporary internal `openssl4j-objects` artifact is using
+date-derived versions, but it is invisible to maven users.
+
 ## Author
 
-Written 2020-2022 by Stephan Fuhrmann. You can reach me via email to s (at) sfuhrm.de
+Written 2020-2023 by Stephan Fuhrmann. You can reach me via email to s (at) sfuhrm.de
 
 ## License
 
