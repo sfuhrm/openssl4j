@@ -1,0 +1,53 @@
+name: Java Single-Platform Build
+
+on: push
+
+env:
+  BUILD_JDK: 11
+
+jobs:
+
+  #
+  # build the java application with single (local) platform
+  #
+  build_jar:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v3
+
+      - 
+        name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'adopt'
+          java-version: ${{ env.BUILD_JDK }}
+      -
+        name: Cache local Maven repository
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+      - 
+        name: Build using the build script
+        env:
+          GITHUB_USER: ${{ secrets.GH_USER }}
+          GITHUB_PASSWORD: ${{ secrets.GH_PASSWORD }}
+        run: ./build.sh
+
+      -
+        name: Archive Test Results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: target
+          path: openssl4j/target
+
+      - 
+        uses: actions/upload-artifact@v3
+        with:
+          name: build
+          path: openssl4j/target/*.jar
