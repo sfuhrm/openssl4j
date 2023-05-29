@@ -1,6 +1,10 @@
 name: Cross-Platform Java Build
 
-on: push
+on:
+  push:
+    branches:
+      - main
+      - CIPHER
 
 env:
   BUILD_JDK: 11
