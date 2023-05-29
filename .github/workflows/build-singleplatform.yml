@@ -10,7 +10,7 @@ jobs:
   #
   # build the java application with single (local) platform
   #
-  build_jar:
+  single_platform_jar:
     runs-on: ubuntu-latest
     steps:
       -
