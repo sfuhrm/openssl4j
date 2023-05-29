@@ -1,6 +1,10 @@
 name: Cross-Platform C Build
 
-on: push
+on:
+  push:
+    branches:
+      - main
+      - CIPHER
 
 env:
   QEMU_IMAGE: tonistiigi/binfmt:qemu-v5.0.1
