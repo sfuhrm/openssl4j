@@ -1,4 +1,4 @@
-name: Java Build
+name: Cross-Platform Java Build
 
 on: push
 

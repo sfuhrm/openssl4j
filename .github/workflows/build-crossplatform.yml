@@ -1,4 +1,4 @@
-name: Cross-Platform Build
+name: Cross-Platform C Build
 
 on: push
 
