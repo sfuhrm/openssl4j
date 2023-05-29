@@ -10,7 +10,12 @@ OpenSSL4J JNI Java Library
 OpenSSL4J is a Java bridge to the native OpenSSL library. On the Java side you're
 using the conventional MessageDigest class, but calls in the
 background the native OpenSSL library with all its
-optimizations for performance reasons.
+optimizations for [performance reasons](https://www.openssl.org/docs/faq-4-build.txt):
+
+> On x86, the assembly code uses the CPUID instruction (see the
+> OPENSSL_ia32cap.pod manpage) to determine if various instructions (AES,
+> SSE, MMX, etc) are available and will use them if so.  For other processors,
+> similar tests are performed if at all possible.
 
 ## Features
 
