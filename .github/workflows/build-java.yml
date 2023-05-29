@@ -12,9 +12,11 @@ env:
 jobs:
 
   #
-  # build the java application
+  # build the java application using
+  # cross-platform libs in openssl4j-objects
+  # from github repo
   #
-  build_jar:
+  build_crossplatform_jar:
     runs-on: ubuntu-latest
     steps:
       -
