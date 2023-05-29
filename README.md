@@ -7,10 +7,11 @@ OpenSSL4J JNI Java Library
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/de.sfuhrm/openssl4j/badge.svg)](https://maven-badges.herokuapp.com/maven-central/de.sfuhrm/openssl4j)
 [![License: LGPL v3](https://img.shields.io/badge/License-LGPL%20v3-blue.svg)](https://www.gnu.org/licenses/lgpl-3.0)
 
-OpenSSL4J is a Java bridge to the native OpenSSL library. On the Java side you're
-using the conventional MessageDigest class, but calls in the
-background the native OpenSSL library with all its
-optimizations for [performance reasons](https://www.openssl.org/docs/faq-4-build.txt):
+OpenSSL4J is a Java bridge to the native OpenSSL library.
+On the Java side it's offering the
+conventional [MessageDigest](https://docs.oracle.com/javase/8/docs/api/java/security/MessageDigest.html) class. In the background the calls
+will be translated to the native OpenSSL library with all its
+[optimizations](https://www.openssl.org/docs/faq-4-build.txt):
 
 > On x86, the assembly code uses the CPUID instruction (see the
 > OPENSSL_ia32cap.pod manpage) to determine if various instructions (AES,
@@ -178,6 +179,8 @@ The recommended way of including the library into your project is using maven:
 ```
 
 ---------------------------------------
+
+## Native platforms supported
 
 There are the following native implementations available inside the JAR file:
 
