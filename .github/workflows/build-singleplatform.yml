@@ -1,4 +1,4 @@
-name: Java Single-Platform Build
+name: Single-Platform Build
 
 on: push
 
