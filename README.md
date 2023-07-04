@@ -37,7 +37,7 @@ The per-bar throughputs contain multiple different test scenarios
 regarding blocks sizes and data structures used for
 data passing (byte, array, direct ByteBuffer, heap ByteBuffer).
 The median of the tests is presented by a dark-blue horizontal line
-within the bar. The 25% and 75% quantil make up the
+within the bar. The 25% and 75% quantile make up the
 area of the bars.
 
 ![bc-sun-ossl-performance.png](./images/bc-sun-ossl-performance.png)

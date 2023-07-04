@@ -5,7 +5,7 @@
   <artifactId>openssl4j-objects</artifactId>
   <version>0-SNAPSHOT</version>
   <name>OpenSSL4J Shared Libraries</name>
-  <description>OpenSSL4J Shared Library Objecs</description>
+  <description>OpenSSL4J Shared Library Objects</description>
   <url>https://github.com/sfuhrm/openssl4j</url>
   <scm>
     <url>git@github.com:sfuhrm/openssl4j</url>
