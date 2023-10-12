@@ -30,7 +30,7 @@ The following picture shows a performance comparison of
 
 * BouncyCastle crypto provider (version 1.70)
 * Adoptium JDK SUN crypto provider (JDK 17.0.6)
-* OpenSSL4j (version 0.30)
+* OpenSSL4j (version 0.3.0)
 
 Each bar shows different throughputs in megabytes per second.
 The per-bar throughputs contain multiple different test scenarios
@@ -48,7 +48,7 @@ The benchmark was conducted on a i7-3840QM CPU.
 
 For building the application you need
 
-* JDK 9+,
+* JDK 8+,
 * Apache Maven,
 * GNU Make,
 * GNU GCC,
