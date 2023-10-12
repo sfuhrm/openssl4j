@@ -3,7 +3,7 @@ name: Cross-Platform C Build
 on:
   push:
     branches:
-      - main
+      - master
       - CIPHER
 
 env:
