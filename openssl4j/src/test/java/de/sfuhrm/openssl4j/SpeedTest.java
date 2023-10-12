@@ -25,7 +25,7 @@ import java.util.stream.Stream;
  * Benchmark testing the speed of multiple algorithm implementations.
  * @author Stephan Fuhrmann
  */
-//@Disabled
+@Disabled
 public class SpeedTest {
 
     static final int TIMES = 100;
