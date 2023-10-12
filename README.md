@@ -5,7 +5,7 @@ OpenSSL4J JNI Java Library
 [![Java Build](https://github.com/sfuhrm/openssl4j/actions/workflows/build-java.yml/badge.svg)](https://github.com/sfuhrm/openssl4j/actions/workflows/build-java.yml)
 [![Crossplatform Build](https://github.com/sfuhrm/openssl4j/actions/workflows/build-crossplatform.yml/badge.svg)](https://github.com/sfuhrm/openssl4j/actions/workflows/build-crossplatform.yml)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/de.sfuhrm/openssl4j/badge.svg)](https://maven-badges.herokuapp.com/maven-central/de.sfuhrm/openssl4j)
-[![License: LGPL v3](https://img.shields.io/badge/License-LGPL%20v3-blue.svg)](https://www.gnu.org/licenses/lgpl-3.0)
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 OpenSSL4J is a Java bridge to the native OpenSSL library.
 On the Java side it's offering the
@@ -210,4 +210,6 @@ Written 2020-2023 by Stephan Fuhrmann. You can reach me via email to s (at) sfuh
 
 ## License
 
-The project is licensed under [LGPL 3.0](https://www.gnu.org/licenses/lgpl-3.0.en.html).
+The project *is* licensed under [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt) after excluding OpenSSL4j release v0.3.0.
+
+The project *was* licensed under [LGPL 3.0](https://www.gnu.org/licenses/lgpl-3.0.en.html) until including OpenSSL4j release v0.3.0.
