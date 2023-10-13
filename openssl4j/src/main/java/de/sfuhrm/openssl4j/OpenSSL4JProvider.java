@@ -24,7 +24,8 @@ public final class OpenSSL4JProvider extends Provider {
      * class can't be used.
      * */
     public OpenSSL4JProvider() {
-        super(PROVIDER_NAME, PropertyAccessor.get("version", "unknown"),
+        super(PROVIDER_NAME,
+                getLibraryVersion(),
                 "OpenSSL4J provider v"
                 + PropertyAccessor.get("version", "unknown") + ", implementing "
                 + "multiple message digest algorithms.");
@@ -40,6 +41,17 @@ public final class OpenSSL4JProvider extends Provider {
         } catch (IOException e) {
             throw new IllegalStateException("Could not initialize", e);
         }
+    }
+
+    private static double getLibraryVersion() {
+        double result = 0.0;
+        String stringVersion = PropertyAccessor.get("version", "0.0.0");
+        Pattern versionPattern = Pattern.compile("(\\d+\\.\\d+).*");
+        Matcher matcher = versionPattern.matcher(stringVersion);
+        if (matcher.matches()) {
+            result = Double.parseDouble(matcher.group(1));
+        }
+        return result;
     }
 
     /** Gets the names and the aliases of all message digest

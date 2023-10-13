@@ -8,6 +8,7 @@ import java.nio.file.Paths;
 import java.nio.file.attribute.PosixFilePermission;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -83,7 +84,10 @@ final class ObjectTransfer {
 
     private void transferTo(InputStream inputStream, Path targetFile) throws IOException {
         Files.copy(inputStream, targetFile);
-        Files.setPosixFilePermissions(targetFile, Set.of(PosixFilePermission.OWNER_EXECUTE, PosixFilePermission.OWNER_READ));
+        Set<PosixFilePermission> set = new HashSet<>();
+        set.add(PosixFilePermission.OWNER_EXECUTE);
+        set.add(PosixFilePermission.OWNER_READ);
+        Files.setPosixFilePermissions(targetFile, set);
         libraries.add(targetFile);
     }
 }
