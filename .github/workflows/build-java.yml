@@ -3,7 +3,7 @@ name: Cross-Platform Java Build
 on:
   push:
     branches:
-      - main
+      - master
       - CIPHER
 
 jobs:
