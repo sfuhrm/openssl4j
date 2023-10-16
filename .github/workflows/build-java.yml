@@ -1,10 +1,6 @@
 name: Cross-Platform Java Build
 
-on:
-  push:
-    branches:
-      - master
-      - CIPHER
+on: push
 
 jobs:
 
