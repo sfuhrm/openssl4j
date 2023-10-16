@@ -113,7 +113,7 @@ import de.sfuhrm.openssl4j.OpenSSL4JProvider;
 
 MessageDigest messageDigest = MessageDigest.getInstance("MD5", new OpenSSL4JProvider());
 messageDigest.update("hello world!".getBytes(Charset.forName("ASCII")));
-byte[] digest = messageDigest.digest():
+byte[] digest = messageDigest.digest();
 ```
 
 ---------------------------------------
@@ -174,7 +174,7 @@ The recommended way of including the library into your project is using maven:
 <dependency>
     <groupId>de.sfuhrm</groupId>
     <artifactId>openssl4j</artifactId>
-    <version>0.3.0</version>
+    <version>0.4.2</version>
 </dependency>
 ```
 
