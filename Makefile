@@ -35,6 +35,9 @@ ${TARGET}/%.o: ${JNI_C_SOURCES}/%.c ${JNI_HEADER_FILES}
 	$<
 
 ${TARGET}/libopenssl4j-${JAVA_OS_ARCH}.so: ${TARGET}/openssl4j_common.o ${TARGET}/openssl4j_messagedigest.o
-	ld --verbose --pic-executable -fPIC -shared -o $@ -lc -lssl \
-	${TARGET}/openssl4j_common.o \
-	${TARGET}/openssl4j_messagedigest.o
+	# link libssl statically, libc dynamically
+	ld --verbose --pic-executable -fPIC -shared -o $@ \
+	 ${TARGET}/openssl4j_common.o \
+	 ${TARGET}/openssl4j_messagedigest.o \
+	 --whole-archive -Bstatic -lssl \
+	 --no-whole-archive -Bdynamic  -lcrypto -lc
