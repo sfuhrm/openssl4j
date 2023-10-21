@@ -174,7 +174,7 @@ The recommended way of including the library into your project is using maven:
 <dependency>
     <groupId>de.sfuhrm</groupId>
     <artifactId>openssl4j</artifactId>
-    <version>0.4.2</version>
+    <version>0.5.0</version>
 </dependency>
 ```
 
