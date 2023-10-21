@@ -4,7 +4,6 @@
 #
 ####
 JAVA_OS_ARCH:=$(shell cd build-helper && ${JAVA_HOME}/bin/java -Xint OsArch.java )
-MACHINE_TRIPLET=$(shell gcc -dumpmachine)
 
 JNI_JAVA_SOURCES=openssl4j/src/main/java
 JNI_C_SOURCES=openssl4j-objects/src/main/c
@@ -36,6 +35,9 @@ ${TARGET}/%.o: ${JNI_C_SOURCES}/%.c ${JNI_HEADER_FILES}
 	$<
 
 ${TARGET}/libopenssl4j-${JAVA_OS_ARCH}.so: ${TARGET}/openssl4j_common.o ${TARGET}/openssl4j_messagedigest.o
-	ld --verbose --pic-executable -fPIC -shared -o $@ /usr/lib/${MACHINE_TRIPLET}/libssl.a -lc \
-	${TARGET}/openssl4j_common.o \
-	${TARGET}/openssl4j_messagedigest.o
+	# link libssl statically, libc dynamically
+	ld --verbose --pic-executable -fPIC -shared -o $@ \
+	 ${TARGET}/openssl4j_common.o \
+	 ${TARGET}/openssl4j_messagedigest.o \
+	 --whole-archive -Bstatic -lssl \
+	 --no-whole-archive -Bdynamic -lc
