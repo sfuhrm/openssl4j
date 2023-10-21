@@ -10,7 +10,7 @@
   <name>OpenSSL4J JNI</name>
   <description>Java binding to OpenSSL library functions</description>
   <properties>
-    <openssl4j-objects.version>2023-10-21-08-11-18</openssl4j-objects.version>
+    <openssl4j-objects.version>2023-10-21-08-46-22</openssl4j-objects.version>
   </properties>
   <build>
     <resources>
