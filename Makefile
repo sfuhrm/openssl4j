@@ -39,5 +39,5 @@ ${TARGET}/libopenssl4j-${JAVA_OS_ARCH}.so: ${TARGET}/openssl4j_common.o ${TARGET
 	ld --verbose --pic-executable -fPIC -shared -o $@ \
 	 ${TARGET}/openssl4j_common.o \
 	 ${TARGET}/openssl4j_messagedigest.o \
-	 --whole-archive -Bstatic -lssl -lcrypto \
-	 --no-whole-archive -Bdynamic -lc
+	 --whole-archive -Bstatic -lssl \
+	 --no-whole-archive -Bdynamic  -lcrypto -lc
