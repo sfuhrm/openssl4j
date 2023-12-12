@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -46,27 +47,33 @@ final class ObjectTransfer {
         Runtime.getRuntime().addShutdownHook(new Thread(removeTarget));
     }
 
-    /** Enforces that the input string is alphanumeric.
-     * @param in the string to check.
+    /** Gets a system property, enforcing that the value string is alphanumeric.
+     * @param property the name of the property to get.
+     * @return the value of the property if it is alphanumeric.
      * @throws IllegalStateException if there is a non alphanumeric character in the string.
+     * @throws NullPointerException if property is null or not set.
      * */
-    static String enforceAlnum(String in) {
-        for (int i = 0; i < in.length(); i++) {
-            int c = in.charAt(i);
+    static String getSystemPropertyAlnum(String property) {
+        Objects.requireNonNull(property);
+
+        final String value = System.getProperty(property);
+        Objects.requireNonNull(value, "System property " + property + " is null");
+        for (int i = 0; i < value.length(); i++) {
+            final int c = value.charAt(i);
             if ((!Character.isLetterOrDigit(c))) {
-                throw new IllegalStateException("os property is containing non-alphanumeric values");
+                throw new IllegalStateException("os property '" + property + "' is containing non-alphanumeric values");
             }
         }
-        return in;
+        return value;
     }
 
     private static String getOsName() {
-        return enforceAlnum(System.getProperty("os.name"));
+        return getSystemPropertyAlnum("os.name");
     }
 
 
     private static String getArchName() {
-        return enforceAlnum(System.getProperty("os.arch"));
+        return getSystemPropertyAlnum("os.arch");
     }
 
     static String toLibraryName(String name) {

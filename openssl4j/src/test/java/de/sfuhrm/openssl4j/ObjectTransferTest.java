@@ -11,16 +11,29 @@ public class ObjectTransferTest {
 
     @Test
     public void enforceAlnumWithAlnum() {
-        Assertions.assertEquals("foobar123", ObjectTransfer.enforceAlnum("foobar123"));
+        System.setProperty("foo", "foobar123");
+        Assertions.assertEquals("foobar123", ObjectTransfer.getSystemPropertyAlnum("foo"));
     }
 
     @Test
     public void enforceAlnumWithSpace() {
-        Assertions.assertThrows(IllegalStateException.class, () -> ObjectTransfer.enforceAlnum("foobar 123"));
+        System.setProperty("foo", "foobar 123");
+        Assertions.assertThrows(IllegalStateException.class, () -> ObjectTransfer.getSystemPropertyAlnum("foo"));
     }
 
     @Test
     public void enforceAlnumWithBackslash() {
-        Assertions.assertThrows(IllegalStateException.class, () -> ObjectTransfer.enforceAlnum("foobar\\123"));
+        System.setProperty("foo", "foobar\\123");
+        Assertions.assertThrows(IllegalStateException.class, () -> ObjectTransfer.getSystemPropertyAlnum("foo"));
+    }
+
+    @Test
+    public void enforceAlnumWithNotExist() {
+        Assertions.assertThrows(NullPointerException.class, () -> ObjectTransfer.getSystemPropertyAlnum("NOT_EXIST"));
+    }
+
+    @Test
+    public void enforceAlnumWithNull() {
+        Assertions.assertThrows(NullPointerException.class, () -> ObjectTransfer.getSystemPropertyAlnum(null));
     }
 }
