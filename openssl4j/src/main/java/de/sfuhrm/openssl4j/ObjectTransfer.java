@@ -46,13 +46,27 @@ final class ObjectTransfer {
         Runtime.getRuntime().addShutdownHook(new Thread(removeTarget));
     }
 
+    /** Enforces that the input string is alphanumeric.
+     * @param in the string to check.
+     * @throws IllegalStateException if there is a non alphanumeric character in the string.
+     * */
+    static String enforceAlnum(String in) {
+        for (int i = 0; i < in.length(); i++) {
+            int c = in.charAt(i);
+            if ((!Character.isLetterOrDigit(c))) {
+                throw new IllegalStateException("os property is containing non-alphanumeric values");
+            }
+        }
+        return in;
+    }
+
     private static String getOsName() {
-        return System.getProperty("os.name");
+        return enforceAlnum(System.getProperty("os.name"));
     }
 
 
     private static String getArchName() {
-        return System.getProperty("os.arch");
+        return enforceAlnum(System.getProperty("os.arch"));
     }
 
     static String toLibraryName(String name) {
