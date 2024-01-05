@@ -49,8 +49,9 @@ final class ObjectTransfer {
 
     /** Gets a system property, enforcing that the value string is alphanumeric.
      * @param property the name of the property to get.
-     * @return the value of the property if it is alphanumeric.
-     * @throws IllegalStateException if there is a non alphanumeric character in the string.
+     * @return the value of the property consisting of its alphanumeric parts
+     * and the non-alphanumeric parts being replaced with an
+     * underscore character ('_').
      * @throws NullPointerException if property is null or not set.
      * */
     static String getSystemPropertyAlnum(String property) {
@@ -58,13 +59,16 @@ final class ObjectTransfer {
 
         final String value = System.getProperty(property);
         Objects.requireNonNull(value, "System property " + property + " is null");
+        StringBuilder result = new StringBuilder(value.length());
         for (int i = 0; i < value.length(); i++) {
-            final int c = value.charAt(i);
-            if ((!Character.isLetterOrDigit(c))) {
-                throw new IllegalStateException("os property '" + property + "' is containing non-alphanumeric values");
+            final char c = value.charAt(i);
+            if (Character.isLetterOrDigit(c)) {
+                result.append(c);
+            } else {
+                result.append('_');
             }
         }
-        return value;
+        return result.toString();
     }
 
     private static String getOsName() {

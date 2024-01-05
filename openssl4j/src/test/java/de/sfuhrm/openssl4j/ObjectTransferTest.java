@@ -18,13 +18,13 @@ public class ObjectTransferTest {
     @Test
     public void enforceAlnumWithSpace() {
         System.setProperty("foo", "foobar 123");
-        Assertions.assertThrows(IllegalStateException.class, () -> ObjectTransfer.getSystemPropertyAlnum("foo"));
+        Assertions.assertEquals("foobar_123", ObjectTransfer.getSystemPropertyAlnum("foo"));
     }
 
     @Test
     public void enforceAlnumWithBackslash() {
         System.setProperty("foo", "foobar\\123");
-        Assertions.assertThrows(IllegalStateException.class, () -> ObjectTransfer.getSystemPropertyAlnum("foo"));
+        Assertions.assertEquals("foobar_123", ObjectTransfer.getSystemPropertyAlnum("foo"));
     }
 
     @Test
