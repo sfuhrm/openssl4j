@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>de.sfuhrm</groupId>
     <artifactId>openssl4j-parent</artifactId>
-    <version>0.5.1-SNAPSHOT</version>
+    <version>0.3.1-SNAPSHOT</version>
   </parent>
   <artifactId>openssl4j</artifactId>
   <name>OpenSSL4J JNI</name>
   <description>Java binding to OpenSSL library functions</description>
   <properties>
-    <openssl4j-objects.version>2023-10-21-08-46-22</openssl4j-objects.version>
+    <openssl4j-objects.version>2023-05-28-18-05-08</openssl4j-objects.version>
   </properties>
   <build>
     <resources>
@@ -57,10 +58,10 @@
   <dependencies>
     <!-- for speedtest only -->
     <dependency>
-        <groupId>org.bouncycastle</groupId>
-        <artifactId>bcprov-jdk18on</artifactId>
-        <version>1.77</version>
-        <scope>test</scope>
+      <groupId>org.bouncycastle</groupId>
+      <artifactId>bcprov-jdk15on</artifactId>
+      <version>1.70</version>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 </project>
