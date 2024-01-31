@@ -1,4 +1,4 @@
-FROM debian:10
+FROM debian:11
 
 ENV JAVA_HOME=/opt/java/openjdk
 COPY --from=eclipse-temurin:11 $JAVA_HOME $JAVA_HOME
