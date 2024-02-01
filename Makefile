@@ -10,7 +10,7 @@ CUR_DIR := $(shell pwd)
 $(info JavaArch: ${JAVA_OS_ARCH})
 $(info Cur Dir: ${CUR_DIR})
 
-BASE_DIR?=/openssl4j
+BASE_DIR?=openssl4j_build
 
 JNI_JAVA_SOURCES=openssl4j/src/main/java
 JNI_C_SOURCES=openssl4j/src/main/c
@@ -55,13 +55,13 @@ endif
 .PHONY: install
 
 install: ${TARGET}/libopenssl4j-${JAVA_OS_ARCH}.so
-	sudo mkdir -p ${INSTALL_TARGET}
-	sudo cp $< ${INSTALL_TARGET} 
+	 mkdir -p ${INSTALL_TARGET}
+	 cp $< ${INSTALL_TARGET} 
 	cp ./openssl4j/src/main/java/de/sfuhrm/openssl4j/OpenSSLCryptoNative.java temp.java
 	ls -lah ./openssl4j/src/main/java/de/sfuhrm/openssl4j/
 	sed 's@private static String openssl4JBasePath = "\/openssl4j";@private static String openssl4JBasePath = "\${BASE_DIR}";@g' ./temp.java > ./openssl4j/src/main/java/de/sfuhrm/openssl4j/OpenSSLCryptoNative.java
 clean:
-	sudo rm -fr ${TARGET} ${INSTALL_TARGET}
+	 rm -fr ${TARGET} ${INSTALL_TARGET}
 
 buildTest: 
 	mkdir output
@@ -80,9 +80,9 @@ endif
 
 
 ${TARGET}/include/%.h: ${JNI_JAVA_FILES}
-	sudo mkdir -p ${TARGET}/include
+	 mkdir -p ${TARGET}/include
 	mvn install -DskipTests
-	sudo ${JAVA_HOME}/bin/javac -J-Xint -classpath ${JNI_JAVA_SOURCES} -h ${TARGET}/include -d ${TARGET} -s ${TARGET} ${JNI_JAVA_FILES}
+	 ${JAVA_HOME}/bin/javac -J-Xint -classpath ${JNI_JAVA_SOURCES} -h ${TARGET}/include -d ${TARGET} -s ${TARGET} ${JNI_JAVA_FILES}
 
 ${TARGET}/libopenssl4j-${JAVA_OS_ARCH}.so: ${JNI_HEADER_FILES}
 	$(info Includes: ${INCLUDES})
