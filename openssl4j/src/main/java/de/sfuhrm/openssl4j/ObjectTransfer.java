@@ -20,8 +20,6 @@ import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.sound.sampled.LineUnavailableException;
-
 /**
  * Transfers the object files from the JAR file to a temporary directory. The temporary directory
  * will be deleted when the JVM shuts down.
