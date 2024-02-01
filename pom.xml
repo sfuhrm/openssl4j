@@ -7,10 +7,10 @@
   <version>0.3.1-SNAPSHOT</version>
   <name>OpenSSL4J Parent</name>
   <description>OpenSSL4J Parent POM</description>
-  <url>https://github.com/sfuhrm/openssl4j</url>
+  <url>https://github.com/openssl4j/openssl4j</url>
   <scm>
-    <url>git@github.com:sfuhrm/openssl4j</url>
-    <connection>scm:git:git@github.com:sfuhrm/openssl4j.git</connection>
+    <url>git@github.com:openssl4j/openssl4j</url>
+    <connection>scm:git:git@github.com:openssl4j/openssl4j.git</connection>
     <tag>HEAD</tag>
   </scm>
   <licenses>
@@ -24,7 +24,7 @@
     <repository>
       <id>github</id>
       <name>GitHub Packages</name>
-      <url>https://maven.pkg.github.com/sfuhrm/openssl4j</url>
+      <url>https://maven.pkg.github.com/openssl4j/openssl4j</url>
     </repository>
   </repositories>
   <distributionManagement>
