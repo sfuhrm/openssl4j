@@ -3,3 +3,4 @@
 *.iml
 *~
 *.versionsBackup
+build-helper/OsArch.class

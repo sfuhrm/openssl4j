@@ -61,7 +61,7 @@ install: ${TARGET}/libopenssl4j-${JAVA_OS_ARCH}.so
 	ls -lah ./openssl4j/src/main/java/de/sfuhrm/openssl4j/
 	sed 's@private static String openssl4JBasePath = "\/openssl4j";@private static String openssl4JBasePath = "\${BASE_DIR}";@g' ./temp.java > ./openssl4j/src/main/java/de/sfuhrm/openssl4j/OpenSSLCryptoNative.java
 clean:
-	rm -fr ${TARGET} ${INSTALL_TARGET}
+	sudo rm -fr ${TARGET} ${INSTALL_TARGET}
 
 buildTest: 
 	mkdir output
@@ -70,7 +70,7 @@ ifeq ($(UNAME_S),Darwin)
 	-Wl,-rpath,/usr/local/lib64,-rpath,@loader_path ${test_libs} ${TEST_INCLUDES} \
 	${JNI_C_TEST_SOURCES}/main.c
 else	
-	sudo gcc -Wall -Werror -fPIC -o output/openssl4jTest -lc -g -O0 -Wl,-v \
+	 gcc -Wall -Werror -fPIC -o output/openssl4jTest -lc -g -O0 -Wl,-v \
 	-Wl,-z,defs -Wl,-rpath,/lib64/ossl-modules,-rpath,'$$ORIGIN',-rpath,/lib64 -Wl,-z,origin ${TEST_INCLUDES} \
 	${JNI_C_TEST_SOURCES}/main.c \
 	${test_libs}
@@ -87,7 +87,7 @@ ${TARGET}/include/%.h: ${JNI_JAVA_FILES}
 ${TARGET}/libopenssl4j-${JAVA_OS_ARCH}.so: ${JNI_HEADER_FILES}
 	$(info Includes: ${INCLUDES})
 ifeq ($(UNAME_S),Darwin)
-	sudo gcc -Wall -Werror -fPIC -o "$@" -lc -Wl,-v \
+	 gcc -Wall -Werror -fPIC -o "$@" -lc -Wl,-v \
 	-Wl,-rpath,/usr/local/lib64,-rpath,@loader_path ${libs} -shared ${INCLUDES} \
 	${JNI_C_SOURCES}/openssl4j_common.c \
 	${JNI_C_SOURCES}/openssl4j_messagedigest.c \
@@ -97,7 +97,7 @@ ifeq ($(UNAME_S),Darwin)
 	${JNI_C_SOURCES}/openssl4j_mac.c
 	$(info Output File: "$@")
 else	
-	sudo gcc -Wall -Werror -fPIC -o "$@" -lc -Wl,-v \
+	 gcc -Wall -Werror -fPIC -o "$@" -lc -Wl,-v \
 	-Wl,-z,defs -Wl,-rpath,/lib64/ossl-modules,-rpath,'$$ORIGIN',-rpath,/lib64 -Wl,-z,origin -shared ${INCLUDES} \
 	${JNI_C_SOURCES}/openssl4j_common.c \
 	${JNI_C_SOURCES}/openssl4j_messagedigest.c \

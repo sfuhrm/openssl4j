@@ -38,7 +38,7 @@ public final class OpenSSL4JProvider extends Provider {
       return OpenSSL4JProvider.instance;
    }
 
-  private OpenSSL4JProvider() {
+  public OpenSSL4JProvider() {
     // TODO: Get the major.middle versions from somewhere instead of hardcoding (the original
     // gets them from Maven). Unfortunately a double can't support major.middle.minor because it
     // only has one decimal point.
