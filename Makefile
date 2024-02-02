@@ -47,7 +47,7 @@ else
 $(info Building for RedHat x86)
 INCLUDES+= -I/usr/local/include/openssl 
 TEST_INCLUDES+= -I${JAVA_HOME}/include/linux
-libs+= -L/lib64/ /lib64/libssl.so.3 /lib64/libcrypto.so.3
+libs+= -L/lib64/ -l:libssl.so.3 -l:libcrypto.so.3
 endif
 
 .PHONY: all
