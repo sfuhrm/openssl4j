@@ -81,7 +81,6 @@ endif
 
 ${TARGET}/include/%.h: ${JNI_JAVA_FILES}
 	 mkdir -p ${TARGET}/include
-	mvn install -DskipTests
 	 ${JAVA_HOME}/bin/javac -J-Xint -classpath ${JNI_JAVA_SOURCES} -h ${TARGET}/include -d ${TARGET} -s ${TARGET} ${JNI_JAVA_FILES}
 
 ${TARGET}/libopenssl4j-${JAVA_OS_ARCH}.so: ${JNI_HEADER_FILES}
