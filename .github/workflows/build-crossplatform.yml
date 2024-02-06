@@ -82,7 +82,7 @@ jobs:
       -
         name: Extract shared library
         run: |
-          tar --wildcards -xvf image.tar openssl4j/target/libopenssl4j-*.so
+          tar --wildcards -xvf image.tar openssl4j/openssl4j_build/openssl4j/c/libopenssl4j-*.so
 
       - uses: actions/upload-artifact@v3
         with:
