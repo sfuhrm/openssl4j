@@ -5,7 +5,7 @@ COPY --from=eclipse-temurin:11 $JAVA_HOME $JAVA_HOME
 ENV PATH="${JAVA_HOME}/bin:${PATH}"
 
 RUN apt-get update && apt-get install -y \
-make gcc libssl1.1 libssl-dev libssl
+make gcc 
 COPY . openssl4j
 ENV JAVA_HOME=/opt/java/openjdk/
 RUN echo "JAVA_HOME    is ${JAVA_HOME}"
