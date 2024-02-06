@@ -4,3 +4,4 @@
 *~
 *.versionsBackup
 build-helper/OsArch.class
+openssl4j_build/
