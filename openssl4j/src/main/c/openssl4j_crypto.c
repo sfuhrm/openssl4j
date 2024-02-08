@@ -8,6 +8,7 @@
 #include <openssl/evp.h>
 #include <openssl/err.h>
 #include <string.h>
+#include <stdint.h>
 #include <openssl/pem.h>
 #include <openssl/bio.h>
 #include <openssl/encoder.h>
@@ -31,7 +32,8 @@ char* opensslConfigLocation = NULL;
 // Checks to make sure FIPS is enabled for the provided lib and the default lib.
 JNIEXPORT jint JNICALL Java_de_sfuhrm_openssl4j_OpenSSLCryptoNative_FIPSMode
   (JNIEnv *env, jclass obj, jlong handle) {
-    struct OpenSSLProviderHolder *ctx = (struct OpenSSLProviderHolder*) handle;
+    uintptr_t temp = (uintptr_t) handle; //hide warnings about casting between int and pointer
+    struct OpenSSLProviderHolder *ctx = (struct OpenSSLProviderHolder*) temp;
     return EVP_default_properties_is_fips_enabled(ctx->lib) && EVP_default_properties_is_fips_enabled(NULL);
 }
 
@@ -153,7 +155,7 @@ unsigned long long createOpenSSLLibNative(int setFips, const char* confLocation,
   }
 
 
-  return (unsigned long long)handle;
+  return (uintptr_t)handle;
 }
 
 // Based on https://www.openssl.org/docs/man3.0/man7/fips_module.html
