@@ -87,7 +87,7 @@ jobs:
       - uses: actions/upload-artifact@v3
         with:
           name: shared_objects
-          path: openssl4j/target/*.so
+          path: openssl4j/openssl4j_build/openssl4j/c/libopenssl4j-*.so
 
   #
   # deploy the openssl4j-objects artifact to github packages
