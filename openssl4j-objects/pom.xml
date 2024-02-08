@@ -36,7 +36,7 @@
         <repository>
           <id>github</id>
           <name>GitHub Packages</name>
-          <url>https://maven.pkg.github.com/sfuhrm/openssl4j</url>
+          <url>https://maven.pkg.github.com/openssl4j/openssl4j</url>
         </repository>
       </distributionManagement>
    </profile>
