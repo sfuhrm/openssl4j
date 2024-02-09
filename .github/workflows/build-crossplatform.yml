@@ -37,11 +37,16 @@ jobs:
       matrix:
         include:
           - platform: linux/amd64
+            artifact: linux_amd64
           - platform: linux/arm64
+            artifact: linux_arm64
           - platform: linux/s390x
+            artifact: linux_s390x
           - platform: linux/arm/v7
+            artifact: linux_arm_v7
           #- platform: linux/arm/v6
           - platform: linux/ppc64le
+            artifact: linux_ppc64le
           #- platform: linux/riscv64
           #- platform: linux/386
           #- platform: linux/mips64le
@@ -86,7 +91,7 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: shared_objects_${{ matrix.platform }}
+          name: shared_objects_${{ matrix.artifact }}
           path: openssl4j/target/*.so
 
   #
