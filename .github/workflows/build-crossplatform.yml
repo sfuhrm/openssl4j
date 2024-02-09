@@ -95,6 +95,9 @@ jobs:
   deploy_openssl4j_objects:
     needs: qemu_platform_object_files
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
     steps:
       -
         name: Checkout
