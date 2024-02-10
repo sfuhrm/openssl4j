@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Manual test for {@linkplain ObjectTransfer}.
+ *
  * @author Stephan Fuhrmann
  */
 public class ObjectTransferTest {

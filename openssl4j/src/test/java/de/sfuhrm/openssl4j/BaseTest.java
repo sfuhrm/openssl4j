@@ -12,14 +12,14 @@ import org.junit.jupiter.api.BeforeEach;
  */
 public class BaseTest {
 
-  Formatter formatter;
-  Charset ascii;
+    Formatter formatter;
+    Charset ascii;
 
-  @BeforeEach
-  public void before() throws IOException {
-    NativeLoader.loadAll();
+    @BeforeEach
+    public void before() throws IOException {
+        NativeLoader.loadAll();
 
-    formatter = Formatter.getInstance();
-    ascii = StandardCharsets.US_ASCII;
-  }
+        formatter = Formatter.getInstance();
+        ascii = StandardCharsets.US_ASCII;
+    }
 }

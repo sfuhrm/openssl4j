@@ -1,26 +1,23 @@
 /**
- * Binding classes from the Java JCA providers. The
- * native OpenSSL library is being linked dynamically
- * into the JVMs address space.
+ * Binding classes from the Java JCA providers. The native OpenSSL library is being linked dynamically into the JVMs
+ * address space.
  *
- * <h2>Usage</h2>
- * There are multiple ways of using the library.
+ * <h2>Usage</h2> There are multiple ways of using the library.
  *
  * <h3>Runtime configuration</h3>
  *
- * You can create an instance of a message digest as follows if you are
- * explicitly specifying the crypto provider {@code OpenSSL4JProvider}:
+ * You can create an instance of a message digest as follows if you are explicitly specifying the crypto provider
+ * {@code OpenSSL4JProvider}:
  *
  * {@code MessageDigest md5 = new MessageDigest("MD5", new OpenSSL4JProvider());}
  *
  * <h3>JDK-wide configuration</h3>
  *
- * You can specify the {@code OpenSSL4JProvider} to be used JDK-wide
- * implicitly by the by changing your
+ * You can specify the {@code OpenSSL4JProvider} to be used JDK-wide implicitly by the by changing your
  * <ul>
  * <li>Linux, or macOS: `&lt;java-home&gt;/conf/security/java.security</li>
  * <li>Windows: `&lt;java-home&gt;\conf\security\java.security</li>
- *</ul>
+ * </ul>
  *
  * to have the OpenSSL4J provider in the first place:
  *

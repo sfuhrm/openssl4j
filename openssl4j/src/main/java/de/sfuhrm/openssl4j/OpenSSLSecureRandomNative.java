@@ -4,25 +4,26 @@ import java.security.SecureRandomSpi;
 
 public class OpenSSLSecureRandomNative extends SecureRandomSpi {
 
-  private static native void engineSetSeedNative(byte[] seed, int seedLen, double randomness);
-  private static native int engineNextBytesNative(byte[] rand, int randLen);
+    private static native void engineSetSeedNative(byte[] seed, int seedLen, double randomness);
 
-  @Override
-  protected void engineSetSeed(byte[] seed) {
-    engineSetSeedNative(seed, seed.length, seed.length);
-  }
+    private static native int engineNextBytesNative(byte[] rand, int randLen);
 
-  @Override
-  protected void engineNextBytes(byte[] bytes) {
-    engineNextBytesNative(bytes, bytes.length);
-  }
+    @Override
+    protected void engineSetSeed(byte[] seed) {
+        engineSetSeedNative(seed, seed.length, seed.length);
+    }
 
-  @Override
-  protected byte[] engineGenerateSeed(int numBytes) {
-    byte[] seed = new byte[numBytes];
+    @Override
+    protected void engineNextBytes(byte[] bytes) {
+        engineNextBytesNative(bytes, bytes.length);
+    }
 
-    engineNextBytesNative(seed, numBytes);
+    @Override
+    protected byte[] engineGenerateSeed(int numBytes) {
+        byte[] seed = new byte[numBytes];
 
-    return seed;
-  }
+        engineNextBytesNative(seed, numBytes);
+
+        return seed;
+    }
 }

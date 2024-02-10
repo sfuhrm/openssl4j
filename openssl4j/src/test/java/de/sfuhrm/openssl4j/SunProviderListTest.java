@@ -14,19 +14,18 @@ import org.junit.jupiter.api.Test;
  */
 public class SunProviderListTest {
 
-  @Test
-  public void list() {
-    Provider[] providers = Security.getProviders();
-    Arrays.sort(providers, Comparator.comparing(Provider::getName));
-    for (Provider provider : providers) {
-      System.out.println(provider.getName());
-      TreeSet<Provider.Service> sortedServices =
-          new TreeSet<>(Comparator.comparing(o -> (o.getType() + o.getAlgorithm())));
-      sortedServices.addAll(provider.getServices());
-      for (Provider.Service service : sortedServices) {
-        System.out.println(
-            service.getType() + " - " + service.getClassName() + " - " + service.getAlgorithm());
-      }
+    @Test
+    public void list() {
+        Provider[] providers = Security.getProviders();
+        Arrays.sort(providers, Comparator.comparing(Provider::getName));
+        for (Provider provider : providers) {
+            System.out.println(provider.getName());
+            TreeSet<Provider.Service> sortedServices = new TreeSet<>(
+                    Comparator.comparing(o -> (o.getType() + o.getAlgorithm())));
+            sortedServices.addAll(provider.getServices());
+            for (Provider.Service service : sortedServices) {
+                System.out.println(service.getType() + " - " + service.getClassName() + " - " + service.getAlgorithm());
+            }
+        }
     }
-  }
 }
